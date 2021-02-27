@@ -49,7 +49,6 @@ class UserController {
     async login(req:Request,res:Response):Promise<Response>{
         try{
             const {login, password,role} = await req.body
-            console.log(req.body)
             const user: QueryResult = await pool.query('SELECT * FROM client WHERE login=$1 ',[login])
             if(!user.rows.length){
                 return res.status(400).json({message:`Пользователь с логином ${login} не найден`})

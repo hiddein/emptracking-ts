@@ -15,5 +15,7 @@ router.post(
   empsController.create
 )
 router.get("/", authMiddleware, empsController.getAll)
+router.get("/:id", authMiddleware, empsController.getOne)
+
 
 export default router
