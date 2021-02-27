@@ -1,4 +1,5 @@
     import express from 'express'
+    import fileupload from 'express-fileupload'
     import cors from 'cors'
     import indexRoutes from './routes/index'
     import dotenv from 'dotenv'
@@ -8,6 +9,7 @@
     const app = express()
     app.use(cors())
     app.use(express.json())
+    app.use(fileupload({}))
     app.use('/api',indexRoutes)
 
     const start = async () => {

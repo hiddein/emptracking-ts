@@ -14,20 +14,26 @@
   "author": "Nikolaev Denis <nikolaev.devl@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@types/dateformat": "^3.0.1",
+    "@types/express-fileupload": "^1.1.6",
     "@types/pg": "^7.14.9",
+    "@types/uuid": "^8.3.0",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "config": "^3.3.3",
     "cors": "^2.8.5",
+    "dateformat": "^4.5.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
     "express-validator": "^6.9.2",
     "jsonwebtoken": "^8.5.1",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.6.3",
-    "ts-dotenv": "^0.8.3"
+    "ts-dotenv": "^0.8.3",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",

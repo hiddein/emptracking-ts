@@ -71,8 +71,7 @@ class UserController {
     }
 
     async check(req:any,res:Response):Promise<Response>{
-        console.log(req.user)
-        console.log()
+
         const token = generateAccessToken(req.body.id,req.body.login,req.body.role)
               return res.json({token})
 
