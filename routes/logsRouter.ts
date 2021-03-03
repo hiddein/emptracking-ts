@@ -13,5 +13,6 @@ router.post(
   ],
   logsController.create
 )
+router.get("/", authMiddleware, logsController.getAll)
 
 export default router
