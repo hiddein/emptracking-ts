@@ -35,5 +35,21 @@ class routeController {
     )
     return res.status(200).json(response.rows)
   }
+  async getStart(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params
+    const response: QueryResult = await pool.query(
+      "SELECT * from route where id_start=$1",
+      [id]
+    )
+    return res.status(200).json(response.rows)
+  }
+  async getEnd(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params
+    const response: QueryResult = await pool.query(
+      "SELECT * from route where id_end=$1",
+      [id]
+    )
+    return res.status(200).json(response.rows)
+  }
 }
 export default new routeController()
