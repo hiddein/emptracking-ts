@@ -28,6 +28,7 @@ const generate_time = (dt:Date,hh?:any,mm?:any, min_before?:any, min_after?:any)
 
 
 var generation = async(days:number) => {
+  var i = 0
   var logs: object[] = []
   const week: Array<number> = [0,1,2,3,4]
   var times: Array<Array<number>> = [[9,0], [12,0], [12,5], [13,30], [14,10], [17,40]]
@@ -41,38 +42,22 @@ var generation = async(days:number) => {
 
   
 
-  for (let l = 0; l < 1/*days*/; l++) {
+  for (let l = 0; l < days; l++) {
     if (week.includes(currentDay.getDay()))
     {
-      var room
+      
       var startRoomData:any = rooms[randomInteger(0,rooms.length-1)]
+      let room = startRoomData.id_room
       var state = false
       var ways: any[] = []
+      let way
 
-      times.map(async(time) => {
-      state = !state
-      const timestamp = generate_time(currentDay, time[0], time[1], minDiff, minDiff).toLocaleString()
       
-       if (state){
-        await getWays(room = startRoomData.id_room).then(function(data) { ways  =  data 
-        })
-        console.log(ways)
-        room = ways[randomInteger(0,ways.length-1)].id_end
-        console.log(room)
-         logs.push({action:'in',time:timestamp})
-       }
-       else {
-        await getWays(room = startRoomData.id_room).then(function(data) { ways  =  data 
-        })
-        console.log(ways)
-        room = ways[randomInteger(0,ways.length-1)].id_end
-        console.log(room)
-        logs.push({action:'out',time:timestamp})
-       }
-       
-      })
+      i++
+      console.log(i)
     }
     currentDay.setDate(currentDay.getDate() + 1)
+    console.log(currentDay)
   }
   return logs
 }
