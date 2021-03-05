@@ -8,7 +8,7 @@ const $authHost = axios.create ({
 })
 
  const authInterceptor = (config:any) =>{
-     config.headers.authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYxNDg3MDIyNywiZXhwIjoxNjE0OTU2NjI3fQ.zlqsUtuIlumEi_KYl0t1vuM0HV5nGN1qvMfFZ1j5o6Q'
+     config.headers.authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTYxNDk1NzE2MywiZXhwIjoxNjE1MDQzNTYzfQ.o7-33veuRA1h3LrVMBlyXYv8XevWJthpVRc4DRCBKuQ'
      return config
  }
  $authHost.interceptors.request.use(authInterceptor)

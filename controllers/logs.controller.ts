@@ -32,7 +32,7 @@ class logsController {
 
   async deleteAll(req: Request, res: Response): Promise<Response> {
     const response: QueryResult = await pool.query(
-      "DELETE FROM tracking"
+      "DELETE FROM tracking;ALTER SEQUENCE tracking_id_reg_seq RESTART WITH 1"
     )
     return res.status(200).json({ message: "OK"})
   }

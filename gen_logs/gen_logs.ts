@@ -1,7 +1,8 @@
-import $authHost from "./axiosConf"
+import $authHost from "./axiosConfig"
+import { LogInterface,RoomInterface, WayInterface, EmpInterface } from "./types"
 
 const getWays = async (id: number) => {
-  const { data } = await $authHost.get("api/route/start/" + id)
+  const { data } = await $authHost.get(`api/route/start/${id}`)
   return data
 }
 
@@ -30,18 +31,18 @@ const clearLogs = async () => {
 }
 
 const randomInteger = (min: number, max: number): number => {
-  let rand = min + Math.random() * (max + 1 - min)
+  let rand: number = min + Math.random() * (max + 1 - min)
   return Math.floor(rand)
 }
 
 const generate_time = (
   dt: Date,
-  hh?: any,
-  mm?: any,
-  min_before?: any,
-  min_after?: any
+  hh: number,
+  mm: number,
+  min_before: number,
+  min_after: number
 ): Date => {
-  const sec =
+  const sec: number =
     randomInteger(0, 59) + randomInteger(-min_before * 60, min_after * 60)
   //var newDate = new Date(dt.getFullYear(),dt.getMonth(),dt.getDate(),hh,mm,sec)
   dt.setHours(hh)
@@ -51,7 +52,7 @@ const generate_time = (
 }
 
 var generation = async (days: number) => {
-  var logs: object[] = []
+  var logs: LogInterface[] = []
   const week: Array<number> = [0, 1, 2, 3, 4]
   var times: Array<Array<number>> = [
     [9, 0],
@@ -64,22 +65,22 @@ var generation = async (days: number) => {
   const minDiff: number = 15
   var currentDay: Date = new Date()
   currentDay.setDate(currentDay.getDate() - days)
-  var rooms: object[] = []
-  await getRooms().then(function (data) {
-    rooms = data
-  })
+  var rooms: RoomInterface[] = []
+
+  rooms = await getRooms()
 
   for (let l = 0; l < days; l++) {
     if (week.includes(currentDay.getDay())) {
-      var startRoomData: any = rooms[randomInteger(0, rooms.length - 1)]
-      let room = startRoomData.id_room
-      var state = false
-      var ways: any[] = []
-      let way
+      var startRoomData: RoomInterface =
+        rooms[randomInteger(0, rooms.length - 1)]
+      let room: number = startRoomData.id_room
+      var state: boolean = false
+      var ways: WayInterface[] = []
+      let way: WayInterface
 
       for (let time in times) {
         state = !state
-        const timestamp = generate_time(
+        const timestamp: string = generate_time(
           currentDay,
           times[time][0],
           times[time][1],
@@ -88,9 +89,7 @@ var generation = async (days: number) => {
         ).toLocaleString()
 
         if (state) {
-          await getWays(room).then(function (data) {
-            ways = data
-          })
+          ways = await getWays(room)
           //console.log("Старт- ", room)
           way = ways[randomInteger(0, ways.length - 1)]
           room = way.id_end
@@ -98,9 +97,7 @@ var generation = async (days: number) => {
           logs.push({ route: way.id_route, timestamp: timestamp })
           //console.log(timestamp)
         } else {
-          await getWays(room).then(function (data) {
-            ways = data
-          })
+          ways = await getWays(room)
 
           //console.log("Старт- ", room)
           way = ways[randomInteger(0, ways.length - 1)]
@@ -120,32 +117,23 @@ var generation = async (days: number) => {
   return logs
 }
 
-// Начало выполнения
+// Начало заполнения
 const start = async () => {
-  let message: string = ""
-  var emps: any[] = []
-  var genResult: any[] = []
-  var uploadData: any[] = []
+  var emps: EmpInterface[] = []
+  var genResult: LogInterface[] = []
 
   await clearLogs()
-  await getEmps().then(function (data) {
-    emps = data
-  })
-  
+
+  emps = await getEmps()
+
   for (let emp in emps) {
     let empId: number = emps[emp].id_emp
-    generation(5)
-      .then(async function (data) {
-        genResult = data
-      })
-      
-      .then(async function () {
-      for (let log in genResult) {
-        //console.log(empId, genResult[log].route, genResult[log].timestamp)
-       // uploadData.push({empId, route: genResult[log].route, timestamp : genResult[log].timestamp})
+
+    genResult = await generation(5)
+
+    for (let log in genResult) {
       await addLog(empId, genResult[log].route, genResult[log].timestamp)
-      }
-      })
+    }
   }
 }
 start()
