@@ -14,5 +14,6 @@ router.post(
   logsController.create
 )
 router.get("/", authMiddleware, logsController.getAll)
+router.get("/delete",authMiddleware,logsController.deleteAll)
 
 export default router

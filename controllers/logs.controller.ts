@@ -29,5 +29,14 @@ class logsController {
     )
     return res.status(200).json(response.rows)
   }
+
+  async deleteAll(req: Request, res: Response): Promise<Response> {
+    const response: QueryResult = await pool.query(
+      "DELETE FROM tracking"
+    )
+    return res.status(200).json({ message: "OK"})
+  }
+
+
 }
 export default new logsController()
