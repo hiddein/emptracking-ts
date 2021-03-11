@@ -80,12 +80,10 @@ var generation = async (days: number, empId:number) => {
     if (week.includes(currentDay.getDay())) {
       let room: number = startRooms[randomInteger(0, startRooms.length - 1)].id_room
       //console.log("Сотрудник - ", empId, "Помещение- ", room)
-      var state: boolean = false
       var ways: WayInterface[] = []
       let way: WayInterface
 
       for (let time in times) {
-        state = !state
         const timestamp: string = generate_time(
           currentDay,
           times[time][0],
@@ -94,7 +92,6 @@ var generation = async (days: number, empId:number) => {
           minDiff
         ).toLocaleString()
 
-        if (state) {
           ways = await getWays(room)
           //console.log("Старт- ", room)
           way = ways[randomInteger(0, ways.length - 1)]
@@ -102,17 +99,7 @@ var generation = async (days: number, empId:number) => {
           //console.log("Конец- ", room)
           logs.push({ route: way.id_route, timestamp: timestamp })
           //console.log(timestamp)
-        } else {
-          ways = await getWays(room)
-
-          //console.log("Старт- ", room)
-          way = ways[randomInteger(0, ways.length - 1)]
-          room = way.id_end
-          //console.log("Конец- ", room)
-
-          logs.push({ route: way.id_route, timestamp: timestamp })
-          //console.log(timestamp)
-        }
+       
       }
       //console.log('end day')
     }
