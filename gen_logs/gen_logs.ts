@@ -74,12 +74,12 @@ var generation = async (days: number, empId:number) => {
   
   rooms = await getRooms()
 
-  var startRooms: any = await getStartRoom(empId)
+  var startRooms: StartRoomInterface[] = await getStartRoom(empId)
 
   for (let l = 0; l < days; l++) {
     if (week.includes(currentDay.getDay())) {
       let room: number = startRooms[randomInteger(0, startRooms.length - 1)].id_room
-      console.log("Сотрудник - ", empId, "Помещение- ", room)
+      //console.log("Сотрудник - ", empId, "Помещение- ", room)
       var state: boolean = false
       var ways: WayInterface[] = []
       let way: WayInterface
