@@ -25,7 +25,7 @@ create TABLE emp (
 create TABLE access (
     id_emp INTEGER,
     id_route INTEGER,
-    FOREIGN KEY (id_emp) REFERENCES emp (id_emp)
+    FOREIGN KEY (id_emp) REFERENCES emp (id_emp),
     FOREIGN KEY (id_route) REFERENCES route (id_route)
 )
 
@@ -39,7 +39,7 @@ create TABLE route (
     id_route SERIAL PRIMARY KEY,
     id_start INTEGER,
     id_end INTEGER,
-    FOREIGN KEY (id_start) REFERENCES room (id_room)
+    FOREIGN KEY (id_start) REFERENCES room (id_room),
     FOREIGN KEY (id_end) REFERENCES room (id_room)
 )
 
@@ -48,7 +48,13 @@ create TABLE tracking (
     id_emp INTEGER,
     id_route INTEGER,
     Timestamp TIMESTAMP,
-    FOREIGN KEY (id_emp) REFERENCES emp (id_emp)
+    FOREIGN KEY (id_emp) REFERENCES emp (id_emp),
     FOREIGN KEY (id_route) REFERENCES room (id_route)
 )
 
+create TABLE dep_own_room (
+    id_dep INTEGER,
+    id_room INTEGER,
+    FOREIGN KEY (id_dep) REFERENCES department (id_dep),
+    FOREIGN KEY (id_room) REFERENCES room (id_room)
+)

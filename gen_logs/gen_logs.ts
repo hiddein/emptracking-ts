@@ -1,5 +1,5 @@
 import $authHost from "./axiosConfig"
-import { LogInterface,RoomInterface, WayInterface, EmpInterface } from "./types"
+import { LogInterface,RoomInterface, WayInterface, EmpInterface, StartRoomInterface } from "./types"
 
 const getWays = async (id: number) => {
   const { data } = await $authHost.get(`api/route/start/${id}`)
@@ -8,6 +8,11 @@ const getWays = async (id: number) => {
 
 const getRooms = async () => {
   const { data } = await $authHost.get("api/room")
+  return data
+}
+
+const getStartRoom = async (id:number) => {
+  const { data } = await $authHost.get(`api/room/start/${id}`)
   return data
 }
 
@@ -51,7 +56,7 @@ const generate_time = (
   return dt
 }
 
-var generation = async (days: number) => {
+var generation = async (days: number, empId:number) => {
   var logs: LogInterface[] = []
   const week: Array<number> = [0, 1, 2, 3, 4]
   var times: Array<Array<number>> = [
@@ -66,14 +71,15 @@ var generation = async (days: number) => {
   var currentDay: Date = new Date()
   currentDay.setDate(currentDay.getDate() - days)
   var rooms: RoomInterface[] = []
-
+  
   rooms = await getRooms()
+
+  var startRooms: any = await getStartRoom(empId)
 
   for (let l = 0; l < days; l++) {
     if (week.includes(currentDay.getDay())) {
-      var startRoomData: RoomInterface =
-        rooms[randomInteger(0, rooms.length - 1)]
-      let room: number = startRoomData.id_room
+      let room: number = startRooms[randomInteger(0, startRooms.length - 1)].id_room
+      console.log("Сотрудник - ", empId, "Помещение- ", room)
       var state: boolean = false
       var ways: WayInterface[] = []
       let way: WayInterface
@@ -129,7 +135,7 @@ const start = async () => {
   for (let emp in emps) {
     let empId: number = emps[emp].id_emp
 
-    genResult = await generation(5)
+    genResult = await generation(10,empId)
 
     for (let log in genResult) {
       await addLog(empId, genResult[log].route, genResult[log].timestamp)

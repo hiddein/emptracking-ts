@@ -3,6 +3,11 @@
     timestamp: any
 
 }
+
+export interface StartRoomInterface {
+    id_room : number
+}
+
 export interface RoomInterface {
     id_room : number,
     name_room :string,
