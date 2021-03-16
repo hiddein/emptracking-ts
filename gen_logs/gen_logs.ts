@@ -1,13 +1,8 @@
 import $authHost from "./axiosConfig"
-import { LogInterface,RoomInterface, WayInterface, EmpInterface, StartRoomInterface } from "./types"
+import { LogInterface,RoomInterface, WayInterface, EmpInterface, StartRoomInterface, ScheduleInterface } from "./types"
 
 const getWays = async (id: number) => {
   const { data } = await $authHost.get(`api/route/start/${id}`)
-  return data
-}
-
-const getRooms = async () => {
-  const { data } = await $authHost.get("api/room")
   return data
 }
 
@@ -18,6 +13,11 @@ const getStartRoom = async (id:number) => {
 
 const getEmps = async () => {
   const { data } = await $authHost.get("api/emps")
+  return data
+}
+
+const getSchedule = async (id: number) => {
+  const { data } = await $authHost.get(`api/emps/schedule/${id}`)
   return data
 }
 
@@ -40,6 +40,35 @@ const randomInteger = (min: number, max: number): number => {
   return Math.floor(rand)
 }
 
+const genTravelTimes = async(empId: number) => {
+  var schedule: ScheduleInterface[] = []
+  schedule = await getSchedule(empId)
+  let startTimeHours =  Number(schedule[0].start_time.split(':')[0])
+  let startTimeMinutes =  Number(schedule[0].start_time.split(':')[1])
+  let endTimeHours = Number(schedule[0].end_time.split(':')[0])
+  let endTimeMinutes = Number(schedule[0].end_time.split(':')[1])
+
+  let getDate = (date:any):any => new Date(0, 0,0, date.split(':')[0], date.split(':')[1]); //получение даты из строки (подставляются часы и минуты
+  let different = getDate(schedule[0].end_time) - getDate(schedule[0].start_time) ;
+  
+  let hours = Math.floor((different % 86400000) / 3600000);
+  
+
+  
+  var times: Array<Array<number>> = [
+    [startTimeHours, startTimeMinutes],
+    [startTimeHours + Math.floor(hours*0.3), 0],
+    [startTimeHours + Math.floor(hours*0.3), 15],
+    [startTimeHours + Math.floor(hours*0.6), 0],
+    [startTimeHours + Math.floor(hours*0.6), 30],
+    [startTimeHours + Math.floor(hours*0.8), 10],
+    [startTimeHours + Math.floor(hours*0.8), 30],
+    [endTimeHours, endTimeMinutes],
+  ]
+  
+  return times
+}
+
 const generate_time = (
   dt: Date,
   hh: number,
@@ -58,28 +87,23 @@ const generate_time = (
 
 var generation = async (days: number, empId:number) => {
   var logs: LogInterface[] = []
-  const week: Array<number> = [0, 1, 2, 3, 4]
-  var times: Array<Array<number>> = [
-    [9, 0],
-    [12, 0],
-    [12, 5],
-    [13, 30],
-    [14, 10],
-    [17, 40],
-  ]
+  const week: Array<number> = [1, 2, 3, 4, 5]
+
+  
+  var times: Array<Array<number>> = await genTravelTimes(empId)
+  console.log(times)
   const minDiff: number = 15
   var currentDay: Date = new Date()
   currentDay.setDate(currentDay.getDate() - days)
-  var rooms: RoomInterface[] = []
-  
-  rooms = await getRooms()
 
+
+  
   var startRooms: StartRoomInterface[] = await getStartRoom(empId)
 
   for (let l = 0; l < days; l++) {
     if (week.includes(currentDay.getDay())) {
       let room: number = startRooms[randomInteger(0, startRooms.length - 1)].id_room
-      //console.log("Сотрудник - ", empId, "Помещение- ", room)
+      console.log("Сотрудник - ", empId, "Помещение- ", room)
       var ways: WayInterface[] = []
       let way: WayInterface
 

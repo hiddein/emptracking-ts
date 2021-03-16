@@ -16,6 +16,6 @@ router.post(
 )
 router.get("/", authMiddleware, empsController.getAll)
 router.get("/:id", authMiddleware, empsController.getOne)
-
+router.get("/schedule/:id", authMiddleware, empsController.getSchedule)
 
 export default router

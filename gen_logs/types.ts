@@ -29,3 +29,10 @@ export interface EmpInterface {
     email_emp :string,
     tel_emp :string
 }
+export interface ScheduleInterface {
+    id_emp:number, 
+    start_time:any, 
+    teaTime:number, 
+    lunch_time:number, 
+    end_time: any
+}

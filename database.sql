@@ -58,3 +58,13 @@ create TABLE dep_own_room (
     FOREIGN KEY (id_dep) REFERENCES department (id_dep),
     FOREIGN KEY (id_room) REFERENCES room (id_room)
 )
+
+create TABLE schedule(
+    id_reg SERIAL PRIMARY KEY,
+    id_emp INTEGER,
+    start_time time,
+    teaTime INTEGER,
+    lunch_time INTEGER,
+    end_time time,
+    FOREIGN KEY (id_emp) REFERENCES emp (id_emp)
+)
