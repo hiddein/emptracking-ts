@@ -59,7 +59,7 @@ class UserController {
             }
 
             const token = generateAccessToken(user.rows[0].client_id,user.rows[0].login,user.rows[0].role)
-            return res.status(200).json({token})
+            return res.status(200).json({token, userLogin:user.rows[0].login, UserRole: user.rows[0].role})
           } 
           catch (e){
               console.log(e)
