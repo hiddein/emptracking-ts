@@ -12,7 +12,7 @@ router.post('/registration',[
     roleMiddleware(['admin']),
 ],userController.registration)
 router.post('/login',userController.login)
-router.get('/auth',authMiddleware,userController.check)
+router.get('/auth',authMiddleware,userController.auth)
 
 
 

@@ -1,5 +1,5 @@
 create TABLE client(
-    id_user SERIAL PRIMARY KEY,
+    client_id SERIAL PRIMARY KEY,
     login VARCHAR(20),
     password VARCHAR (20),
     role VARCHAR(10)

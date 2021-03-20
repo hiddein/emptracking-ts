@@ -48,7 +48,7 @@ class UserController {
 
     async login(req:Request,res:Response):Promise<Response>{
         try{
-            const {login, password,role} = await req.body
+            const {login, password} = await req.body
             const user: QueryResult = await pool.query('SELECT * FROM client WHERE login=$1 ',[login])
             if(!user.rows.length){
                 return res.status(400).json({message:`Пользователь с логином ${login} не найден`})
@@ -59,7 +59,7 @@ class UserController {
             }
 
             const token = generateAccessToken(user.rows[0].client_id,user.rows[0].login,user.rows[0].role)
-            return res.status(200).json({token, userLogin:user.rows[0].login, UserRole: user.rows[0].role})
+            return res.status(200).json({token, user:{userLogin:user.rows[0].login, userRole: user.rows[0].role} })
           } 
           catch (e){
               console.log(e)
@@ -69,11 +69,11 @@ class UserController {
        
     }
 
-    async check(req:any,res:Response):Promise<Response>{
+    async auth(req:any,res:Response):Promise<Response>{
 
-        const token = generateAccessToken(req.body.id,req.body.login,req.body.role)
-              return res.json({token})
-
+        const user: QueryResult = await pool.query('SELECT * FROM client WHERE client_id=$1 ',[req.user.id])
+        const token = generateAccessToken(user.rows[0].client_id,user.rows[0].login,user.rows[0].role)
+        return res.status(200).json({token, user:{userLogin:user.rows[0].login, userRole: user.rows[0].role} })
        
        
     }
