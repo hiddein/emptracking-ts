@@ -3,7 +3,6 @@ import {
   Card,
   CardActions,
   CardContent,
-  createMuiTheme,
   Grid,
   makeStyles,
   TextField,
@@ -12,7 +11,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { login as loginAction } from "../store/actions/login"
+import { login as loginAction } from "../store/actions/user"
 
 const useStyles = makeStyles(() => ({
   root: {

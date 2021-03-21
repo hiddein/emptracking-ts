@@ -7,11 +7,13 @@ import { useRoutes } from "./routes"
 import {BrowserRouter as Router} from 'react-router-dom'
 import { useTypedSelector } from "./hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { autologin } from "./store/actions/login"
+import { autologin } from "./store/actions/user"
 
 const useStyles = makeStyles(() => ({
   root: {
     background: blue[50],
+    position: 'relative',
+    minHeight: "100vh"
   },
 }))
 const App: React.FC = () => {
@@ -36,7 +38,7 @@ const App: React.FC = () => {
     <div className={classes.root}>
       <Navbar />
       {routes}
-      {/*<Footer />*/}
+      <Footer />
     </div>
     </Router>
     </ThemeProvider>

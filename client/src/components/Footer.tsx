@@ -9,9 +9,13 @@ import { BottomNavigation } from "@material-ui/core"
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+
   },
   title: {
-    color: blue[100],
+    color: blue[50],
     alignSelf: "center",
     marginLeft: "auto",
     marginRight: "20px",

@@ -70,12 +70,16 @@ const useStyles = makeStyles((theme) => ({
   userTitle: {
     cursor: "default",
     flexGrow: 0,
-    color: blue[50],
     fontSize: "16px",
     textAlign: "right",
     verticalAlign: "middle",
     marginTop: 8,
     lineHeight: 1.4,
+  },
+  subUserTitle: {
+    
+    color: blue[50],
+
   },
 }))
 
@@ -219,7 +223,9 @@ export const Navbar: React.FC = () => {
                 <Typography variant="h6" className={classes.userTitle}>
                   {userLogin}
                   <br></br>
+                  <Typography variant="subtitle2" className={classes.subUserTitle}>
                   {userRole == "admin" ? "Администратор" : "Пользователь"}
+                  </Typography>
                 </Typography>
                 <IconButton
                   aria-label="account of current user"

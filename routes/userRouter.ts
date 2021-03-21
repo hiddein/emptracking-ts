@@ -7,7 +7,7 @@ import roleMiddleware from '../middleware/roleMiddleware'
 const router = Router()
 router.post('/registration',[
     check('login','Логин не может быть пустым').notEmpty(),
-    check('password','Пароль должен быть больше 4 и меньше 12 символов').isLength({min:4,max:12}),
+    check('password','Пароль должен быть больше 0 и меньше 12 символов').isLength({min:1,max:12}),
     check('role','Введите верную роль').isIn(['admin', 'user']),
     roleMiddleware(['admin']),
 ],userController.registration)
