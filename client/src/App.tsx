@@ -8,6 +8,7 @@ import {BrowserRouter as Router} from 'react-router-dom'
 import { useTypedSelector } from "./hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { autologin } from "./store/actions/user"
+import { ruRU } from '@material-ui/core/locale';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,7 +22,8 @@ const App: React.FC = () => {
     palette: {
      
     },
-  });
+    
+  },ruRU);
   const isAuth = useTypedSelector(state => state.user.isAuth)
   const dispatch = useDispatch()
   const userRole = useTypedSelector(state => state.user.userRole)

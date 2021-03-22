@@ -20,8 +20,9 @@ import { login as loginAction, registration } from "../store/actions/user"
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
-    minHeight: "100vh",
+    minHeight: "600px",
     padding: "20px",
+    height: '100vh'
 
   },
   title: {

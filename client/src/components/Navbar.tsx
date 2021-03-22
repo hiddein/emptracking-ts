@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
   },
   userContainer: {
     display: "flex",
+
     marginRight: "0px",
     paddingRight: "0px",
     justifyContent: "flex-end",
@@ -77,8 +78,10 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: 1.4,
   },
   subUserTitle: {
-    
+    fontSize: '14px',
     color: blue[50],
+    fontWeight: 600,
+    letterSpacing: 0.5
 
   },
 }))
@@ -223,7 +226,8 @@ export const Navbar: React.FC = () => {
                 <Typography variant="h6" className={classes.userTitle}>
                   {userLogin}
                   <br></br>
-                  <Typography variant="subtitle2" className={classes.subUserTitle}>
+                  
+                  <Typography  className={classes.subUserTitle}>
                   {userRole == "admin" ? "Администратор" : "Пользователь"}
                   </Typography>
                 </Typography>

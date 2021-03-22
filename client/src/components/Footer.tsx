@@ -4,7 +4,7 @@ import Typography from "@material-ui/core/Typography"
 
 import { blue } from "@material-ui/core/colors"
 
-import { BottomNavigation } from "@material-ui/core"
+import { BottomNavigation, Container } from "@material-ui/core"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -21,8 +21,10 @@ const useStyles = makeStyles(() => ({
     marginRight: "20px",
   },
   nav: {
+    display: 'flex',
     backgroundColor: blue[600],
     height: 40,
+    alignItems: 'flex-end'
   },
 }))
 
@@ -31,11 +33,11 @@ export const Footer: React.FC = () => {
 
   return (
     <div className={classes.root}>
-      <BottomNavigation className={classes.nav}>
+      <div className={classes.nav}>
         <Typography variant="h6" color="inherit" className={classes.title}>
           2021 EmpTracking System
         </Typography>
-      </BottomNavigation>
+      </div>
     </div>
   )
 }
