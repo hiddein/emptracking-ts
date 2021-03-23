@@ -1,5 +1,5 @@
 import axios from "axios"
-import { setLoading, setUser } from "../reducers/userReducer"
+import { logout, setLoading, setUser } from "../reducers/userReducer"
 
 
 export const registration = (login: string, password: string, role: string) => {
@@ -53,7 +53,7 @@ export const autologin = () => {
       dispatch(setUser(response.data.user))
       localStorage.setItem("token", response.data.token)
     } catch (e) {
-      localStorage.removeItem('token')
+      dispatch(logout())
     }
   }
 }

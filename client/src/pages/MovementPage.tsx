@@ -10,7 +10,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { EmpsTable } from "../components/movements/EmpsTable"
-import { MovementsEmpBar } from "../components/movements/MovementsEmpBar"
+import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 
 const useStyles = makeStyles((theme: Theme) => ({

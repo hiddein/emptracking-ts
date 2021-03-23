@@ -10,6 +10,9 @@ import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
 import { AccessViolationTable } from "../components/violation/accessViolation/AccessViolationTable"
+import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
+import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
+import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -56,16 +59,17 @@ export const AccessViolationPage: React.FC = () => {
           <Card className={classes.paper}><AccessViolationTable /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}>3</Card>
+          <Card className={classes.paper}><DepsAccessViolChart /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}>4</Card>
+          <Card className={classes.paper}><EmpAccessViolChart /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}>5</Card>
+          <Card className={classes.paper}><ByEmpsAccessViolChart /></Card>
         </Grid>
         
       </Grid>
+
     </div>
   )
 }

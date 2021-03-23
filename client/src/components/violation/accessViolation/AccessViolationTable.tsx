@@ -5,6 +5,7 @@ import {
   GridColDef,
   GridToolbarContainer,
   GridFilterToolbarButton,
+  GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
@@ -32,10 +33,12 @@ const CustomToolbar = () => {
     <GridToolbarContainer className={classes.toolBarContainer}>
       <Typography variant="h6">Нарушения доступа </Typography>
       <div className={classes.toolBarItem}>
-        <div className={classes.toolBarOption} >
-      <GridFilterToolbarButton />
-      </div>
-
+        <div className={classes.toolBarOption}>
+          <GridFilterToolbarButton />
+        </div>
+        <div className={classes.toolBarOption}>
+          <GridToolbarExport />
+        </div>
       </div>
     </GridToolbarContainer>
   )
@@ -104,7 +107,7 @@ export const AccessViolationTable: React.FC = () => {
   ]
 
   return (
-    <div style={{ height: 300, width: "100%" }}>
+    <div style={{ height: 338, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
