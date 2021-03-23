@@ -1,7 +1,8 @@
  export interface userState {
     userLogin: string,
     userRole: string,
-    isAuth: boolean
+    isAuth: boolean,
+    loading: boolean
 }
 
 export interface userAuth {
@@ -10,14 +11,15 @@ export interface userAuth {
 }
 
 export enum UserActionTypes {
-    SET_USER = "SET_USER",
+    SET_USER_START = "SET_USER_START",
+    SET_USER_SUCCESS = "SET_USER_SUCCESS",
     LOGOUT = "LOGOUT"
 
 
 }
 
-interface setUserAction {
-    type: UserActionTypes.SET_USER,
+interface setUserSuccessAction {
+    type: UserActionTypes.SET_USER_SUCCESS,
     payload: any
 }
 
@@ -25,5 +27,9 @@ interface logoutAction {
     type: UserActionTypes.LOGOUT,
 }
 
+interface SetUserStartAncion {
+    type: UserActionTypes.SET_USER_START,
+}
 
-export type userAction = setUserAction | logoutAction
+
+export type userAction = setUserSuccessAction | logoutAction | SetUserStartAncion

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { setUser } from "../reducers/userReducer"
+import { setLoading, setUser } from "../reducers/userReducer"
 
 
 export const registration = (login: string, password: string, role: string) => {
@@ -41,7 +41,9 @@ export const login = (login: string, password: string) => {
 }
 
 export const autologin = () => {
+  
   return async (dispatch: any) => {
+    dispatch(setLoading())
     try {
       const response = await axios.get(
         "http://localhost:7000/api/user/auth",

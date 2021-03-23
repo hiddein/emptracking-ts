@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Grid,
   makeStyles,
@@ -8,7 +9,7 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
-import { EmpsTable } from "../components/EmpsTable"
+import { EmpsTable } from "../components/movements/EmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpBar"
 import { MovementsTable } from "../components/movements/MovementsTable"
 
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingTop: "10px",
   },
   container1: {
-    padding: "60px 0 50px",
+    padding: "70px 0 50px",
     margin: "0 auto",
     width: "95%",
   },
@@ -29,44 +30,93 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
+  paper1: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    maxHeight: "351px",
+  },
   title: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(0),
     textAlign: "center",
     color: blue[900],
     fontSize: "30px",
+  },
+  selectedEmpContainer: {
+    padding: 5,
+    backgroundColor: blue[300],
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  selectedEmpButton: {
+    padding: 5,
+    color: blue[900],
+  },
+  selectedEmpLabel: {
+    paddingLeft: "10px",
+    display: "flex",
+    alignItems: "center",
+  },
+  selectedEmp: {
+    color: blue[800],
+    paddingRight: "10px",
+    fontSize: "20px",
   },
 }))
 
 export const MovementPage: React.FC = () => {
   const classes = useStyles()
+  const [selectedEmp, SetselectedEmp] = useState("")
   return (
     //<MovementsTable />
     //<MovementsEmpBar />
     <div className={classes.container1}>
-      <Grid container spacing={3} className={classes.container}>
+      <Grid container spacing={2} className={classes.container}>
+        {/* Заголовок страницы */}
         <Grid item xs={12}>
           <Typography className={classes.title} variant="h3">
             Перемещения сотрудников
           </Typography>
         </Grid>
-       
-        <Grid item xs={12} sm={6}>
-          <Grid container direction="column" spacing={3}>
-
-            <Grid item xs={12} sm={12}>
-
+        {/* Сетка дэшборда */}
+        <Grid item xs={12} md={6}>
+          <Grid container direction="column" spacing={2}>
+            <Grid item xs={12} md={12}>
               <Card className={classes.paper}>
-                <EmpsTable />
+                <EmpsTable updateData={SetselectedEmp} />
               </Card>
             </Grid>
             <Grid item>
-              <Card className={classes.paper}><MovementsEmpBar /></Card>
+              <Card className={classes.paper1}>
+                <MovementsEmpBar />
+              </Card>
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={6}>
+        <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <MovementsTable />
+            {selectedEmp != "" ? (
+              <div className={classes.selectedEmpContainer}>
+                <div className={classes.selectedEmpLabel}>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.selectedEmp}
+                  >
+                    Выбран сотрудник:
+                  </Typography>{" "}
+                  {selectedEmp}
+                </div>
+                <Button
+                  className={classes.selectedEmpButton}
+                  onClick={() => {
+                    SetselectedEmp("")
+                  }}
+                >
+                  Отменить выбор
+                </Button>
+              </div>
+            ) : null}
+
+            <MovementsTable empSelected={selectedEmp ? true : false} />
           </Card>
         </Grid>
       </Grid>

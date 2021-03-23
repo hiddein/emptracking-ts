@@ -9,6 +9,7 @@ import { useTypedSelector } from "./hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { autologin } from "./store/actions/user"
 import { ruRU } from '@material-ui/core/locale';
+import { Loader } from "./components/Loader"
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -25,6 +26,7 @@ const App: React.FC = () => {
     
   },ruRU);
   const isAuth = useTypedSelector(state => state.user.isAuth)
+  const isLoading = useTypedSelector(state => state.user.loading)
   const dispatch = useDispatch()
   const userRole = useTypedSelector(state => state.user.userRole)
   const routes = useRoutes(isAuth,userRole=='admin'? true: false)
@@ -33,13 +35,16 @@ const App: React.FC = () => {
   useEffect(() => {
     dispatch(autologin())
   }, [])
+  
 
   return (
     <ThemeProvider theme={theme}>
     <Router>
     <div className={classes.root}>
+
       <Navbar />
-      {routes}
+
+      { isLoading? <Loader size={150} /> : routes}
       <Footer />
     </div>
     </Router>

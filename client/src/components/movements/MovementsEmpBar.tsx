@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
     },
     datePicker:{
         width: '180px',
+        margin: 0
     }
 }))
 

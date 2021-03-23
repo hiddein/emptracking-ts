@@ -61,7 +61,7 @@ export const MainPanelPage: React.FC = () => {
   return (
 
     <div className={classes.container1}>
-    <Grid container spacing={3} className={classes.container} >
+    <Grid container spacing={2} className={classes.container} >
     <Grid item xs={12}>
     <Card className={classes.paper}>1</Card>
         </Grid>
