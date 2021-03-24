@@ -1,94 +1,136 @@
-import { Card, Grid, makeStyles, Paper, Theme, Typography } from "@material-ui/core"
+import {
+  Card,
+  Grid,
+  makeStyles,
+  Paper,
+  Theme,
+  Typography,
+} from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
-
-
+import { TopAbsenceTimeChart } from "../components/mainpageCharts/TopAbsenceTimeChart"
+import { TopLatesDepsChart } from "../components/mainpageCharts/TopLatesDepsChart"
+import { TopMissOnWorkPlaceChart } from "../components/mainpageCharts/TopMissOnWorkPlaceChart"
+import { TopVisRoomsChart } from "../components/mainpageCharts/TopVisRoomsChart"
+import { RangePicker } from "../components/RangePicker"
+import { AccessViolationTable } from "../components/violation/accessViolation/AccessViolationTable"
+import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
+import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
+import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
-    paddingTop: '10px',
-
+    paddingTop: "10px",
   },
   container1: {
-    padding: '80px 0 50px',
-    margin: '0 auto',
-    width: '95%'
-
+    padding: "70px 0 50px",
+    margin: "0 auto",
+    width: "95%",
   },
-  
+
   paper: {
     padding: theme.spacing(2),
-    textAlign: 'center',
+    textAlign: "center",
+    height: "320px",
+  },
+  paper1: {
+    padding: theme.spacing(2),
+    textAlign: "center",
+    maxHeight: "351px",
   },
   title: {
-    padding: theme.spacing(2),
-    textAlign: 'center',
+    padding: theme.spacing(0),
+    textAlign: "center",
     color: blue[900],
-    fontSize: '25px'
+    fontSize: "25px",
+    display: "flex",
+    alignItems: "center",
   },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  datePickerContainer:{
+    padding: '5px 20px',
+    display: 'flex',
+    flexWrap: 'nowrap'
+  },
+  paperInfo:{
+    height: "145px",
+    padding: '11px'
+  },
+  paperInfo2:{
+    height: "145px",
+    padding: '11px',
+    marginRight: '-18px'
+  },
+  paperLateStats:{
+    height: "330px",
+    padding: '11px',
+
+  },
+  paperMostVis:{
+    height: "330px",
+    padding: '11px',
+    marginRight: '-18px'
+  }
 }))
 
-
-
 export const MainPanelPage: React.FC = () => {
-  const classes = useStyles();
-  const [selectedItem, SetselectedItem] = useState(0)
-
-  var options = {
-    options: {
-      chart: {
-        id: "basic-bar",
-        events: {
-          dataPointSelection: function(event:any, chartContext:any, config:any) {
-            SetselectedItem(config.dataPointIndex)
-          }
-        }
-      },
-      xaxis: {
-        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
-      }
-    },
-    series: [
-      {
-        name: "series-1",
-        data: [30, 40, 45, 50, 49, 60, 70, 91]
-      }
-    ]
-  }
-  
+  const classes = useStyles()
 
   return (
-
     <div className={classes.container1}>
-    <Grid container spacing={2} className={classes.container} >
-    <Grid item xs={12}>
-    <Card className={classes.paper}>1</Card>
+      <Grid container spacing={2} className={classes.container}>
+        <Grid item xs={12} className={classes.titleContainer}>
+          <Typography className={classes.title} variant="h3">
+            Главная панель
+          </Typography>
+          <Card className={classes.datePickerContainer}>
+          <RangePicker />
+          </Card>
         </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}><Chart
-          options={options.options}
-          series={options.series}
-          type="bar"
-          height={"350px"} />
-          {options.options.xaxis.categories[selectedItem]}</Card>
-    </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}>2</Card>
-    </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}>3</Card>
-    </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}>4</Card>
-    </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}>5</Card>
-    </Grid>
-    <Grid item xs={12} sm={6} xl={4}>
-      <Card className={classes.paper}>6</Card>
-    </Grid>
-  </Grid>
-  </div>
+
+
+        <Grid spacing={2} item xs={12} md={6}>
+        <Grid spacing={2} container  xs={12} md={12}>
+        <Grid  item xs={12} md={6}>
+          <Card className={classes.paperInfo}>2</Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paperInfo2}>2</Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paperInfo}>2</Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paperInfo2}>2</Card>
+        </Grid>
+        </Grid>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paper}><TopMissOnWorkPlaceChart /></Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paper}><TopAbsenceTimeChart /></Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+
+        <Grid spacing={2} container  xs={12} md={12}>
+        <Grid  item xs={12} md={6}>
+          <Card className={classes.paperLateStats}><TopVisRoomsChart /></Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paperMostVis}><TopLatesDepsChart /></Card>
+        </Grid>
+
+        </Grid>
+
+        </Grid>
+        
+      </Grid>
+
+    </div>
   )
 }

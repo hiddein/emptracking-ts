@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-export const WorkHoursByEmpChart: React.FC = () => {
+export const TopMissOnWorkPlaceChart: React.FC = () => {
   const classes = useStyles()
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
 
@@ -78,13 +78,13 @@ export const WorkHoursByEmpChart: React.FC = () => {
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений (сотрудник)</Typography>
+        <Typography variant='h6'>Время отсутствия на рабочем месте</Typography>
          </div>
       <Chart
         options={state.options}
         series={state.series}
         type="bar"
-        height={"268px"}
+        height={"280px"}
       />
 </div>
 

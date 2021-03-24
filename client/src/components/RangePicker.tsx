@@ -9,12 +9,14 @@ import MomentUtils from "@date-io/moment"
 
 const useStyles = makeStyles(() => ({
   datePicker:{
-    width: '160px',
+    width: '150px',
     margin: '0 10px',
     
     
 },
-
+datePickerContainer:{
+  display:'flex'
+}
 }))
 
 export const RangePicker: React.FC = () => {
@@ -26,7 +28,7 @@ export const RangePicker: React.FC = () => {
   const handleDateChangeEnd = (date:any) => {setSelectedDateEnd(date)}
 
   return (
-
+    <div className={classes.datePickerContainer}>
     <MuiPickersUtilsProvider utils={MomentUtils}>
     <KeyboardDatePicker
     className={classes.datePicker}
@@ -58,5 +60,6 @@ export const RangePicker: React.FC = () => {
       }}
     />
      </MuiPickersUtilsProvider>
+     </div>
   )
 }

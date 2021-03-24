@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-export const WorkHoursByEmpChart: React.FC = () => {
+export const CountVisitsByEmpChart: React.FC = () => {
   const classes = useStyles()
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
 
@@ -78,7 +78,7 @@ export const WorkHoursByEmpChart: React.FC = () => {
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений (сотрудник)</Typography>
+        <Typography variant='h6'>Количество посещений (по сотрудникам отдела)</Typography>
          </div>
       <Chart
         options={state.options}
