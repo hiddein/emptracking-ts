@@ -104,6 +104,13 @@ export const AccessViolationTable: React.FC = () => {
       room: "sdfhsdfh",
       timeViol: "83921232313",
     },
+    {
+      id: 7,
+      empName: "Николаев Денис",
+      empDep: "Отдел разработки",
+      room: "sdfhsdfh",
+      timeViol: "83921232313",
+    },
   ]
 
   return (
@@ -111,7 +118,7 @@ export const AccessViolationTable: React.FC = () => {
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
+        pageSize={6}
         rowHeight={25}
         disableColumnSelector={true}
         disableColumnMenu={true}

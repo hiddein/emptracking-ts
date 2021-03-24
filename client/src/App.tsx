@@ -21,7 +21,12 @@ const useStyles = makeStyles(() => ({
 const App: React.FC = () => {
   const theme = createMuiTheme({
     palette: {
-     
+      primary: {
+        light: '#757ce8',
+        main: blue[800],
+        dark: '#002884',
+        contrastText: '#fff',
+      },
     },
     
   },ruRU);

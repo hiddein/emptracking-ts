@@ -173,7 +173,7 @@ export const Navbar: React.FC = () => {
                     to="/violation/access"
                     onClick={handleClose}
                   >
-                    Нарушения доступа
+                    Нарушения прав доступа
                   </MenuItem>
                   <MenuItem
                     component={RouterLink}

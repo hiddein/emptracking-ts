@@ -9,6 +9,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
+import { RangePicker } from "../components/RangePicker"
 import { AccessViolationTable } from "../components/violation/accessViolation/AccessViolationTable"
 import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
 import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
+    height: "320px",
   },
   paper1: {
     padding: theme.spacing(2),
@@ -40,8 +42,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(0),
     textAlign: "center",
     color: blue[900],
-    fontSize: "30px",
+    fontSize: "25px",
+    display: "flex",
+    alignItems: "center",
   },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  datePickerContainer:{
+    padding: '5px 20px',
+    display: 'flex',
+    flexWrap: 'nowrap'
+  }
 }))
 
 export const AccessViolationPage: React.FC = () => {
@@ -50,10 +63,13 @@ export const AccessViolationPage: React.FC = () => {
   return (
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.titleContainer}>
           <Typography className={classes.title} variant="h3">
             Нарушения прав доступа в помещения
           </Typography>
+          <Card className={classes.datePickerContainer}>
+          <RangePicker />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}><AccessViolationTable /></Card>

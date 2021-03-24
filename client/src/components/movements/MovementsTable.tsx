@@ -46,7 +46,6 @@ interface propsTable {
 }
 
 export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
-  const classes = useStyles()
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },
