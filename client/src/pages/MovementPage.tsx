@@ -8,10 +8,13 @@ import {
   Typography,
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { EmpsTable } from "../components/movements/EmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
+import { RangePicker } from "../components/RangePicker"
+import { getEmps } from "../store/action-creators/emps"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -40,6 +43,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "center",
     color: blue[900],
     fontSize: "25px",
+    display: "flex",
+    alignItems: "center",
   },
   selectedEmpContainer: {
     padding: 5,
@@ -61,21 +66,38 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: "10px",
     fontSize: "20px",
   },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  datePickerContainer:{
+    padding: '5px 20px',
+    display: 'flex',
+    flexWrap: 'nowrap'
+  },
 }))
 
 export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getEmps())
+  }, [])
   return (
     //<MovementsTable />
     //<MovementsEmpBar />
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
         {/* Заголовок страницы */}
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.titleContainer}>
           <Typography className={classes.title} variant="h3">
             Перемещения сотрудников
           </Typography>
+          <Card className={classes.datePickerContainer}>
+          <RangePicker />
+          </Card>
         </Grid>
         {/* Сетка дэшборда */}
         <Grid item xs={12} md={6}>

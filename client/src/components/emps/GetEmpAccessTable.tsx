@@ -56,13 +56,14 @@ const CustomToolbar = () => {
 export const GetEmpAccessTable: React.FC = () => {
 
   const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", flex: 0.2, type: "string" },
     {
       field: "roomName",
       headerName: "Название помещения",
       flex: 1,
       type: "string",
     },
-    { field: "roomDep", headerName: "Отдел", flex: 1, type: "string" },
+    { field: "roomAbout", headerName: "Описание помещения", flex: 1, type: "string" },
   
 
     // {
@@ -80,37 +81,37 @@ export const GetEmpAccessTable: React.FC = () => {
     {
       id: 1,
       roomName: "Цех №1",
-      roomDep: "Отдел разработки",
+      roomAbout: "Отдел разработки",
     },
     {
         id: 2,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
       {
         id: 3,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
       {
         id: 4,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
       {
         id: 5,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
       {
         id: 6,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
       {
         id: 7,
         roomName: "Цех №1",
-        roomDep: "Отдел разработки",
+        roomAbout: "Отдел разработки",
       },
     
   ]

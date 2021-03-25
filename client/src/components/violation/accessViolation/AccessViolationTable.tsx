@@ -114,11 +114,11 @@ export const AccessViolationTable: React.FC = () => {
   ]
 
   return (
-    <div style={{ height: 338, width: "100%" }}>
+    <div style={{ height: 320, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={6}
+        pageSize={5}
         rowHeight={25}
         disableColumnSelector={true}
         disableColumnMenu={true}

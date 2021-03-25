@@ -12,6 +12,7 @@ import {
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 import { ENGINE_METHOD_PKEY_ASN1_METHS } from "node:constants"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
 
 
 const useStyles = makeStyles(() => ({
@@ -60,6 +61,8 @@ interface propsTable {
 export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState('')
+  const emps = useTypedSelector(state => state.emp.emps)
+  const isLoading = useTypedSelector(state => state.emp.loading)
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.4, disableColumnMenu: true , type: 'number'},
@@ -91,50 +94,16 @@ export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
     // },
   ]
 
-  const rows = [
-    {
-      id: 1,
-      empName: "Николаев Денис",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-    {
-      id: 2,
-      empName: "Васильев Владимир",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-    {
-      id: 3,
-      empName: "Николаев Денис",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-    {
-      id: 4,
-      empName: "Николаев Денис",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-    {
-      id: 5,
-      empName: "Николаев Денис",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-    {
-      id: 6,
-      empName: "Николаев Денис",
-      empDep: "Отдел разработки",
-      dobEmp: "15.11.1999",
-      telEmp: "83921232313",
-    },
-  ]
+  interface Employee {
+    id: number
+    empDep: string
+    empName: string
+    dobEmp: string
+    telEmp: string
+  }
+
+  const rows: Employee[] = []
+  emps.map((emp:any) => rows.push({id: emp.id_emp, empDep: emp.name_dep, empName: `${emp.last_name} ${emp.first_name} ${emp.middle_name}`, dobEmp: emp.db_emp, telEmp: emp.tel_emp }))
 
   return (
     <div style={{ height: 300, width: "100%" }}>

@@ -12,6 +12,7 @@ import {
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -54,15 +55,13 @@ const CustomToolbar = () => {
 
 
 export const RoomSearchTable: React.FC = () => {
+  const rooms = useTypedSelector(state => state.room.rooms)
+  const isLoading = useTypedSelector(state => state.room.loading)
 
   const columns: GridColDef[] = [
-    {
-      field: "roomName",
-      headerName: "Название помещения",
-      flex: 1,
-      type: "string",
-    },
-    { field: "roomDep", headerName: "Отдел", flex: 1, type: "string" },
+    { field: "id", headerName: "ID", flex: 0.2, type: "string"},
+    { field: "roomName", headerName: "Название помещения", flex: 1, type: "string"},
+    { field: "roomAbout", headerName: "Описание помещения", flex: 1, type: "string" },
   
 
     // {
@@ -76,44 +75,16 @@ export const RoomSearchTable: React.FC = () => {
     // },
   ]
 
-  const rows = [
-    {
-      id: 1,
-      roomName: "Цех №1",
-      roomDep: "Отдел разработки",
-    },
-    {
-        id: 2,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-      {
-        id: 3,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-      {
-        id: 4,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-      {
-        id: 5,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-      {
-        id: 6,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-      {
-        id: 7,
-        roomName: "Цех №1",
-        roomDep: "Отдел разработки",
-      },
-    
-  ]
+  interface Room {
+    id: number
+    roomName: string
+    roomAbout: string
+
+  }
+
+  const rows: Room[] = []
+  rooms.map((room:any) => rows.push({id: room.id_room, roomName: room.name_room, roomAbout: room.about_room}))
+
 
   return (
     <div style={{ height: 340, width: "100%" }}>
