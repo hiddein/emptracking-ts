@@ -7,8 +7,9 @@ import {
   Typography,
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
+import { useDispatch } from "react-redux"
 import { TopAbsenceTimeChart } from "../components/mainpageCharts/TopAbsenceTimeChart"
 import { TopLatesDepsChart } from "../components/mainpageCharts/TopLatesDepsChart"
 import { TopMissOnWorkPlaceChart } from "../components/mainpageCharts/TopMissOnWorkPlaceChart"
@@ -18,6 +19,8 @@ import { AccessViolationTable } from "../components/violation/accessViolation/Ac
 import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
 import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
 import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import { getEmps } from "../store/action-creators/emps"
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -57,28 +60,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexWrap: 'nowrap'
   },
   paperInfo:{
-    height: "145px",
-    padding: '11px'
-  },
-  paperInfo2:{
-    height: "145px",
-    padding: '11px',
-    marginRight: '-18px'
+    height: "168px",
+
   },
   paperLateStats:{
-    height: "330px",
-    padding: '11px',
+    height: "352px",
+
 
   },
   paperMostVis:{
-    height: "330px",
-    padding: '11px',
-    marginRight: '-18px'
+    height: "352px",
+
+
   }
 }))
 
 export const MainPanelPage: React.FC = () => {
   const classes = useStyles()
+  const dispatch = useDispatch()
+
+
 
   return (
     <div className={classes.container1}>
@@ -93,19 +94,19 @@ export const MainPanelPage: React.FC = () => {
         </Grid>
 
 
-        <Grid spacing={2} item xs={12} md={6}>
-        <Grid spacing={2} container  xs={12} md={12}>
         <Grid  item xs={12} md={6}>
+        <Grid spacing={2} container  >
+        <Grid  item xs={12} md={6}>
+          <Card className={classes.paperInfo}>1</Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
           <Card className={classes.paperInfo}>2</Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo2}>2</Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
           <Card className={classes.paperInfo}>2</Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo2}>2</Card>
+          <Card className={classes.paperInfo}>2</Card>
         </Grid>
         </Grid>
         </Grid>
@@ -117,7 +118,7 @@ export const MainPanelPage: React.FC = () => {
         </Grid>
         <Grid item xs={12} md={6}>
 
-        <Grid spacing={2} container  xs={12} md={12}>
+        <Grid spacing={2} container >
         <Grid  item xs={12} md={6}>
           <Card className={classes.paperLateStats}><TopVisRoomsChart /></Card>
         </Grid>

@@ -12,6 +12,13 @@ export enum UserActionTypes {
 
 }
 
+export interface EmpInterface {
+    userLogin: string,
+    userRole: string,
+}
+
+
+
 interface FetchEmpAction {
     type: UserActionTypes.FETCH_EMPS
 }

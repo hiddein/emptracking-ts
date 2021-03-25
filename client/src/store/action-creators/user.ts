@@ -1,7 +1,6 @@
 import axios from "axios"
 import { logout, setLoading, setUser } from "../reducers/userReducer"
 
-
 export const registration = (login: string, password: string, role: string) => {
   return async (dispatch: any) => {
     try {
@@ -10,9 +9,11 @@ export const registration = (login: string, password: string, role: string) => {
         {
           login,
           password,
-          role
+          role,
         },
-        {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}}
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       )
       alert(response.data.message)
     } catch (e) {
@@ -31,7 +32,7 @@ export const login = (login: string, password: string) => {
           password,
         }
       )
-      
+
       dispatch(setUser(response.data.user))
       localStorage.setItem("token", response.data.token)
     } catch (e) {
@@ -41,14 +42,12 @@ export const login = (login: string, password: string) => {
 }
 
 export const autologin = () => {
-  
   return async (dispatch: any) => {
     dispatch(setLoading())
     try {
-      const response = await axios.get(
-        "http://localhost:7000/api/user/auth",
-        {headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}}
-      )
+      const response = await axios.get("http://localhost:7000/api/user/auth", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
 
       dispatch(setUser(response.data.user))
       localStorage.setItem("token", response.data.token)

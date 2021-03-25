@@ -8,11 +8,14 @@ import {
   Typography,
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { EmpCard } from "../components/emps/EmpCard"
 import { GetEmpAccessTable } from "../components/emps/GetEmpAccessTable"
 import { MostVisitedChart } from "../components/emps/MostVisitedChart"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import { getEmps } from "../store/action-creators/emps"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -82,7 +85,11 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
-  const [selectedEmp, SetselectedEmp] = useState("")
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getEmps())
+  }, [])
   return (
     //<MovementsTable />
     //<MovementsEmpBar />
@@ -106,7 +113,7 @@ export const EmployeePage: React.FC = () => {
             <EmpCard />
           </Card>
         </Grid>
-        <Grid item spacing={2} xs={12} md={6}>
+        <Grid item  xs={12} md={6}>
           <Grid container spacing={2}>
             <Grid item container spacing={2} xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>

@@ -51,10 +51,15 @@ class empsController {
   }
 
   async getAll(req: Request, res: Response): Promise<Response> {
+    try{
     const response: QueryResult = await pool.query(
-      "SELECT id_emp,first_name,middle_name,last_name,id_dep,to_char(db_emp, 'dd.mm.yyyy') as db_emp ,email_emp,tel_emp,photo_emp from emp"
+      "SELECT id_emp,first_name,middle_name,last_name,emp.id_dep,name_dep,to_char(db_emp, 'dd.mm.yyyy') as db_emp ,email_emp,tel_emp,photo_emp from emp, department where emp.id_dep=department.id_dep"
     )
     return res.status(200).json(response.rows)
+  }
+  catch (e){
+    return res.status(400).json(e)
+  }
   }
 
   async getOne(req: Request, res: Response): Promise<Response> {

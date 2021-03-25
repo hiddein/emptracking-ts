@@ -84,7 +84,7 @@ export const ByEmpsAccessViolChart: React.FC = () => {
         options={state.options}
         series={state.series}
         type="bar"
-        height={"280px"}
+        height={"260px"}
       />
 </div>
 

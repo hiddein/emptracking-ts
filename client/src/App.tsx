@@ -7,15 +7,16 @@ import { useRoutes } from "./routes"
 import {BrowserRouter as Router} from 'react-router-dom'
 import { useTypedSelector } from "./hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { autologin } from "./store/actions/user"
+import { autologin } from "./store/action-creators/user"
 import { ruRU } from '@material-ui/core/locale';
 import { Loader } from "./components/Loader"
+import { getEmps } from "./store/action-creators/emps"
 
 const useStyles = makeStyles(() => ({
   root: {
     background: blue[50],
     position: 'relative',
-    minHeight: "100vh"
+    minHeight: '100vh',
   },
 }))
 const App: React.FC = () => {
@@ -49,7 +50,7 @@ const App: React.FC = () => {
 
       <Navbar />
 
-      { isLoading? <Loader size={150} /> : routes}
+      { isLoading? <Loader size={150} height= '100vh'/> : routes}
       <Footer />
     </div>
     </Router>

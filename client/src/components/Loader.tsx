@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   center: {
     display: 'flex',
     alignItems: 'center',
-    height: '100vh',
+    height: '100%',
     justifyContent: 'center'
 
   },
@@ -22,6 +22,7 @@ const useStyles = makeStyles(() => ({
 
 interface propsLoader {
     size: number,
+    height?: string
 }
 
 
@@ -29,9 +30,9 @@ export const Loader: React.FC<propsLoader> = (props:propsLoader) => {
   const classes = useStyles()
 
   return (
-    <div className={classes.center}>
+    <div className={classes.center} style={{height: props.height}}>
       <div className={classes.loader}>
-      <CircularProgress size={props.size} className={classes.loader} />
+      <CircularProgress size={props.size} className={classes.loader}  />
       </div>
     </div>
   )

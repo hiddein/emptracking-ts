@@ -36,7 +36,7 @@ export const RangePicker: React.FC = () => {
       variant="inline"
       format="MM/DD/yyyy"
       margin="normal"
-      id="date-picker-inline"
+      id="date-picker-inline1"
       label="Начальная дата "
       value={selectedDateStart}
       onChange={handleDateChangeStart}
@@ -51,7 +51,7 @@ export const RangePicker: React.FC = () => {
       variant="inline"
       format="MM/DD/yyyy"
       margin="normal"
-      id="date-picker-inline"
+      id="date-picker-inline2"
       label="Конечная дата"
       value={selectedDateEnd}
       onChange={handleDateChangeEnd}

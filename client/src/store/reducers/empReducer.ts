@@ -22,3 +22,19 @@ export const empReducer = (state = initialState,action:EmpAction):EmpState => {
             return state
     }
 }
+export const fetchEmps = () => ({
+    type: UserActionTypes.FETCH_EMPS,
+  })
+  
+  export const fetchEmpsSuccess = (emps:any) => ({
+    type: UserActionTypes.FETCH_EMPS_SUCCESS,
+    payload: emps
+  
+  })
+  
+  export const fetchEmpsError = (error:string) => ({
+      type: UserActionTypes.FETCH_EMPS_ERROR,
+      payload: error
+  
+    })
+    

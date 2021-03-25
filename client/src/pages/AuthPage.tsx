@@ -11,7 +11,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { login as loginAction } from "../store/actions/user"
+import { login as loginAction } from "../store/action-creators/user"
 
 const useStyles = makeStyles(() => ({
   root: {
