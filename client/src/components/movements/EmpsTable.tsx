@@ -81,6 +81,7 @@ export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
       disableColumnMenu: true,
       type: 'string' 
     },
+
   ]
 
   interface Employee {

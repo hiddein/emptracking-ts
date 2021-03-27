@@ -84,9 +84,7 @@ export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
   const dispatch = useDispatch()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  
+
   
   useEffect(() => {
     dispatch(getEmps())
@@ -117,7 +115,7 @@ export const MovementPage: React.FC = () => {
             </Grid>
             <Grid item>
               <Card className={classes.paper1}>
-                <MovementsEmpBar startDate={startDate} idEmp={selectedEmp.split(' ')[0]} />
+                <MovementsEmpBar idEmp={selectedEmp.split(' ')[0]} />
               </Card>
             </Grid>
           </Grid>

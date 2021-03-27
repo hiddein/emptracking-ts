@@ -15,12 +15,7 @@ import { TopLatesDepsChart } from "../components/mainpageCharts/TopLatesDepsChar
 import { TopMissOnWorkPlaceChart } from "../components/mainpageCharts/TopMissOnWorkPlaceChart"
 import { TopVisRoomsChart } from "../components/mainpageCharts/TopVisRoomsChart"
 import { RangePicker } from "../components/RangePicker"
-import { AccessViolationTable } from "../components/violation/accessViolation/AccessViolationTable"
-import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
-import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
-import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
-import { useTypedSelector } from "../hooks/useTypedSelector"
-import { getEmps } from "../store/action-creators/emps"
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {

@@ -34,3 +34,24 @@ export const rusLocale = {
    noRowsLabel: 'Нет совпадений',
    errorOverlayDefaultLabel: 'An error occurred.',
 }
+export const rusLocaleChart = {
+  "name": "RU",
+  "options": {
+    "months": ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"],
+    "shortMonths": ["Янв", "Фев", "Мар", "Апр", "Май", "Июнь", "Июль", "Авг", "Сен", "Окт", "Ноя", "Дек"],
+    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "shortDays": ["Вск", "Пн", "ВТ", "СР", "ЧТ", "ПТ", "СБ"],
+    "toolbar": {
+        "exportToSVG": "Загрузить SVG",
+        "exportToPNG": "Загрузить PNG",
+        "exportToCSV": "Загрузить CSV",
+        "menu": "Меню",
+        "selection": "Выбор",
+        "selectionZoom": "Лупа",
+        "zoomIn": "Приблизить",
+        "zoomOut": "Отдалить",
+        "pan": "Переместить",
+        "reset": "Сброс"
+    }
+  }
+}

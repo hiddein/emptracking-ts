@@ -13,6 +13,7 @@ import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
 import { ContactsOutlined } from "@material-ui/icons"
 
+
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
     display: "flex",
@@ -110,9 +111,9 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
 
   if (props.empId !== "") {
     IdFiltering()
-    console.log(props.empId)
+
   } else {
-    console.log(props.empId)
+
     dateFiltering()
   }
 
@@ -142,6 +143,7 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
           }}
           disableColumnSelector={true}
           disableColumnMenu={true}
+          hideFooterSelectedRowCount = {true}
         />
       )}
     </div>
