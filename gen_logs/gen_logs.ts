@@ -58,7 +58,7 @@ const genTravelTimes = async(empId: number) => {
   var times: Array<Array<number>> = [
     [startTimeHours, startTimeMinutes],
     [startTimeHours + Math.floor(hours*0.3), 0],
-    [startTimeHours + Math.floor(hours*0.3), 15],
+    [startTimeHours + Math.floor(hours*0.3), 30],
     [startTimeHours + Math.floor(hours*0.6), 0],
     [startTimeHours + Math.floor(hours*0.6), 30],
     [startTimeHours + Math.floor(hours*0.8), 10],
@@ -142,7 +142,7 @@ const start = async () => {
   await clearLogs()
 
   emps = await getEmps()
-
+  console.log(emps)
   for (let emp in emps) {
     let empId: number = emps[emp].id_emp
 

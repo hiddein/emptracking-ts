@@ -18,7 +18,7 @@ class roomController {
   }
 
   async getAll(req: Request, res: Response): Promise<Response> {
-    const response: QueryResult = await pool.query("SELECT * from room")
+    const response: QueryResult = await pool.query("SELECT * from room ")
     return res.status(200).json(response.rows)
   }
 

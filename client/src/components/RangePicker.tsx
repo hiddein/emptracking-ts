@@ -1,65 +1,73 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import Typography from "@material-ui/core/Typography"
-import { blue } from "@material-ui/core/colors"
-
-import { BottomNavigation, Card, Container } from "@material-ui/core"
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
-import MomentUtils from "@date-io/moment"
+import {
+  KeyboardDatePicker,
+  MuiPickersUtilsProvider,
+} from "@material-ui/pickers"
+import ruLocale from "date-fns/locale/ru";
+import DateFnsUtils from "@date-io/date-fns";
+import { useDispatch } from "react-redux"
+import { setEndDate, setStartDate } from "../store/reducers/datesReducer"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import { ContactsOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
-  datePicker:{
-    width: '150px',
-    margin: '0 10px',
-    
-    
-},
-datePickerContainer:{
-  display:'flex'
-}
+  datePicker: {
+    width: "150px",
+    margin: "0 10px",
+  },
+  datePickerContainer: {
+    display: "flex",
+  },
 }))
 
 export const RangePicker: React.FC = () => {
   const classes = useStyles()
-  const [selectedDateStart, setSelectedDateStart] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
-  const handleDateChangeStart = (date:any) => {setSelectedDateStart(date)}
+  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
 
-  const [selectedDateEnd, setSelectedDateEnd] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
-  const handleDateChangeEnd = (date:any) => {setSelectedDateEnd(date)}
+  const handleDateChangeStart = (date: any) => {
+    dispatch(setStartDate(date))
+  }
+
+  const handleDateChangeEnd = (date: any) => {
+    dispatch(setEndDate(date))
+  }
 
   return (
     <div className={classes.datePickerContainer}>
-    <MuiPickersUtilsProvider utils={MomentUtils}>
-    <KeyboardDatePicker
-    className={classes.datePicker}
-      disableToolbar
-      variant="inline"
-      format="MM/DD/yyyy"
-      margin="normal"
-      id="date-picker-inline1"
-      label="Начальная дата "
-      value={selectedDateStart}
-      onChange={handleDateChangeStart}
-      KeyboardButtonProps={{
-        'aria-label': 'change date',
-      }}
-    />
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
+        <KeyboardDatePicker
+          className={classes.datePicker}
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline1"
+          label="Начальная дата "
+          value={startDate}
+          onChange={handleDateChangeStart}
+          KeyboardButtonProps={{
+            "aria-label": "change date",
+          }}
+        />
 
-<KeyboardDatePicker
-    className={classes.datePicker}
-      disableToolbar
-      variant="inline"
-      format="MM/DD/yyyy"
-      margin="normal"
-      id="date-picker-inline2"
-      label="Конечная дата"
-      value={selectedDateEnd}
-      onChange={handleDateChangeEnd}
-      KeyboardButtonProps={{
-        'aria-label': 'change date',
-      }}
-    />
-     </MuiPickersUtilsProvider>
-     </div>
+        <KeyboardDatePicker
+          className={classes.datePicker}
+          disableToolbar
+          variant="inline"
+          format="MM/dd/yyyy"
+          margin="normal"
+          id="date-picker-inline2"
+          label="Конечная дата"
+          value={endDate}
+          onChange={handleDateChangeEnd}
+          KeyboardButtonProps={{
+            "aria-label": "change date",
+          }}
+        />
+      </MuiPickersUtilsProvider>
+    </div>
   )
 }

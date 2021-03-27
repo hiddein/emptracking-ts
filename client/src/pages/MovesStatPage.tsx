@@ -11,16 +11,12 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import { RangePicker } from "../components/RangePicker"
-import { LateEmpsGrid } from "../components/violation/lateEmpsViolation/LateEmpsGrid"
-import { WorkHoursGrid } from "../components/violation/workHoursViolation/WorkHoursGrid"
-import { LateEmpsTable } from "../components/violation/lateEmpsViolation/LateEmpsTable"
-import { LateEmpsByDepChart } from "../components/violation/lateEmpsViolation/LateEmpsByDepChart"
-import { LateEmpsByEmpChart } from "../components/violation/lateEmpsViolation/LateEmpsByEmpChart"
-import { CountVisitsByEmpsDepChart } from "../components/rooms/stat/byEmp/CountVisitsByEmpsDepChart"
-import { CountVisitsByDepChart } from "../components/rooms/stat/byDep/CountVisitsByDepChart"
-import { CountVisitsByEmpPerRangeChart } from "../components/rooms/stat/byEmp/CountVisitsByEmpPerRangeChart"
-import { CountVisitsByEmpChart } from "../components/rooms/stat/byDep/CountVisitsByEmpChart"
-import { StatTable } from "../components/rooms/stat/StatTable"
+
+import { CountVisitsByEmpsDepChart } from "../components/movements/stat/byEmp/CountVisitsByEmpsDepChart"
+import { CountVisitsByDepChart } from "../components/movements/stat/byDep/CountVisitsByDepChart"
+import { CountVisitsByEmpPerRangeChart } from "../components/movements/stat/byEmp/CountVisitsByEmpPerRangeChart"
+import { CountVisitsByEmpChart } from "../components/movements/stat/byDep/CountVisitsByEmpChart"
+import { StatTable } from "../components/movements/stat/StatTable"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -68,7 +64,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
-export const RoomStatPage: React.FC = () => {
+export const MovesStatPage: React.FC = () => {
   const classes = useStyles()
   const [empsSelected, SetEmpsSelected] = useState(true)
   const [roomsSelected, SetRoomsSelected] = useState(false)

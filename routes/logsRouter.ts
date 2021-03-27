@@ -15,5 +15,8 @@ router.post(
 )
 router.get("/", authMiddleware, logsController.getAll)
 router.get("/delete",authMiddleware,logsController.deleteAll)
+router.get("/getMoves",authMiddleware,logsController.getAllMoves)
+router.get("/getMovesInRange",authMiddleware,logsController.getMovesInRange)
+router.get("/getMovesInRangeById",authMiddleware,logsController.getMovesInRangeById)
 
 export default router

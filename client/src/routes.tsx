@@ -6,7 +6,7 @@ import { EmployeePage } from "./pages/EmployeePage"
 import { RoomInfoPage } from "./pages/RoomInfoPage"
 import { AccessViolationPage } from "./pages/AccessViolationPage"
 import { HoursViolationPage } from "./pages/HoursViolationPage"
-import { RoomStatPage } from "./pages/RoomStatPage"
+import { MovesStatPage } from "./pages/MovesStatPage"
 import { AuthPage } from "./pages/AuthPage"
 import { GiveAccessPage } from "./pages/GiveAccessPage"
 
@@ -32,8 +32,8 @@ export const useRoutes = (isAuthenticated: boolean, isAdmin: boolean) => {
             <Route path="/violation/workhours" exact>
               <HoursViolationPage />
             </Route>
-            <Route path="/rooms/stat" exact>
-              <RoomStatPage />
+            <Route path="/movements/stat" exact>
+              <MovesStatPage />
             </Route>
             <Route path="/giveaccess" exact>
               <GiveAccessPage />
@@ -63,8 +63,8 @@ export const useRoutes = (isAuthenticated: boolean, isAdmin: boolean) => {
         <Route path="/violation/workhours" exact>
           <HoursViolationPage />
         </Route>
-        <Route path="/rooms/stat" exact>
-          <RoomStatPage />
+        <Route path="/movements/stat" exact>
+          <MovesStatPage />
         </Route>
         <Redirect to="/dashboard" />
       </Switch>

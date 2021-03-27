@@ -29,4 +29,8 @@ export const rusLocale = {
   filterOperatorOnOrAfter: "включает или после",
   filterOperatorBefore: "перед",
   filterOperatorOnOrBefore: "включает или перед",
+   // Root
+   rootGridLabel: 'Таблица',
+   noRowsLabel: 'Нет совпадений',
+   errorOverlayDefaultLabel: 'An error occurred.',
 }

@@ -1,151 +1,146 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
+import DateFnsUtils from "@date-io/date-fns"
 import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import moment from "moment"
 
 const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: ' 0 20px'
-        
- 
-    },
-    datePicker:{
-        width: '180px',
-        margin: 0
-    }
+  labelDiv: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: " 0 20px",
+  },
+  datePicker: {
+    width: "180px",
+    margin: 0,
+  },
 }))
 
-export const MovementsEmpBar: React.FC = () => {
+interface propsMovesChart {
+  startDate: Date
+  idEmp: string
+}
+
+export const MovementsEmpBar: React.FC<propsMovesChart> = (
+  props: propsMovesChart
+) => {
   const classes = useStyles()
-  const [selectedItem, SetselectedItem] = useState(0)
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const [selectedDate, setSelectedDate] = React.useState<Date>(props.startDate)
+  const moves = useTypedSelector((state) => state.move.moves)
+  const newDate =
+    selectedDate.getFullYear() +
+    "-" +
+    (selectedDate.getMonth() < 9
+      ? `0${selectedDate.getMonth() + 1}`
+      : selectedDate.getMonth() + 1) +
+    "-" +
+    (selectedDate.getDate() < 10
+      ? `0${selectedDate.getDate()}`
+      : selectedDate.getDate())
+  const movesFiltered = moves.filter(
+    (move) => move.time_enter.startsWith(newDate) && move.id_emp == props.idEmp
+  )
+  const handleDateChange = (date: any) => {
+    setSelectedDate(date)
+  }
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
-
-  const state = {
-    series: [
-      {
-        data: [
-          {
-            x: 'Analysis',
-            y: [
-              new Date('2019-02-27').getTime(),
-              new Date('2019-03-04').getTime()
-            ],
-            fillColor: '#008FFB'
-          },
-          {
-            x: 'Design',
-            y: [
-              new Date('2019-03-04').getTime(),
-              new Date('2019-03-08').getTime()
-            ],
-            fillColor: '#00E396'
-          },
-          {
-            x: 'Coding',
-            y: [
-              new Date('2019-03-07').getTime(),
-              new Date('2019-03-10').getTime()
-            ],
-            fillColor: '#775DD0'
-          },
-          {
-            x: 'Testing',
-            y: [
-              new Date('2019-03-08').getTime(),
-              new Date('2019-03-12').getTime()
-            ],
-            fillColor: '#FEB019'
-          },
-          {
-            x: 'Deployment',
-            y: [
-              new Date('2019-03-12').getTime(),
-              new Date('2019-03-17').getTime()
-            ],
-            fillColor: '#FF4560'
-          }
-        ]
-      }
-    ],
+  interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    series: [{ data: [] }],
     options: {
       chart: {
         height: 350,
-        type: 'rangeBar'
+        type: "rangeBar",
       },
       plotOptions: {
         bar: {
           horizontal: true,
           distributed: true,
           dataLabels: {
-            hideOverflowingLabels: false
-          }
-        }
+            hideOverflowingLabels: false,
+          },
+        },
       },
       dataLabels: {
         enabled: true,
-       
+        formatter: function (val: any, opts: any) {
+          const a = moment(val[0])
+          const b = moment(val[1])
+          const diff = b.diff(a)
+          const duration = moment.duration(diff)
+          console.log(duration)
+          return `${duration.hours()}:${duration.minutes()}`
+        },
         style: {
-          colors: ['#f3f4f5', '#fff']
-        }
+          colors: ["#f3f4f5", "#fff"],
+        },
       },
       xaxis: {
-        type: 'datetime'
+        type: "datetime",
       },
       yaxis: {
-        show: false
+        show: true,
       },
       grid: {
         row: {
-          colors: ['#f3f4f5', '#fff'],
-          opacity: 1
-        }
-      }
+          colors: ["#f3f4f5", "#fff"],
+          opacity: 1,
+        },
+      },
     },
-  
-  
-  };
+  }
 
+  movesFiltered.map((move: any) => {
+    chartState.series[0].data.push({
+      x: move.name_room,
+      y: [
+        new Date(move.time_enter).getTime(),
+        new Date(move.time_leave).getTime(),
+      ],
+    })
+  })
 
   return (
     <React.Fragment>
-        <div>
+      <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Перемещения сотрудника в указанную дату</Typography>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-        <KeyboardDatePicker
-        className={classes.datePicker}
-          disableToolbar
-          variant="inline"
-          format="MM/DD/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Выберите дату "
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
+          <Typography variant="h6">
+            Перемещения сотрудника в указанную дату
+          </Typography>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              className={classes.datePicker}
+              disableToolbar
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="date-picker-inline"
+              label="Выберите дату "
+              value={selectedDate}
+              onChange={handleDateChange}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </div>
+        <Chart
+          options={chartState.options}
+          series={chartState.series}
+          type="rangeBar"
+          height={"280px"}
         />
-         </MuiPickersUtilsProvider>
-         </div>
-      <Chart
-        options={state.options}
-        series={state.series}
-        type="rangeBar"
-        height={"280px"}
-      />
-</div>
-
+      </div>
     </React.Fragment>
   )
 }

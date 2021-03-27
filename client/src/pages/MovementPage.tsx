@@ -14,7 +14,10 @@ import { EmpsTable } from "../components/movements/EmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
+import { useTypedSelector } from "../hooks/useTypedSelector"
 import { getEmps } from "../store/action-creators/emps"
+import { getAllMoves } from "../store/action-creators/moves"
+import { setStartDate } from "../store/reducers/datesReducer"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -61,8 +64,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     alignItems: "center",
   },
-  selectedEmp: {
-    color: blue[800],
+  selectedEmpFIO: {
+    color: blue[900],
     paddingRight: "10px",
     fontSize: "20px",
   },
@@ -81,10 +84,15 @@ export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
   const dispatch = useDispatch()
-
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+  
+  
   useEffect(() => {
     dispatch(getEmps())
-  }, [])
+    dispatch(getAllMoves())
+   }, [])
+
   return (
     //<MovementsTable />
     //<MovementsEmpBar />
@@ -109,7 +117,7 @@ export const MovementPage: React.FC = () => {
             </Grid>
             <Grid item>
               <Card className={classes.paper1}>
-                <MovementsEmpBar />
+                <MovementsEmpBar startDate={startDate} idEmp={selectedEmp.split(' ')[0]} />
               </Card>
             </Grid>
           </Grid>
@@ -121,11 +129,10 @@ export const MovementPage: React.FC = () => {
                 <div className={classes.selectedEmpLabel}>
                   <Typography
                     variant="subtitle2"
-                    className={classes.selectedEmp}
+                    className={classes.selectedEmpFIO}
                   >
-                    Выбран сотрудник:
-                  </Typography>{" "}
-                  {selectedEmp}
+                  {`${selectedEmp.split(' ')[2]} ${selectedEmp.split(' ')[3]} ${selectedEmp.split(' ')[4]}`}
+                  </Typography>
                 </div>
                 <Button
                   className={classes.selectedEmpButton}
@@ -138,7 +145,7 @@ export const MovementPage: React.FC = () => {
               </div>
             ) : null}
 
-            <MovementsTable empSelected={selectedEmp ? true : false} />
+            <MovementsTable  empId={selectedEmp.split(' ')[0]} />
           </Card>
         </Grid>
       </Grid>

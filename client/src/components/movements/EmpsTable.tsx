@@ -13,6 +13,7 @@ import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 import { ENGINE_METHOD_PKEY_ASN1_METHS } from "node:constants"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { Loader } from "../Loader"
 
 
 const useStyles = makeStyles(() => ({
@@ -59,8 +60,6 @@ interface propsTable {
 }
 
 export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
-  const classes = useStyles()
-  const [selectedEmp, SetselectedEmp] = useState('')
   const emps = useTypedSelector(state => state.emp.emps)
   const isLoading = useTypedSelector(state => state.emp.loading)
 
@@ -82,16 +81,6 @@ export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
       disableColumnMenu: true,
       type: 'string' 
     },
-
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: ValueGetterParams) =>
-    //     `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-    // },
   ]
 
   interface Employee {
@@ -107,7 +96,7 @@ export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
 
   return (
     <div style={{ height: 300, width: "100%" }}>
-      <DataGrid
+       {isLoading? <Loader size={60}/> :<DataGrid
         rows={rows}
         columns={columns}
         pageSize={5}
@@ -116,13 +105,13 @@ export const EmpsTable: React.FC<propsTable> = (props:propsTable) => {
         disableColumnMenu={true}
         
         localeText={rusLocale}
-        onRowSelected={(param:any) =>{props.updateData(param.data.empName); }}
+        onRowSelected={(param:any) =>{props.updateData(`${param.data.id}  ${param.data.empName}`); }}
         components={{
           Toolbar: CustomToolbar,
         }}
 
         hideFooterSelectedRowCount = {true}
-      />
+      />}
     </div>
   )
 }

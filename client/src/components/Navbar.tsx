@@ -100,10 +100,10 @@ export const Navbar: React.FC = () => {
     null
   )
   const ViolOpen = Boolean(anchorElViol)
-  const [anchorElRoom, setAnchorElRoom] = React.useState<null | HTMLElement>(
+  const [anchorElMoves, setAnchorElMoves] = React.useState<null | HTMLElement>(
     null
   )
-  const RoomOpen = Boolean(anchorElRoom)
+  const MovesOpen = Boolean(anchorElMoves)
 
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
@@ -113,14 +113,14 @@ export const Navbar: React.FC = () => {
     setAnchorElViol(event.currentTarget)
   }
 
-  const handleClickRoom = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElRoom(event.currentTarget)
+  const handleClickMoves = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorElMoves(event.currentTarget)
   }
 
   const handleClose = () => {
     setAnchorElViol(null)
     setAnchorElUser(null)
-    setAnchorElRoom(null)
+    setAnchorElMoves(null)
   }
 
   return (
@@ -146,12 +146,36 @@ export const Navbar: React.FC = () => {
                   Главная панель
                 </Button>
                 <Button
-                  component={RouterLink}
-                  to="/movements"
                   className={classes.menuItem}
+                  aria-controls="fade-menu"
+                  aria-haspopup="true"
+                  onClick={handleClickMoves}
                 >
                   Перемещения
                 </Button>
+                <Menu
+                  id="fade-menu"
+                  anchorEl={anchorElMoves}
+                  keepMounted
+                  open={MovesOpen}
+                  onClose={handleClose}
+                  TransitionComponent={Fade}
+                >
+                  <MenuItem
+                    component={RouterLink}
+                    to="/movements"
+                    onClick={handleClose}
+                  >
+                    Пермещения по предприятию
+                  </MenuItem>
+                  <MenuItem
+                    component={RouterLink}
+                    to="/movements/stat"
+                    onClick={handleClose}
+                  >
+                    Статистика посещений помещений
+                  </MenuItem>
+                </Menu>
                 <Button
                   className={classes.menuItem}
                   aria-controls="fade-menu"
@@ -191,36 +215,12 @@ export const Navbar: React.FC = () => {
                   Сотрудники
                 </Button>
                 <Button
+                  component={RouterLink}
+                  to="/rooms"
                   className={classes.menuItem}
-                  aria-controls="fade-menu"
-                  aria-haspopup="true"
-                  onClick={handleClickRoom}
                 >
                   Помещения
                 </Button>
-                <Menu
-                  id="fade-menu"
-                  anchorEl={anchorElRoom}
-                  keepMounted
-                  open={RoomOpen}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}
-                >
-                  <MenuItem
-                    component={RouterLink}
-                    to="/rooms"
-                    onClick={handleClose}
-                  >
-                    Помещения предприятия
-                  </MenuItem>
-                  <MenuItem
-                    component={RouterLink}
-                    to="/rooms/stat"
-                    onClick={handleClose}
-                  >
-                    Статистика посещений
-                  </MenuItem>
-                </Menu>
               </Container>
               <Container className={classes.userContainer}>
                 <Typography variant="h6" className={classes.userTitle}>
