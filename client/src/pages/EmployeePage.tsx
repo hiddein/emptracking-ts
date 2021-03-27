@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [selectedEmp, SetselectedEmp] = useState("")
 
   useEffect(() => {
     dispatch(getEmps())
@@ -105,7 +106,7 @@ export const EmployeePage: React.FC = () => {
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <SearchEmpsTable />
+          <SearchEmpsTable updateData={SetselectedEmp} height={340} />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>

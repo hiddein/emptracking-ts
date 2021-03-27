@@ -118,11 +118,12 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
   }
 
   movesFiltered.map((move: any) => {
+
     chartState.series[0].data.push({
       x: move.name_room,
       y: [
-        new Date(move.time_enter).getTime(),
-        new Date(move.time_leave).getTime(),
+        moment(move.time_enter).utcOffset(0, true).toDate().getTime(),
+        moment(move.time_leave).utcOffset(0, true).toDate().getTime(),
       ],
     })
   })

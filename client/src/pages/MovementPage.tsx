@@ -10,7 +10,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-import { EmpsTable } from "../components/movements/EmpsTable"
+import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
@@ -110,7 +110,7 @@ export const MovementPage: React.FC = () => {
           <Grid container direction="column" spacing={2}>
             <Grid item xs={12} md={12}>
               <Card className={classes.paper}>
-                <EmpsTable updateData={SetselectedEmp} />
+                <SearchEmpsTable updateData={SetselectedEmp}  height={300} />
               </Card>
             </Grid>
             <Grid item>

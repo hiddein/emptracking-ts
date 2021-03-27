@@ -17,6 +17,7 @@ import { CountVisitsByDepChart } from "../components/movements/stat/byDep/CountV
 import { CountVisitsByEmpPerRangeChart } from "../components/movements/stat/byEmp/CountVisitsByEmpPerRangeChart"
 import { CountVisitsByEmpChart } from "../components/movements/stat/byDep/CountVisitsByEmpChart"
 import { StatTable } from "../components/movements/stat/StatTable"
+import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -68,6 +69,7 @@ export const MovesStatPage: React.FC = () => {
   const classes = useStyles()
   const [empsSelected, SetEmpsSelected] = useState(true)
   const [roomsSelected, SetRoomsSelected] = useState(false)
+  const [selectedEmp, SetselectedEmp] = useState("")
 
   const handleSelected = () => {
     SetRoomsSelected(!roomsSelected)
@@ -106,19 +108,36 @@ export const MovesStatPage: React.FC = () => {
             <RangePicker />
           </Card>
         </Grid>
+
+        <Grid spacing={2} item xs={12} md={6}>
+          <Card className={classes.paper}>
+            <StatTable />
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6} spacing={2}>
+          <Card className={classes.paper}>
+          <SearchEmpsTable updateData={SetselectedEmp} height={350}  />
+          </Card>
+        </Grid>
+
         <Grid item xs={12} md={6}>
-              <Card className={classes.paper}><StatTable /></Card>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <Grid container direction="column" spacing={2}>
-                <Grid item xs={12} md={12}>
-                  <Card className={classes.paper}>{empsSelected? <CountVisitsByEmpsDepChart />: <CountVisitsByDepChart />} </Card>
-                </Grid>
-                <Grid item xs={12} md={12}>
-                  <Card className={classes.paper1}>{empsSelected? <CountVisitsByEmpPerRangeChart />: <CountVisitsByEmpChart />}</Card>
-                </Grid>
-              </Grid>
-            </Grid>
+          <Card className={classes.paper}>
+            {empsSelected ? (
+              <CountVisitsByEmpsDepChart />
+            ) : (
+              <CountVisitsByDepChart />
+            )}{" "}
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card className={classes.paper1}>
+            {empsSelected ? (
+              <CountVisitsByEmpPerRangeChart />
+            ) : (
+              <CountVisitsByEmpChart />
+            )}
+          </Card>
+        </Grid>
       </Grid>
     </div>
   )

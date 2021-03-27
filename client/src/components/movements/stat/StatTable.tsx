@@ -90,11 +90,11 @@ export const StatTable: React.FC = () => {
   ]
 
   return (
-    <div style={{ height:699, width: "100%" }}>
+    <div style={{ height:350, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={18}
+        pageSize={10}
         rowHeight={28}
         localeText={rusLocale}
         components={{
