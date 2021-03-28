@@ -18,6 +18,7 @@ import { CountVisitsByEmpPerRangeChart } from "../components/movements/stat/byEm
 import { CountVisitsByEmpChart } from "../components/movements/stat/byDep/CountVisitsByEmpChart"
 import { StatTable } from "../components/movements/stat/StatTable"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
+import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -70,6 +71,7 @@ export const MovesStatPage: React.FC = () => {
   const [empsSelected, SetEmpsSelected] = useState(true)
   const [roomsSelected, SetRoomsSelected] = useState(false)
   const [selectedEmp, SetselectedEmp] = useState("")
+  const [selectedRoom, SetselectedRoom] = useState("")
 
   const handleSelected = () => {
     SetRoomsSelected(!roomsSelected)
@@ -116,7 +118,12 @@ export const MovesStatPage: React.FC = () => {
         </Grid>
         <Grid item xs={12} md={6} spacing={2}>
           <Card className={classes.paper}>
-          <SearchEmpsTable updateData={SetselectedEmp} height={350}  />
+             {empsSelected ? (
+              <SearchEmpsTable updateData={SetselectedEmp} height={350}  />
+            ) : (
+              <RoomSearchTable SetselectedRoom={SetselectedRoom} height={350} />
+            )}
+          
           </Card>
         </Grid>
 
@@ -126,7 +133,7 @@ export const MovesStatPage: React.FC = () => {
               <CountVisitsByEmpsDepChart />
             ) : (
               <CountVisitsByDepChart />
-            )}{" "}
+            )}
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>

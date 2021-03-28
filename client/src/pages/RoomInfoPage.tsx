@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const RoomInfoPage: React.FC = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
+  const [selectedRoom, SetselectedRoom] = useState("")
 
   useEffect(() => {
     dispatch(getRooms())
@@ -90,7 +91,7 @@ export const RoomInfoPage: React.FC = () => {
 
        
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><RoomSearchTable /></Card>
+          <Card className={classes.paper}><RoomSearchTable SetselectedRoom={SetselectedRoom} height={340}   /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}><EmpsWithAccessTable /></Card>

@@ -52,9 +52,13 @@ const CustomToolbar = () => {
     </GridToolbarContainer>
   )
 }
+interface propsTable {
+  SetselectedRoom: Function,
+  height: number
+  
+}
 
-
-export const RoomSearchTable: React.FC = () => {
+export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
   const rooms = useTypedSelector(state => state.room.rooms)
   const isLoading = useTypedSelector(state => state.room.loading)
 
@@ -87,7 +91,7 @@ export const RoomSearchTable: React.FC = () => {
 
 
   return (
-    <div style={{ height: 340, width: "100%" }}>
+    <div style={{ height: props.height, width: "100%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
