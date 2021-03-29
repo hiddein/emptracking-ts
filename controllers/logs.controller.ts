@@ -47,7 +47,7 @@ class logsController {
   async getMovesInRange(req: Request, res: Response): Promise<Response> {
     let { startDate, endDate } = req.query
     endDate += ' 23:59'
-
+    
     const response: QueryResult = await pool.query(
       "SELECT move_id, moves.id_emp,first_name,middle_name,last_name, moves.id_room,name_room,to_char(time_enter, 'yyyy-mm-dd hh24:MI:ss') as time_enter,to_char(time_leave, 'yyyy-mm-dd hh24:MI:ss') as time_leave from moves,emp,room where time_leave is not NULL and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and time_enter > $1 and time_leave <= $2 ",
       [startDate, endDate]
@@ -58,7 +58,6 @@ class logsController {
   async getMovesInRangeById(req: Request, res: Response): Promise<Response> {
     let { startDate, endDate, empId } = req.query
     endDate += ' 23:59'
-
     const response: QueryResult = await pool.query(
       "SELECT move_id, moves.id_emp,first_name,middle_name,last_name, moves.id_room,name_room,to_char(time_enter, 'yyyy-mm-dd hh24:MI:ss') as time_enter,to_char(time_leave, 'yyyy-mm-dd hh24:MI:ss') as time_leave from moves,emp,room where time_leave is not NULL and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and time_enter > $1 and time_leave <= $2 and moves.id_emp=$3 ",
       [startDate, endDate, empId]

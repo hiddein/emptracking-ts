@@ -82,41 +82,12 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
 
   const rows: Move[] = []
 
-  let movesFiltered: Move[] = []
-  const newStartDate = startDate.getFullYear() + '-' + (startDate.getMonth()<9? `0${startDate.getMonth()+1}`: (startDate.getMonth()+1) ) + '-' + (startDate.getDate()<10? `0${startDate.getDate()}`: (startDate.getDate()) )
-  const newEndDate = endDate.getFullYear() + '-' + (endDate.getMonth()<9? `0${endDate.getMonth()+1}`: (endDate.getMonth()+1) ) + '-' + (endDate.getDate()<10? `0${endDate.getDate()}`: (endDate.getDate()+1) )
+  let movesFiltered: Move[] = moves
 
-  const dateFiltering = () => {
-    movesFiltered = moves.filter((move) => {
-      if (move.time_enter >= newStartDate) {
-        if (move.time_leave <= newEndDate) {
-          return true
-        }
-      }
-    })
-  }
-  const IdFiltering = () => {
-    movesFiltered = moves.filter((move) => {
-      if (move.id_emp == props.empId) {
-        if (move.time_enter >= newStartDate) {
-          if (move.time_leave <= newEndDate) {
-            return true
-          }
-        }
-      } else {
-        return false
-      }
-    })
-  }
 
   if (props.empId !== "") {
-    IdFiltering()
-
-  } else {
-
-    dateFiltering()
-  }
-
+    movesFiltered = moves.filter((move) => move.id_emp == props.empId)
+  } 
   movesFiltered.map((move: any) =>
     rows.push({
       id: move.move_id,

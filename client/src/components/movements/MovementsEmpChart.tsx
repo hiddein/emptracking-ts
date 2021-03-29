@@ -1,5 +1,5 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import {} from "apexcharts/dist/locales/ru.json"
 import DateFnsUtils from "@date-io/date-fns"
@@ -10,6 +10,9 @@ import {
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import moment from "moment"
 import { rusLocaleChart } from "../../rusLocale/ruslocale"
+import { getOneDayMoves } from "../../store/action-creators/moves"
+import { useDispatch } from "react-redux"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -40,26 +43,20 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
 
   const classes = useStyles()
 
-  const endDate = useTypedSelector(state => state.dates.endDate)
   const [selectedDate, setSelectedDate] = React.useState<Date>(new Date('2021-03-18'))
-  const moves = useTypedSelector((state) => state.move.moves)
-  const newDate =
-    selectedDate.getFullYear() +
-    "-" +
-    (selectedDate.getMonth() < 9
-      ? `0${selectedDate.getMonth() + 1}`
-      : selectedDate.getMonth() + 1) +
-    "-" +
-    (selectedDate.getDate() < 10
-      ? `0${selectedDate.getDate()}`
-      : selectedDate.getDate())
-  const movesFiltered = moves.filter(
-    (move) => move.time_enter.startsWith(newDate) && move.id_emp == props.idEmp
+  const oneDayMoves = useTypedSelector((state) => state.oneDayMoves.moves)
+  const isLoading = useTypedSelector((state) => state.oneDayMoves.loading)
+  const dispatch = useDispatch()
+  const movesFiltered = oneDayMoves.filter(
+    (move) => move.id_emp == props.idEmp
   )
   const handleDateChange = (date: any) => {
     date!==null?setSelectedDate(date):setSelectedDate(new Date('0000-00-00'))
   }
 
+  useEffect(() => {
+    dispatch(getOneDayMoves(selectedDate))
+   }, [selectedDate,props.idEmp])
   interface chartStateInterface {
     series: any
     options: any
@@ -153,14 +150,17 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
             />
           </MuiPickersUtilsProvider>
         </div>
+        
         {props.idEmp==''? <div className={classes.noEmpContainer}> <Typography variant="h4">
             Выберите сотрудника
-          </Typography></div>:<Chart
+          </Typography></div>:  isLoading ? (
+        <Loader size={60} height="290px"/>
+      ) : (<Chart
           options={chartState.options}
           series={chartState.series}
           type="rangeBar"
-          height={"280px"}
-        />}
+          height="280px"
+        />)}
         
       </div>
     </React.Fragment>
