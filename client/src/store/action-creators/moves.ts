@@ -1,5 +1,4 @@
 import axios from "axios"
-import { Dispatch } from "react"
 import { fetchMoves, fetchMovesError, fetchMovesSuccess } from "../reducers/moveReducer"
 import { fetchOneDayMoves, fetchOneDayMovesError, fetchOneDayMovesSuccess } from "../reducers/oneDayMovesReducer"
 
@@ -48,3 +47,4 @@ export const getOneDayMoves = (date:Date) => {
     }
   }
 }
+

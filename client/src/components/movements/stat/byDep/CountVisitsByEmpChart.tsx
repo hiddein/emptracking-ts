@@ -1,11 +1,9 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { Loader } from "../../../Loader";
+import { rusLocaleChart } from "../../../../rusLocale/ruslocale";
 
 const useStyles = makeStyles(() => ({
     labelDiv:{
@@ -17,75 +15,97 @@ const useStyles = makeStyles(() => ({
         
  
     },
+    noDepContainer: {
+      height: "290px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "25px",
+    },
     datePicker:{
         width: '180px',
         margin: 0
     }
 }))
+interface propsStatChart {
+  nameDep: string
+  nameRoom: string
+}
 
-export const CountVisitsByEmpChart: React.FC = () => {
+export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const stat = useTypedSelector((state) => state.stat.stat)
+  const isLoading = useTypedSelector((state) => state.stat.loading)
+  const statFiltered = stat.filter((item) => item.name_room == props.nameRoom && item.name_dep==props.nameDep)
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
-
-  const state = {
-   
+  interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    
     series: [{
-      data: [21, 22, 10, 28, 16, 21, 13, 30]
+        name: "Количество посещений",
+        data: []
     }],
     options: {
       chart: {
         height: 350,
         type: 'bar',
-        events: {
-        
-          }
-        }
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: '45%',
-          distributed: true,
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
+        zoom: {
+          enabled: false
         }
       },
       dataLabels: {
         enabled: false
       },
-      legend: {
-        show: false
+      stroke: {
+        curve: 'straight'
+      },
+      
+      grid: {
+        row: {
+          colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+          opacity: 0.5
+        },
       },
       xaxis: {
-        categories: [
-          ['John', 'Doe'],
-          ['Joe', 'Smith'],
-          ['Jake', 'Williams'],
-          'Amber',
-          ['Peter', 'Brown'],
-          ['Mary', 'Evans'],
-          ['David', 'Wilson'],
-          ['Lily', 'Roberts'], 
-        ],
-        labels: {
-          style: {
-            fontSize: '12px'
-          }
-        }
+        categories: [],
+      },
+      yaxis: {
+        min:0,
+        forceNiceScale:true
       }
     }
+    }
 
+    statFiltered.map((item: any) => {
+      chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
+      chartState.series[0].data.push(item.count_visits)
+    })
   return (
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
         <Typography variant='h6'>Количество посещений (по сотрудникам отдела)</Typography>
          </div>
-      <Chart
-        options={state.options}
-        series={state.series}
-        type="bar"
-        height={"268px"}
-      />
+         {props.nameDep == ""? (
+          <div className={classes.noDepContainer}>
+            <Typography variant="h4">Выберите помещение и отдел</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
+          <Chart
+          options={chartState.options}
+          series={chartState.series}
+          type="bar"
+          height={"268px"}
+        />
+        )}
+     
 </div>
 
     </React.Fragment>

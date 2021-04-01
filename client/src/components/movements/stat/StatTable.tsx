@@ -9,6 +9,8 @@ import {
   ValueGetterParams,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -41,56 +43,57 @@ const CustomToolbar = () => {
   )
 }
 
+interface propsTable {
+  empId: string
+  nameRoom:string
+}
 
+export const StatTable: React.FC<propsTable> = (props: propsTable) => {
+  const stat = useTypedSelector((state) => state.stat.stat)
+  const isLoading = useTypedSelector((state) => state.stat.loading)
 
-export const StatTable: React.FC = () => {
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },
+    { field: "nameDep", headerName: "Отдел", flex: 1, type: "string", },
     { field: "room", headerName: "Помещение", flex: 1, type: "string" },
-    {
-      field: "enterTime",
-      headerName: "Время входа",
-      flex: 1,
-      type: "dateTime",
-    },
-    {
-      field: "exitTime",
-      headerName: "Время выхода",
-      flex: 1,
-      type: "dateTime",
-    },
+    { field: "countVis", headerName: "Количество посещений", flex: 0.8, type: "number", },
   ]
 
-  const rows = [
-    { id: 1, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 2, fioEmp: "2", room: "2", enterTime: 123, exitTime: 35 },
-    { id: 3, fioEmp: "3", room: "3", enterTime: 123, exitTime: 35 },
-    { id: 4, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 5, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 6, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 7, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 8, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 9, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 10, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 11, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 12, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 13, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 14, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 15, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 16, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 17, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 18, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 19, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 20, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 21, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 22, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 23, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-    { id: 24, fioEmp: "Snow", room: "Jon", enterTime: 123, exitTime: 35 },
-  ]
+  interface Stat {
+    id:number
+    fioEmp: string
+    nameDep: string
+    room: string
+    countVis: number
+  }
+
+  const rows: Stat[] = []
+
+  let movesFiltered: Stat [] = stat
+
+  if (props.empId !== "") {
+    movesFiltered = stat.filter((item) => item.id_emp == props.empId)
+  } 
+  if (props.nameRoom !== "") {
+    movesFiltered = stat.filter((item) => item.name_room == props.nameRoom)
+  } 
+
+  movesFiltered.map((item: any,index:number) =>
+    rows.push({
+      id: index,
+      fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name} `,
+      nameDep: item.name_dep,
+      room: item.name_room,
+      countVis: item.count_visits,
+    })
+  )
 
   return (
-    <div style={{ height:350, width: "100%" }}>
+    <div style={{ height: props.empId != "" || props.nameRoom!= "" ? 266 : 310, width: "100%" }}>
+       {isLoading ? (
+        <Loader size={60} />
+      ) : (
       <DataGrid
         rows={rows}
         columns={columns}
@@ -102,7 +105,9 @@ export const StatTable: React.FC = () => {
         }}
         disableColumnSelector={true}
         disableColumnMenu={true}
+        hideFooterSelectedRowCount = {true}
       />
+      )}
     </div>
   )
 }

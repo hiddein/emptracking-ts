@@ -1,123 +1,140 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+import { useTypedSelector } from "../../../../hooks/useTypedSelector"
+import { Loader } from "../../../Loader"
+import { rusLocaleChart } from "../../../../rusLocale/ruslocale"
 
 const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: ' 0 20px'
-        
- 
-    },
-    datePicker:{
-        width: '180px',
-        margin: 0
-    }
+  labelDiv: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: " 0 20px",
+  },
+  datePicker: {
+    width: "180px",
+    margin: 0,
+  },
+  noEmpContainer: {
+    height: "290px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
-export const CountVisitsByEmpsDepChart: React.FC = () => {
+interface propsStatChart {
+  idEmp: string
+  SetselectedRoomOnChart:Function
+}
+
+export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
+  props: propsStatChart
+) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const stat = useTypedSelector((state) => state.stat.stat)
+  const isLoading = useTypedSelector((state) => state.stat.loading)
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
-
-  const state = {
-    series: [{
-        name: 'Servings',
-        data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35]
-      }],
-      options: {
-        annotations: {
-          points: [{
-            x: 'Bananas',
-            seriesIndex: 0,
-            label: {
-              borderColor: '#775DD0',
-              offsetY: 0,
-              style: {
-                color: '#fff',
-                background: '#775DD0',
-              },
-              text: 'Bananas are good',
-            }
-          }]
-        },
-        chart: {
-          height: 350,
-          type: 'bar',
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: '50%',
+  const statFiltered = stat.filter((item) => item.id_emp == props.idEmp)
+  interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    series: [
+      {
+        name: "Количество посещений",
+        data: [],
+      },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "bar",
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
+        events: {
+          dataPointSelection: function(event:any, chartContext:any, config:any) {
+            props.SetselectedRoomOnChart(statFiltered[config.dataPointIndex].name_room)
           }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: 2
-        },
-        
-        grid: {
-          row: {
-            colors: ['#fff', '#f2f2f2']
-          }
-        },
-        xaxis: {
-          labels: {
-            rotate: -45
-          },
-          categories: ['Apples', 'Oranges', 'Strawberries', 'Pineapples', 'Mangoes', 'Bananas',
-            'Blackberries', 'Pears', 'Watermelons', 'Cherries', 'Pomegranates', 'Tangerines', 'Papayas'
-          ],
-          tickPlacement: 'on'
-        },
-        yaxis: {
-          title: {
-            text: 'Servings',
-          },
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'light',
-            type: "horizontal",
-            shadeIntensity: 0.25,
-            gradientToColors: undefined,
-            inverseColors: true,
-            opacityFrom: 0.85,
-            opacityTo: 0.85,
-            stops: [50, 0, 100]
-          },
         }
       },
-  
-  };
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          columnWidth: "50%",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: 2,
+      },
 
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: [],
+        tickPlacement: "on",
+      },
+      yaxis: {
+        title: {
+          text: "Количество посещений",
+        },
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100],
+        },
+      },
+    },
+  }
 
+  statFiltered.map((item: any) => {
+    chartState.options.xaxis.categories.push(item.name_room)
+    chartState.series[0].data.push(item.count_visits)
+  })
   return (
     <React.Fragment>
-        <div>
+      <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество посещений (по сотрудникам)</Typography>
-         </div>
-      <Chart
-        options={state.options}
-        series={state.series}
-        type="bar"
-        height={"268px"}
-      />
-</div>
-
+          <Typography variant="h6">
+            Количество посещений (по сотруднику)
+          </Typography>
+        </div>
+        {props.idEmp == "" ? (
+          <div className={classes.noEmpContainer}>
+            <Typography variant="h4">Выберите сотрудника</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
+          <Chart
+            options={chartState.options}
+            series={chartState.series}
+            type="bar"
+            height={"268px"}
+          />
+        )}
+      </div>
     </React.Fragment>
   )
 }

@@ -18,5 +18,6 @@ router.get("/delete",authMiddleware,logsController.deleteAll)
 router.get("/getMoves",authMiddleware,logsController.getAllMoves)
 router.get("/getMovesInRange",authMiddleware,logsController.getMovesInRange)
 router.get("/getMovesInRangeById",authMiddleware,logsController.getMovesInRangeById)
+router.get("/getCountMovesInRange",authMiddleware,logsController.getCountMovesInRange)
 
 export default router

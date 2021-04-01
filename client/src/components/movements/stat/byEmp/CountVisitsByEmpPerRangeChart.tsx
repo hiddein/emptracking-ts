@@ -6,6 +6,9 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers"
+import { useTypedSelector } from "../../../../hooks/useTypedSelector"
+import { Loader } from "../../../Loader"
+import { rusLocaleChart } from "../../../../rusLocale/ruslocale"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -19,28 +22,46 @@ const useStyles = makeStyles(() => ({
     width: "180px",
     margin: 0,
   },
+  noRoomContainer: {
+    height: "290px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
-export const CountVisitsByEmpPerRangeChart: React.FC = () => {
+interface propsStatChart {
+  idEmp: string
+  selectedRoomOnChart:string
+}
+
+
+export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: propsStatChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2020-08-18T21:11:54")
+  const stat = useTypedSelector((state) => state.statDaySort.stat)
+  const isLoading = useTypedSelector((state) => state.statDaySort.loading)
+
+  const statDaySortFiltered = stat.filter(
+    (item) => item.id_emp == props.idEmp && item.name_room == props.selectedRoomOnChart
   )
 
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date)
+  interface chartStateInterface {
+    series: any
+    options: any
   }
-
-  const state = {
+  const chartState: chartStateInterface = {
     
     series: [{
-        name: "Desktops",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        name: "Количество посещений",
+        data: []
     }],
     options: {
       chart: {
         height: 350,
         type: 'line',
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
         zoom: {
           enabled: false
         }
@@ -51,10 +72,7 @@ export const CountVisitsByEmpPerRangeChart: React.FC = () => {
       stroke: {
         curve: 'straight'
       },
-      title: {
-        text: 'Product Trends by Month',
-        align: 'left'
-      },
+      
       grid: {
         row: {
           colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
@@ -62,26 +80,42 @@ export const CountVisitsByEmpPerRangeChart: React.FC = () => {
         },
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        categories: [],
+      },
+      yaxis: {
+        min:0,
+        forceNiceScale:true
       }
     }
-   
     }
-  
+    statDaySortFiltered.map((item: any) => {
+      chartState.options.xaxis.categories.push(item.time)
+      chartState.series[0].data.push(item.count_visits)
+    })
+
 
   return (
     <div>
       <div className={classes.labelDiv}>
         <Typography variant="h6">
-          Количество посещений выбранного помещения
+          Количество посещений выбранного помещения {props.selectedRoomOnChart != "" ? ` (${props.selectedRoomOnChart})` :null}
         </Typography>
       </div>
-      <Chart
-        options={state.options}
-        series={state.series}
+      {props.selectedRoomOnChart == "" ? (
+          <div className={classes.noRoomContainer}>
+            <Typography variant="h4">Выберите сотрудника и помещение</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
+          <Chart
+        options={chartState.options}
+        series={chartState.series}
         type="line"
         height={"268px"}
       />
+        )}
+      
     </div>
   )
 }

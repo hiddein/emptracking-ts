@@ -49,7 +49,7 @@ create TABLE tracking (
     id_route INTEGER,
     Timestamp TIMESTAMP,
     FOREIGN KEY (id_emp) REFERENCES emp (id_emp),
-    FOREIGN KEY (id_route) REFERENCES room (id_route)
+    FOREIGN KEY (id_route) REFERENCES route (id_route)
 )
 
 create TABLE dep_own_room (
@@ -68,3 +68,13 @@ create TABLE schedule(
     end_time time,
     FOREIGN KEY (id_emp) REFERENCES emp (id_emp)
 )
+
+create TABLE moves(
+    move_id SERIAL PRIMARY KEY,
+    id_emp INTEGER,
+    id_room time,
+    time_enter TIMESTAMP,
+    time_leave TIMESTAMP,
+
+)
+

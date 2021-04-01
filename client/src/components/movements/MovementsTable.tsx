@@ -52,8 +52,6 @@ interface propsTable {
 export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
   const moves = useTypedSelector((state) => state.move.moves)
   const isLoading = useTypedSelector((state) => state.move.loading)
-  const startDate = useTypedSelector((state) => state.dates.startDate)
-  const endDate = useTypedSelector((state) => state.dates.endDate)
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },

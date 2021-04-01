@@ -13,6 +13,7 @@ import {
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -66,17 +67,6 @@ export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
     { field: "id", headerName: "ID", flex: 0.2, type: "string"},
     { field: "roomName", headerName: "Название помещения", flex: 1, type: "string"},
     { field: "roomAbout", headerName: "Описание помещения", flex: 1, type: "string" },
-  
-
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: ValueGetterParams) =>
-    //     `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-    // },
   ]
 
   interface Room {
@@ -92,7 +82,7 @@ export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
 
   return (
     <div style={{ height: props.height, width: "100%" }}>
-      <DataGrid
+       {isLoading? <Loader size={60}/> :<DataGrid
         rows={rows}
         columns={columns}
         pageSize={6}
@@ -100,14 +90,14 @@ export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
         disableColumnSelector={true}
         disableColumnMenu={true}
         localeText={rusLocale}
-        // onRowSelected={(param: any) => {
-        //   props.updateData(param.data.empName)
-        // }}
+        onRowSelected={(param: any) => {
+          props.SetselectedRoom(param.data.roomName)
+        }}
         components={{
           Toolbar: CustomToolbar,
         }}
         hideFooterSelectedRowCount={true}
-      />
+      />}
     </div>
   )
 }

@@ -30,16 +30,7 @@ class empsController {
       }
       const response: QueryResult = await pool.query(
         "INSERT into emp (first_name,middle_name,last_name,id_dep,db_emp,email_emp,tel_emp,photo_emp) VALUES ($1,$2,$3,$4,$5,$6,$7,$8)",
-        [
-          first_name,
-          middle_name,
-          last_name,
-          id_dep,
-          db_emp,
-          email_emp,
-          tel_emp,
-          filename,
-        ]
+        [ first_name,middle_name,last_name,id_dep,db_emp,email_emp,tel_emp,filename,]
       )
 
       return res

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   Button,
   ButtonGroup,
@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import { RangePicker } from "../components/RangePicker"
-
+import { useDispatch } from "react-redux"
 import { CountVisitsByEmpsDepChart } from "../components/movements/stat/byEmp/CountVisitsByEmpsDepChart"
 import { CountVisitsByDepChart } from "../components/movements/stat/byDep/CountVisitsByDepChart"
 import { CountVisitsByEmpPerRangeChart } from "../components/movements/stat/byEmp/CountVisitsByEmpPerRangeChart"
@@ -19,6 +19,10 @@ import { CountVisitsByEmpChart } from "../components/movements/stat/byDep/CountV
 import { StatTable } from "../components/movements/stat/StatTable"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
+import { getEmps } from "../store/action-creators/emps"
+import { getRooms } from "../store/action-creators/rooms"
+import { getCountMovesInRange, getCountMovesInRangeDaySort, getCountMovesInRangeDepSort } from "../store/action-creators/stat"
+import { useTypedSelector } from "../hooks/useTypedSelector"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -64,6 +68,26 @@ const useStyles = makeStyles((theme: Theme) => ({
   buttonsGroup: {
     backgroundColor: blue[200],
   },
+  selectedEmpContainer: {
+    padding: 5,
+    backgroundColor: blue[300],
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  selectedEmpButton: {
+    padding: 5,
+    color: blue[900],
+  },
+  selectedEmpLabel: {
+    paddingLeft: "10px",
+    display: "flex",
+    alignItems: "center",
+  },
+  selectedEmpFIO: {
+    color: blue[900],
+    paddingRight: "10px",
+    fontSize: "20px",
+  },
 }))
 
 export const MovesStatPage: React.FC = () => {
@@ -71,12 +95,36 @@ export const MovesStatPage: React.FC = () => {
   const [empsSelected, SetEmpsSelected] = useState(true)
   const [roomsSelected, SetRoomsSelected] = useState(false)
   const [selectedEmp, SetselectedEmp] = useState("")
+  const [selectedRoomOnChart, SetselectedRoomOnChart] = useState("")
+  const [selectedDepOnChart, SetselectedDepOnChart] = useState("")
   const [selectedRoom, SetselectedRoom] = useState("")
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const stat = useTypedSelector((state) => state.stat.stat)
+ 
 
+  const dispatch = useDispatch()
+  
   const handleSelected = () => {
+    SetselectedEmp("")
+    SetselectedRoom("")
+    SetselectedRoomOnChart("")
     SetRoomsSelected(!roomsSelected)
     SetEmpsSelected(!empsSelected)
   }
+
+  useEffect(() => {
+    dispatch(getEmps())
+    dispatch(getRooms())
+   }, [])
+
+
+  useEffect(() => {
+    dispatch(getCountMovesInRange(startDate, endDate))
+    dispatch(getCountMovesInRangeDaySort(startDate, endDate))
+    dispatch(getCountMovesInRangeDepSort(startDate, endDate))
+   }, [startDate, endDate])
+
 
   return (
     <div className={classes.container1}>
@@ -113,15 +161,60 @@ export const MovesStatPage: React.FC = () => {
 
         <Grid spacing={2} item xs={12} md={6}>
           <Card className={classes.paper}>
-            <StatTable />
+          {selectedEmp != "" ? (
+              <div className={classes.selectedEmpContainer}>
+                <div className={classes.selectedEmpLabel}>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.selectedEmpFIO}
+                  >
+                  {`${selectedEmp.split(' ')[2]} ${selectedEmp.split(' ')[3]} ${selectedEmp.split(' ')[4]}`}
+                  </Typography>
+                </div>
+                <Button
+                  className={classes.selectedEmpButton}
+                  onClick={() => {
+                    SetselectedEmp("")
+                    SetselectedRoomOnChart("")
+                    SetselectedDepOnChart("")
+                  }}
+                >
+                  Отменить выбор
+                </Button>
+              </div>
+            ) : null}
+            {selectedRoom != "" ?  (
+              <div className={classes.selectedEmpContainer}>
+                <div className={classes.selectedEmpLabel}>
+                  <Typography
+                    variant="subtitle2"
+                    className={classes.selectedEmpFIO}
+                  >
+                  {selectedRoom}
+                  </Typography>
+                </div>
+                <Button
+                  className={classes.selectedEmpButton}
+                  onClick={() => {
+                    SetselectedRoom("")
+                    SetselectedRoomOnChart("")
+                    SetselectedDepOnChart("")
+                  }}
+                >
+                  Отменить выбор
+                </Button>
+              </div>
+            ) : null}
+
+            <StatTable empId={selectedEmp.split(' ')[0]} nameRoom={selectedRoom}/>
           </Card>
         </Grid>
         <Grid item xs={12} md={6} spacing={2}>
           <Card className={classes.paper}>
              {empsSelected ? (
-              <SearchEmpsTable updateData={SetselectedEmp} height={350}  />
+              <SearchEmpsTable updateData={SetselectedEmp} height={310}  />
             ) : (
-              <RoomSearchTable SetselectedRoom={SetselectedRoom} height={350} />
+              <RoomSearchTable SetselectedRoom={SetselectedRoom} height={310} />
             )}
           
           </Card>
@@ -130,18 +223,18 @@ export const MovesStatPage: React.FC = () => {
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
             {empsSelected ? (
-              <CountVisitsByEmpsDepChart />
+              <CountVisitsByEmpsDepChart idEmp={selectedEmp.split(' ')[0]} SetselectedRoomOnChart={SetselectedRoomOnChart}  />
             ) : (
-              <CountVisitsByDepChart />
+              <CountVisitsByDepChart nameRoom={selectedRoom} SetselectedDepOnChart={SetselectedDepOnChart} />
             )}
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper1}>
             {empsSelected ? (
-              <CountVisitsByEmpPerRangeChart />
+              <CountVisitsByEmpPerRangeChart idEmp={selectedEmp.split(' ')[0]}  selectedRoomOnChart={selectedRoomOnChart} />
             ) : (
-              <CountVisitsByEmpChart />
+              <CountVisitsByEmpChart nameDep={selectedDepOnChart} nameRoom={selectedRoom}/>
             )}
           </Card>
         </Grid>

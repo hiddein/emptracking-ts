@@ -34,7 +34,7 @@ class logsController {
     const response: QueryResult = await pool.query(
       "DELETE FROM tracking;ALTER SEQUENCE tracking_id_reg_seq RESTART WITH 1;DELETE FROM moves;ALTER SEQUENCE moves_move_id_seq RESTART WITH 1"
     )
-    return res.status(200).json({ message: "OK"})
+    return res.status(200).json({ message: "OK" })
   }
 
   async getAllMoves(req: Request, res: Response): Promise<Response> {
@@ -46,8 +46,8 @@ class logsController {
 
   async getMovesInRange(req: Request, res: Response): Promise<Response> {
     let { startDate, endDate } = req.query
-    endDate += ' 23:59'
-    
+    endDate += " 23:59"
+
     const response: QueryResult = await pool.query(
       "SELECT move_id, moves.id_emp,first_name,middle_name,last_name, moves.id_room,name_room,to_char(time_enter, 'yyyy-mm-dd hh24:MI:ss') as time_enter,to_char(time_leave, 'yyyy-mm-dd hh24:MI:ss') as time_leave from moves,emp,room where time_leave is not NULL and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and time_enter > $1 and time_leave <= $2 ",
       [startDate, endDate]
@@ -57,7 +57,7 @@ class logsController {
 
   async getMovesInRangeById(req: Request, res: Response): Promise<Response> {
     let { startDate, endDate, empId } = req.query
-    endDate += ' 23:59'
+    endDate += " 23:59"
     const response: QueryResult = await pool.query(
       "SELECT move_id, moves.id_emp,first_name,middle_name,last_name, moves.id_room,name_room,to_char(time_enter, 'yyyy-mm-dd hh24:MI:ss') as time_enter,to_char(time_leave, 'yyyy-mm-dd hh24:MI:ss') as time_leave from moves,emp,room where time_leave is not NULL and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and time_enter > $1 and time_leave <= $2 and moves.id_emp=$3 ",
       [startDate, endDate, empId]
@@ -65,5 +65,32 @@ class logsController {
     return res.status(200).json(response.rows)
   }
 
+  async getCountMovesInRange(req: Request, res: Response): Promise<Response> {
+    let { startDate, endDate, sort } = req.query
+    let response: QueryResult
+    endDate += " 23:59"
+    switch (sort) {
+      case "room":
+        response = await pool.query(
+          "select moves.id_emp,first_name,middle_name,last_name,name_dep, name_room , count(moves.id_room) as count_visits from emp, department, moves,room where time_enter > $1 and time_leave <= $2 and  emp.id_emp=moves.id_emp and emp.id_dep=department.id_dep and moves.id_room=room.id_room group by moves.id_emp,first_name,middle_name,last_name,name_dep, name_room order by name_room",
+          [startDate, endDate]
+        )
+        return res.status(200).json(response.rows)
+      case "dayRoom":
+        response = await pool.query(
+          "select id_emp, name_room, to_char(time_enter, 'yyyy-mm-dd') as time , count(moves.id_room) as count_visits from moves,room where time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room GROUP BY moves.id_emp,name_room, to_char(time_enter, 'yyyy-mm-dd') order by id_emp",
+          [startDate, endDate]
+        )
+        return res.status(200).json(response.rows)
+      case "dayRoomDep":
+        response = await pool.query(
+          "select name_dep, name_room, count(moves.id_room) as count_visits from moves,room,emp,department where time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and emp.id_dep=department.id_dep GROUP BY name_dep,name_room order by name_dep",
+          [startDate, endDate]
+        )
+        return res.status(200).json(response.rows)
+    }
+
+    return res.status(200)
+  }
 }
 export default new logsController()

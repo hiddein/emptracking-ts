@@ -14,7 +14,6 @@ export const getRooms = () => {
       const response = await axios.get("http://localhost:7000/api/room/", {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       })
-      console.log(response.data)
         dispatch(fetchRoomsSuccess(response.data))
     } catch (e) {
       dispatch(fetchRoomsError("Ошибка"))

@@ -83,15 +83,20 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
+
   const dispatch = useDispatch()
   const startDate = useTypedSelector(state => state.dates.startDate)
   const endDate = useTypedSelector(state => state.dates.endDate)
 
-  
   useEffect(() => {
     dispatch(getEmps())
+
+   }, [])
+
+  useEffect(() => {
     dispatch(getMovesInRange(startDate, endDate))
    }, [startDate, endDate])
+
 
   return (
     //<MovementsTable />
