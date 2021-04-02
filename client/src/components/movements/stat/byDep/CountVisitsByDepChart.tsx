@@ -120,7 +120,6 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
       },
     },
   }
-console.log(statFiltered)
   statFiltered.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_visits)

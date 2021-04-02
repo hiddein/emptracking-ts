@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -8,7 +8,9 @@ import {
   GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
-import { blue } from "@material-ui/core/colors"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getAccessViols } from "../../../store/action-creators/accessViols"
 
 
 const useStyles = makeStyles(() => ({
@@ -47,6 +49,15 @@ const CustomToolbar = () => {
 
 
 export const AccessViolationTable: React.FC = () => {
+  const viols = useTypedSelector((state) => state.viol.viols)
+  const isLoading = useTypedSelector((state) => state.viol.loading)
+  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+
+  useEffect(() => {
+    dispatch(getAccessViols(startDate, endDate))
+   }, [startDate, endDate])
 
 
   const columns: GridColDef[] = [
@@ -54,11 +65,6 @@ export const AccessViolationTable: React.FC = () => {
     { field: "empDep", headerName: "Отдел", flex: 1, type: 'string' },
     { field: "room", headerName: "Помещение", flex: 1, disableColumnMenu: true, type: 'string' },
     { field: "timeViol", headerName: "Время нарушения", flex: 1, disableColumnMenu: true, type: 'dateTime' },
-
-    // {field: 'fullName', headerName: 'Full name', description: 'This column has a value getter and is not sortable.', sortable: false, width: 160,
-    //   valueGetter: (params: ValueGetterParams) =>
-    //     `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-    // },
   ]
 
   const rows = [

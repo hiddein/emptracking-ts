@@ -5,6 +5,7 @@ import { moveReducer } from "./moveReducer";
 import { roomReducer } from "./roomReducer";
 import { userReducer } from "./userReducer";
 import { statReducer } from "./statReducer";
+import { accessViolReducer } from "./accessViolReducer";
 
 export const rootReducer = combineReducers({
     emp: empReducer,
@@ -13,6 +14,7 @@ export const rootReducer = combineReducers({
     move: moveReducer,
     dates: datesReducer,
     stat: statReducer,
+    viol: accessViolReducer,
 })
 
 export type rootState = ReturnType<typeof rootReducer>

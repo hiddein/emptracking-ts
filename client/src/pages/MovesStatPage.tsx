@@ -143,7 +143,7 @@ export const MovesStatPage: React.FC = () => {
           </Card>
         </Grid>
 
-        <Grid spacing={2} item xs={12} md={6}>
+        <Grid  item xs={12} md={6}>
           <Card className={classes.paper}>
           {selectedEmp != "" ? (
               <div className={classes.selectedEmpContainer}>
@@ -193,7 +193,7 @@ export const MovesStatPage: React.FC = () => {
             <StatTable empId={selectedEmp.split(' ')[0]} nameRoom={selectedRoom}/>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6} spacing={2}>
+        <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
              {empsSelected ? (
               <SearchEmpsTable updateData={SetselectedEmp} height={310}  />

@@ -40,7 +40,6 @@ export const getCountMovesInRange = (start:Date, end:Date):any => {
         const response = await axios.get(`http://localhost:7000/api/logs/getCountMovesInRange?startDate=${start.toLocaleDateString()}&endDate=${end.toLocaleDateString()}&sort=dayRoomDep`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
-        console.log(response.data)
         dispatch(fetchStatByDepSuccess(response.data))
       } catch (e) {
         dispatch(fetchStatByDepError("Ошибка"))

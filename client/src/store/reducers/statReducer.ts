@@ -12,10 +12,7 @@ const initialState: StatState = {
   errorDepSort: null,
 }
 
-export const statReducer = (
-  state = initialState,
-  action: StatAction
-): StatState => {
+export const statReducer = (state = initialState,action: StatAction): StatState => {
   switch (action.type) {
     case StatActionTypes.FETCH_STAT:
       return { ...state, loading: true, error: null, stat: [] }
