@@ -8,19 +8,10 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
-import { useEffect } from "react"
-import Chart from "react-apexcharts"
-import { useDispatch } from "react-redux"
-import { RangePicker } from "../components/RangePicker"
 import { CountVisitsChart } from "../components/rooms/CountVisitsChart"
 import { EmpsWithAccessTable } from "../components/rooms/EmpsWithAccessTable"
 import { RoomCard } from "../components/rooms/RoomCard"
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
-
-import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
-import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
-import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
-import { getRooms } from "../store/action-creators/rooms"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -71,12 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const RoomInfoPage: React.FC = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [selectedRoom, SetselectedRoom] = useState("")
-
-  useEffect(() => {
-    dispatch(getRooms())
-  }, [])
 
   return (
     <div className={classes.container1}>

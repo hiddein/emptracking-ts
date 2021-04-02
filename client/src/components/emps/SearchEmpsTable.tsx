@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -10,6 +10,8 @@ import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
+import { getEmps } from "../../store/action-creators/emps"
+import { useDispatch } from "react-redux"
 
 
 const useStyles = makeStyles(() => ({
@@ -59,6 +61,12 @@ interface propsTable {
 export const SearchEmpsTable: React.FC<propsTable> = (props:propsTable) => {
   const emps = useTypedSelector(state => state.emp.emps)
   const isLoading = useTypedSelector(state => state.emp.loading)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getEmps())
+
+   }, [])
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.4, disableColumnMenu: true , type: 'number'},

@@ -1,5 +1,5 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -11,7 +11,8 @@ import {
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
-import { ContactsOutlined } from "@material-ui/icons"
+import { useDispatch } from "react-redux"
+import { getAllMoves, getMovesInRange } from "../../store/action-creators/moves"
 
 
 const useStyles = makeStyles(() => ({
@@ -52,6 +53,14 @@ interface propsTable {
 export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
   const moves = useTypedSelector((state) => state.move.moves)
   const isLoading = useTypedSelector((state) => state.move.loading)
+  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+
+  useEffect(() => {
+    dispatch(getMovesInRange(startDate, endDate))
+   }, [startDate, endDate])
+
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },

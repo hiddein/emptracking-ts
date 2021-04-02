@@ -1,5 +1,5 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -9,8 +9,10 @@ import {
   ValueGetterParams,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
+import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { Loader } from "../../Loader"
+import { getCountMovesInRange } from "../../../store/action-creators/stat"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -49,8 +51,16 @@ interface propsTable {
 }
 
 export const StatTable: React.FC<propsTable> = (props: propsTable) => {
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
   const stat = useTypedSelector((state) => state.stat.stat)
   const isLoading = useTypedSelector((state) => state.stat.loading)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCountMovesInRange(startDate, endDate))
+   }, [startDate, endDate])
+
 
 
   const columns: GridColDef[] = [

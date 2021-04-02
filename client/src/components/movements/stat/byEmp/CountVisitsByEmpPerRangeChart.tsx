@@ -1,14 +1,11 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from "@date-io/moment"
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers"
 import { useTypedSelector } from "../../../../hooks/useTypedSelector"
 import { Loader } from "../../../Loader"
 import { rusLocaleChart } from "../../../../rusLocale/ruslocale"
+import { getCountMovesInRangeDaySort } from "../../../../store/action-creators/stat"
+import { useDispatch } from "react-redux"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -41,6 +38,15 @@ export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: p
   const classes = useStyles()
   const stat = useTypedSelector((state) => state.statDaySort.stat)
   const isLoading = useTypedSelector((state) => state.statDaySort.loading)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+
+
+  useEffect(() => {
+    dispatch(getCountMovesInRangeDaySort(startDate, endDate))
+   }, [startDate, endDate])
+
 
   const statDaySortFiltered = stat.filter(
     (item) => item.id_emp == props.idEmp && item.name_room == props.selectedRoomOnChart

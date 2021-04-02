@@ -15,9 +15,6 @@ import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import { getEmps } from "../store/action-creators/emps"
-import { getAllMoves, getMovesInRange } from "../store/action-creators/moves"
-import { setStartDate } from "../store/reducers/datesReducer"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -84,23 +81,9 @@ export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
 
-  const dispatch = useDispatch()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-
-  useEffect(() => {
-    dispatch(getEmps())
-
-   }, [])
-
-  useEffect(() => {
-    dispatch(getMovesInRange(startDate, endDate))
-   }, [startDate, endDate])
 
 
   return (
-    //<MovementsTable />
-    //<MovementsEmpBar />
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
         {/* Заголовок страницы */}

@@ -40,6 +40,15 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
   const stat = useTypedSelector((state) => state.statByDep.stat)
   const isLoading = useTypedSelector((state) => state.statByDep.loading)
   const statFiltered = stat.filter((item) => item.name_room == props.nameRoom)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+
+  
+  useEffect(() => {
+    dispatch(getCountMovesInRangeDepSort(startDate, endDate))
+   }, [startDate, endDate])
+
 
  
 

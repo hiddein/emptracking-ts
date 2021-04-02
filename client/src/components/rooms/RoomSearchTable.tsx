@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -14,6 +14,8 @@ import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
+import { useDispatch } from "react-redux"
+import { getRooms } from "../../store/action-creators/rooms"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -62,6 +64,12 @@ interface propsTable {
 export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
   const rooms = useTypedSelector(state => state.room.rooms)
   const isLoading = useTypedSelector(state => state.room.loading)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getRooms())
+   }, [])
+
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.2, type: "string"},

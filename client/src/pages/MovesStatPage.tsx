@@ -98,12 +98,7 @@ export const MovesStatPage: React.FC = () => {
   const [selectedRoomOnChart, SetselectedRoomOnChart] = useState("")
   const [selectedDepOnChart, SetselectedDepOnChart] = useState("")
   const [selectedRoom, SetselectedRoom] = useState("")
-  const startDate = useTypedSelector((state) => state.dates.startDate)
-  const endDate = useTypedSelector((state) => state.dates.endDate)
-  const stat = useTypedSelector((state) => state.stat.stat)
- 
 
-  const dispatch = useDispatch()
   
   const handleSelected = () => {
     SetselectedEmp("")
@@ -113,17 +108,6 @@ export const MovesStatPage: React.FC = () => {
     SetEmpsSelected(!empsSelected)
   }
 
-  useEffect(() => {
-    dispatch(getEmps())
-    dispatch(getRooms())
-   }, [])
-
-
-  useEffect(() => {
-    dispatch(getCountMovesInRange(startDate, endDate))
-    dispatch(getCountMovesInRangeDaySort(startDate, endDate))
-    dispatch(getCountMovesInRangeDepSort(startDate, endDate))
-   }, [startDate, endDate])
 
 
   return (

@@ -1,9 +1,11 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import { useTypedSelector } from "../../../../hooks/useTypedSelector"
 import { Loader } from "../../../Loader"
 import { rusLocaleChart } from "../../../../rusLocale/ruslocale"
+import { useDispatch } from "react-redux"
+import { getCountMovesInRange } from "../../../../store/action-creators/stat"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -37,6 +39,14 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
   const classes = useStyles()
   const stat = useTypedSelector((state) => state.stat.stat)
   const isLoading = useTypedSelector((state) => state.stat.loading)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getCountMovesInRange(startDate, endDate))
+   }, [startDate, endDate])
+
 
   const statFiltered = stat.filter((item) => item.id_emp == props.idEmp)
   interface chartStateInterface {
