@@ -44,8 +44,8 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
   const classes = useStyles()
 
   const [selectedDate, setSelectedDate] = React.useState<Date>(new Date('2021-03-18'))
-  const oneDayMoves = useTypedSelector((state) => state.oneDayMoves.moves)
-  const isLoading = useTypedSelector((state) => state.oneDayMoves.loading)
+  const oneDayMoves = useTypedSelector((state) => state.move.oneDayMoves)
+  const isLoading = useTypedSelector((state) => state.move.oneDayLoading)
   const dispatch = useDispatch()
   const movesFiltered = oneDayMoves.filter(
     (move) => move.id_emp == props.idEmp

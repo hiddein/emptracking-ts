@@ -9,13 +9,13 @@ const initialState: EmpState = {
 export const empReducer = (state = initialState,action:EmpAction):EmpState => {
     switch (action.type) {
         case UserActionTypes.FETCH_EMPS:
-            return {loading:true,error:null,emps:[]}
+            return {...state,loading:true,error:null,emps:[]}
 
         case UserActionTypes.FETCH_EMPS_SUCCESS:
-            return {loading:false,error:null,emps:action.payload}
+            return {...state,loading:false,error:null,emps:action.payload}
 
         case UserActionTypes.FETCH_EMPS_ERROR:
-            return {loading:false,error:action.payload,emps:[]}
+            return {...state,loading:false,error:action.payload,emps:[]}
 
     
         default:

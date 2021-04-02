@@ -3,12 +3,26 @@ export interface StatState {
     loading: boolean
     error: null | string
 
+    statDaySort: any[]
+    loadingDaySort: boolean
+    errorDaySort: null | string
+
+    statDepSort: any[]
+    loadingDepSort: boolean
+    errorDepSort: null | string
+
 }
 
 export enum StatActionTypes {
     FETCH_STAT = "FETCH_STAT",
     FETCH_STAT_SUCCESS = "FETCH_STAT_SUCCESS",
-    FETCH_STAT_ERROR = "FETCH_STAT_ERROR"
+    FETCH_STAT_ERROR = "FETCH_STAT_ERROR",
+    FETCH_STATDAYSORT = "FETCH_STATDAYSORT",
+    FETCH_STATDAYSORT_SUCCESS = "FETCH_STATDAYSORT_SUCCESS",
+    FETCH_STATDAYSORT_ERROR = "FETCH_STATDAYSORT_ERROR",
+    FETCH_STATBYDEP = "FETCH_STATBYDEP",
+    FETCH_STATBYDEP_SUCCESS = "FETCH_STATBYDEP_SUCCESS",
+    FETCH_STATBYDEP_ERROR = "FETCH_STATBYDEP_ERROR"
 
 }
 
@@ -25,68 +39,31 @@ interface FetchStatErrorAction {
     payload: string
 }
 
-export type StatAction = FetchStatAction | FetchStatSuccessAction | FetchStatErrorAction
-
-export interface StatDaySortState {
-    stat: any[]
-    loading: boolean
-    error: null | string
-
-}
-
-export enum StatDaySortActionTypes {
-    FETCH_STATDAYSORT = "FETCH_STATDAYSORT",
-    FETCH_STATDAYSORT_SUCCESS = "FETCH_STATDAYSORT_SUCCESS",
-    FETCH_STATDAYSORT_ERROR = "FETCH_STATDAYSORT_ERROR"
-
-}
-
 interface FetchStatDaySortAction {
-    type: StatDaySortActionTypes.FETCH_STATDAYSORT
+    type: StatActionTypes.FETCH_STATDAYSORT
 }
 interface FetchStatDaySortSuccessAction {
-    type: StatDaySortActionTypes.FETCH_STATDAYSORT_SUCCESS
+    type: StatActionTypes.FETCH_STATDAYSORT_SUCCESS
     payload: any[]
 }
 
 interface FetchStatDaySortErrorAction {
-    type: StatDaySortActionTypes.FETCH_STATDAYSORT_ERROR
+    type: StatActionTypes.FETCH_STATDAYSORT_ERROR
     payload: string
 }
 
-export type StatDaySortAction = FetchStatDaySortAction | FetchStatDaySortSuccessAction | FetchStatDaySortErrorAction
-
-
-
-
-
-export interface StatByDepState {
-    stat: any[]
-    loading: boolean
-    error: null | string
-
-}
-
-export enum StatByDepActionTypes {
-    FETCH_STATBYDEP = "FETCH_STATBYDEP",
-    FETCH_STATBYDEP_SUCCESS = "FETCH_STATBYDEP_SUCCESS",
-    FETCH_STATBYDEP_ERROR = "FETCH_STATBYDEP_ERROR"
-
-}
 
 interface FetchStatByDepAction {
-    type: StatByDepActionTypes.FETCH_STATBYDEP
+    type: StatActionTypes.FETCH_STATBYDEP
 }
 interface FetchStatByDepSuccessAction {
-    type: StatByDepActionTypes.FETCH_STATBYDEP_SUCCESS
+    type: StatActionTypes.FETCH_STATBYDEP_SUCCESS
     payload: any[]
 }
 
 interface FetchStatByDepErrorAction {
-    type: StatByDepActionTypes.FETCH_STATBYDEP_ERROR
+    type: StatActionTypes.FETCH_STATBYDEP_ERROR
     payload: string
 }
 
-export type StatByDepAction = FetchStatByDepAction | FetchStatByDepSuccessAction | FetchStatByDepErrorAction
-
-
+export type StatAction = FetchStatAction | FetchStatSuccessAction | FetchStatErrorAction | FetchStatByDepAction | FetchStatByDepSuccessAction | FetchStatByDepErrorAction |FetchStatDaySortAction | FetchStatDaySortSuccessAction | FetchStatDaySortErrorAction

@@ -1,7 +1,7 @@
 import axios from "axios"
-import { fetchStat, fetchStatError, fetchStatSuccess } from "../reducers/statReducer"
-import { fetchStatDaySort, fetchStatDaySortError, fetchStatDaySortSuccess } from "../reducers/statDaySortReducer"
-import { fetchStatByDep, fetchStatByDepError, fetchStatByDepSuccess } from "../reducers/statByDepReducer"
+import { fetchStat, fetchStatError, fetchStatSuccess, fetchStatByDep, fetchStatByDepError, fetchStatByDepSuccess, fetchStatDaySort, fetchStatDaySortError, fetchStatDaySortSuccess } from "../reducers/statReducer"
+
+
 
 export const getCountMovesInRange = (start:Date, end:Date):any => {
     return async (dispatch: any) => {

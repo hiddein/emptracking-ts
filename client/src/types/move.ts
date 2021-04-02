@@ -4,30 +4,20 @@ export interface MoveState {
     moves: any[]
     loading: boolean
     error: null | string
+    oneDayMoves: any[]
+    oneDayLoading: boolean
+    oneDayError: null | string
 
 }
 
 export enum MoveActionTypes {
     FETCH_MOVES = "FETCH_MOVES",
     FETCH_MOVES_SUCCESS = "FETCH_MOVES_SUCCESS",
-    FETCH_MOVES_ERROR = "FETCH_MOVES_ERROR"
-
+    FETCH_MOVES_ERROR = "FETCH_MOVES_ERROR",
+    FETCH_ONEDAYMOVES = "FETCH_ONEDAYMOVES",
+    FETCH_ONEDAYMOVES_SUCCESS = "FETCH_ONEDAYMOVES_SUCCESS",
+    FETCH_ONEDAYMOVES_ERROR = "FETCH_ONEDAYMOVES_ERROR"
 }
-
-export interface MoveInterface {
-    moveId: number,
-    empId: number,
-    firstName: string,
-    middlName:string,
-    lastName:string,
-    roomId: number,
-    nameRoom: string
-    timeEnter: string,
-    timeLeave: string,
-    
-}
-
-
 
 interface FetchMoveAction {
     type: MoveActionTypes.FETCH_MOVES
@@ -42,4 +32,18 @@ interface FetchMoveErrorAction {
     payload: string
 }
 
-export type MoveAction = FetchMoveAction | FetchMoveSuccessAction | FetchMoveErrorAction
+interface FetchOneDayMoveAction {
+    type: MoveActionTypes.FETCH_ONEDAYMOVES
+}
+interface FetchOneDayMoveSuccessAction {
+    type: MoveActionTypes.FETCH_ONEDAYMOVES_SUCCESS
+    payload: any[]
+}
+
+interface FetchOneDayMoveErrorAction {
+    type: MoveActionTypes.FETCH_ONEDAYMOVES_ERROR
+    payload: string
+}
+
+export type MoveAction = FetchMoveAction | FetchMoveSuccessAction | FetchMoveErrorAction | FetchOneDayMoveAction | FetchOneDayMoveSuccessAction | FetchOneDayMoveErrorAction
+ 

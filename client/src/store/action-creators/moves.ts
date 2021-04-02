@@ -1,6 +1,5 @@
 import axios from "axios"
-import { fetchMoves, fetchMovesError, fetchMovesSuccess } from "../reducers/moveReducer"
-import { fetchOneDayMoves, fetchOneDayMovesError, fetchOneDayMovesSuccess } from "../reducers/oneDayMovesReducer"
+import { fetchMoves, fetchMovesError, fetchMovesSuccess, fetchOneDayMoves, fetchOneDayMovesError, fetchOneDayMovesSuccess } from "../reducers/moveReducer"
 
 
 export const getAllMoves = () => {

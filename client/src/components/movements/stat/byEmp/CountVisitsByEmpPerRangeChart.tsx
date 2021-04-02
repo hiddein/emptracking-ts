@@ -36,8 +36,8 @@ interface propsStatChart {
 
 export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: propsStatChart) => {
   const classes = useStyles()
-  const stat = useTypedSelector((state) => state.statDaySort.stat)
-  const isLoading = useTypedSelector((state) => state.statDaySort.loading)
+  const stat = useTypedSelector((state) => state.stat.statDaySort)
+  const isLoading = useTypedSelector((state) => state.stat.loadingDaySort)
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()

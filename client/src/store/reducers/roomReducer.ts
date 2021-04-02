@@ -9,13 +9,13 @@ const initialState: RoomState = {
 export const roomReducer = (state = initialState,action:RoomAction):RoomState => {
     switch (action.type) {
         case RoomActionTypes.FETCH_ROOMS:
-            return {loading:true,error:null,rooms:[]}
+            return {...state,loading:true,error:null,rooms:[]}
 
         case RoomActionTypes.FETCH_ROOMS_SUCCESS:
-            return {loading:false,error:null,rooms:action.payload}
+            return {...state,loading:false,error:null,rooms:action.payload}
 
         case RoomActionTypes.FETCH_ROOMS_ERROR:
-            return {loading:false,error:action.payload,rooms:[]}
+            return {...state,loading:false,error:action.payload,rooms:[]}
 
     
         default:
