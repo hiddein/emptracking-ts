@@ -150,7 +150,7 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"280px"}
+        height={"260px"}
       />)}
 </div>
 

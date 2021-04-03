@@ -146,7 +146,7 @@ const start = async () => {
   for (let emp in emps) {
     let empId: number = emps[emp].id_emp
 
-    genResult = await generation(10,empId)
+    genResult = await generation(30,empId)
 
     for (let log in genResult) {
       await addLog(empId, genResult[log].route, genResult[log].timestamp)

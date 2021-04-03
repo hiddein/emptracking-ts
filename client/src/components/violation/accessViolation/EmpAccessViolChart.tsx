@@ -105,7 +105,7 @@ export const EmpAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart
     <div>
       <div className={classes.labelDiv}>
         <Typography variant="h6">
-          Количество нарушений в указанную дату (сотрудник)
+          Количество нарушений в указаннные даты (сотрудник)
         </Typography>
       </div>
       {props.idEmp == "" ? (

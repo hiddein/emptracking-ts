@@ -26,9 +26,9 @@ export const fetchRooms = () => ({
     type: RoomActionTypes.FETCH_ROOMS,
   })
   
-  export const fetchRoomsSuccess = (emps:any) => ({
+  export const fetchRoomsSuccess = (rooms:any) => ({
     type: RoomActionTypes.FETCH_ROOMS_SUCCESS,
-    payload: emps
+    payload: rooms
   
   })
   
