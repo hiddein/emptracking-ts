@@ -1,11 +1,14 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import { Button, Card, Grid, makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+
+import { rusLocaleChart } from "../../../rusLocale/ruslocale";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useDispatch } from "react-redux";
+import { getAccessViols, getAccessViolsByEmpDays} from "../../../store/action-creators/accessViols"
+import _ from "lodash";
+import { Loader } from "../../Loader";
+import { blue } from "@material-ui/core/colors";
 
 const useStyles = makeStyles(() => ({
     labelDiv:{
@@ -20,102 +23,135 @@ const useStyles = makeStyles(() => ({
     datePicker:{
         width: '180px',
         margin: 0
-    }
+    },
+    selectedButton: {
+      padding: "4px 10px",
+      color: blue[900],
+      backgroundColor: blue[200]
+    },
 }))
 
-export const DepsAccessViolChart: React.FC = () => {
+interface propsDepChart {
+  SetselectedDepOnChart:Function
+  SetselectedEmpOnChart:Function
+  idEmp:string
+  depName:string
+}
+
+export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const viols = useTypedSelector((state) => state.viol.viols)
+  const isLoading = useTypedSelector((state) => state.viol.loading)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
+  
+  useEffect(() => {
+    dispatch(getAccessViols(startDate, endDate))
+   }, [startDate, endDate])
 
-  const state = {
-    series: [{
-        name: 'Servings',
-        data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31, 87, 65, 35]
-      }],
-      options: {
-        annotations: {
-          points: [{
-            x: 'Bananas',
-            seriesIndex: 0,
-            label: {
-              borderColor: '#775DD0',
-              offsetY: 0,
-              style: {
-                color: '#fff',
-                background: '#775DD0',
-              },
-              text: 'Bananas are good',
-            }
-          }]
-        },
-        chart: {
-          height: 350,
-          type: 'bar',
-        },
-        plotOptions: {
-          bar: {
-            borderRadius: 10,
-            columnWidth: '50%',
+
+
+  interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    series: [
+      {
+        name: "Количество нарушений",
+        data: [],
+      },
+    ],
+    options: {
+      chart: {
+        height: 350,
+        type: "bar",
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
+        events: {
+          dataPointSelection: function(event:any, chartContext:any, config:any) {
+            props.SetselectedDepOnChart(resultViolsSorted[config.dataPointIndex].name_dep)
           }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          width: 2
-        },
-        
-        grid: {
-          row: {
-            colors: ['#fff', '#f2f2f2']
-          }
-        },
-        xaxis: {
-          labels: {
-            rotate: -45
-          },
-          categories: ['Apples', 'Oranges', 'Strawberries', 'Pineapples', 'Mangoes', 'Bananas',
-            'Blackberries', 'Pears', 'Watermelons', 'Cherries', 'Pomegranates', 'Tangerines', 'Papayas'
-          ],
-          tickPlacement: 'on'
-        },
-        yaxis: {
-          title: {
-            text: 'Servings',
-          },
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-            shade: 'light',
-            type: "horizontal",
-            shadeIntensity: 0.25,
-            gradientToColors: undefined,
-            inverseColors: true,
-            opacityFrom: 0.85,
-            opacityTo: 0.85,
-            stops: [50, 0, 100]
-          },
         }
       },
-  
-  };
+      plotOptions: {
+        bar: {
+          borderRadius: 5,
+          columnWidth: "50%",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        width: 2,
+      },
 
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
+      },
+      xaxis: {
+        labels: {
+          rotate: -45,
+        },
+        categories: [],
+        tickPlacement: "on",
+      },
+      yaxis: {
+        title: {
+          text: "Количество нарушений",
+        },
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100],
+        },
+      },
+    },
+  }
+
+  const violsSorted = _.countBy(viols, 'name_dep')
+  var resultViolsSorted = Object.keys(violsSorted).map(function (id) {
+    return {name_dep: id, count_viols: violsSorted[id]}
+  })
+
+  resultViolsSorted.map((item: any) => {
+    chartState.options.xaxis.categories.push(item.name_dep)
+    chartState.series[0].data.push(item.count_viols)
+  })
 
   return (
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений в указанную дату (по отделам)</Typography>
+        <Typography variant='h6'>Количество нарушений в указанный промежуток (по отделам)</Typography>
+         {props.depName !="" || props.idEmp !="" ? (<Button className={classes.selectedButton}
+                  onClick={() => {
+                    props.SetselectedDepOnChart("")
+                    props.SetselectedEmpOnChart("")
+                  }}>Отменить выбор</Button>) :null }
          </div>
+         {isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="bar"
         height={"280px"}
-      />
+      />)}
 </div>
 
     </React.Fragment>

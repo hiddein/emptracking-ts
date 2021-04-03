@@ -72,25 +72,25 @@ class logsController {
     switch (sort) {
       case "room":
         response = await pool.query(
-          "select moves.id_emp,first_name,middle_name,last_name,name_dep, name_room , count(moves.id_room) as count_visits from emp, department, moves,room where time_enter > $1 and time_leave <= $2 and  emp.id_emp=moves.id_emp and emp.id_dep=department.id_dep and moves.id_room=room.id_room group by moves.id_emp,first_name,middle_name,last_name,name_dep, name_room order by name_room",
+          "select moves.id_emp,first_name,middle_name,last_name,name_dep, name_room , count(moves.id_room) as count_visits from emp, department, moves,room where time_leave is not NULL and time_enter > $1 and time_leave <= $2 and  emp.id_emp=moves.id_emp and emp.id_dep=department.id_dep and moves.id_room=room.id_room group by moves.id_emp,first_name,middle_name,last_name,name_dep, name_room order by name_room",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)
       case "dayRoom":
         response = await pool.query(
-          "select id_emp, name_room, to_char(time_enter, 'yyyy-mm-dd') as time , count(moves.id_room) as count_visits from moves,room where time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room GROUP BY moves.id_emp,name_room, to_char(time_enter, 'yyyy-mm-dd') order by id_emp",
+          "select id_emp, name_room, to_char(time_enter, 'yyyy-mm-dd') as time , count(moves.id_room) as count_visits from moves,room where time_leave is not NULL and time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room GROUP BY moves.id_emp,name_room, to_char(time_enter, 'yyyy-mm-dd') order by id_emp",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)
       case "dayRoomDep":
         response = await pool.query(
-          "select name_dep, name_room, count(moves.id_room) as count_visits from moves,room,emp,department where time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and emp.id_dep=department.id_dep GROUP BY name_dep,name_room order by name_dep",
+          "select name_dep, name_room, count(moves.id_room) as count_visits from moves,room,emp,department where time_leave is not NULL and time_enter > $1 and time_leave <= $2 and moves.id_room=room.id_room and moves.id_emp=emp.id_emp and emp.id_dep=department.id_dep GROUP BY name_dep,name_room order by name_dep",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)
     }
 
-    return res.status(200)
+    return res.status(400).json({message: "Не указана сортировка"})
   }
 }
 export default new logsController()

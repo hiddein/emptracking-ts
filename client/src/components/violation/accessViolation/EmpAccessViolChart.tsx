@@ -1,11 +1,16 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import MomentUtils from "@date-io/moment"
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getAccessViolsByEmpDays } from "../../../store/action-creators/accessViols"
+import { rusLocaleChart } from "../../../rusLocale/ruslocale"
+import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -19,28 +24,50 @@ const useStyles = makeStyles(() => ({
     width: "180px",
     margin: 0,
   },
+  noEmpContainer: {
+    height: "290px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
-export const EmpAccessViolChart: React.FC = () => {
+
+interface propsDepChart {
+  idEmp:string
+}
+
+export const EmpAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2020-08-18T21:11:54")
-  )
+  const viols = useTypedSelector((state) => state.viol.violsByEmpDays)
+  const isLoading = useTypedSelector((state) => state.viol.loadingByEmpDays)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+  const violsFiltered = viols.filter((item) => item.id_emp == props.idEmp)
 
-  const handleDateChange = (date: any) => {
-    setSelectedDate(date)
+  useEffect(() => {
+    dispatch(getAccessViolsByEmpDays(startDate, endDate))
+   }, [startDate, endDate])
+
+
+   interface chartStateInterface {
+    series: any
+    options: any
   }
-
-  const state = {
+  const chartState: chartStateInterface = {
     
     series: [{
-        name: "Desktops",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        name: "Количество нарушений",
+        data: []
     }],
     options: {
       chart: {
         height: 350,
         type: 'line',
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
         zoom: {
           enabled: false
         }
@@ -51,10 +78,7 @@ export const EmpAccessViolChart: React.FC = () => {
       stroke: {
         curve: 'straight'
       },
-      title: {
-        text: 'Product Trends by Month',
-        align: 'left'
-      },
+      
       grid: {
         row: {
           colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
@@ -62,12 +86,20 @@ export const EmpAccessViolChart: React.FC = () => {
         },
       },
       xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+        categories: [],
+      },
+      yaxis: {
+        min:0,
+        forceNiceScale:true
       }
     }
-   
     }
-  
+    violsFiltered.map((item: any) => {
+      chartState.options.xaxis.categories.push(item.timestamp)
+      chartState.series[0].data.push(item.count)
+    })
+
+
 
   return (
     <div>
@@ -76,12 +108,19 @@ export const EmpAccessViolChart: React.FC = () => {
           Количество нарушений в указанную дату (сотрудник)
         </Typography>
       </div>
+      {props.idEmp == "" ? (
+          <div className={classes.noEmpContainer}>
+            <Typography variant="h4">Выберите отдел и сотрудника</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="line"
         height={"280px"}
-      />
+      />)}
     </div>
   )
 }

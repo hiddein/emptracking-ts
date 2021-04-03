@@ -1,11 +1,12 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { rusLocaleChart } from "../../../rusLocale/ruslocale";
+import _ from "lodash";
+import { getAccessViolsByEmp } from "../../../store/action-creators/accessViols";
+import { useDispatch } from "react-redux";
+import { Loader } from "../../Loader";
 
 const useStyles = makeStyles(() => ({
     labelDiv:{
@@ -20,72 +21,128 @@ const useStyles = makeStyles(() => ({
     datePicker:{
         width: '180px',
         margin: 0
-    }
+    },
+    noDepContainer: {
+      height: "290px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "25px",
+    },
 }))
 
-export const ByEmpsAccessViolChart: React.FC = () => {
+interface propsDepChart {
+  depName:string
+  SetselectedEmpOnChart:Function
+}
+
+export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const viols = useTypedSelector((state) => state.viol.violsByEmp)
+  const isLoading = useTypedSelector((state) => state.viol.loadingByEmp)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+  const violsFiltered = viols.filter((item) => item.name_dep == props.depName)
+  
+  useEffect(() => {
+    dispatch(getAccessViolsByEmp(startDate, endDate))
+   }, [startDate, endDate, props.depName ])
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
-
-  const state = {
-   
-    series: [{
-      data: [21, 22, 10, 28, 16, 21, 13, 30]
-    }],
+   interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    series: [
+      {
+        name: "Количество нарушений",
+        data: [],
+      },
+    ],
     options: {
       chart: {
         height: 350,
-        type: 'bar',
+        type: "bar",
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
         events: {
-        
+          dataPointSelection: function(event:any, chartContext:any, config:any) {
+            props.SetselectedEmpOnChart(violsFiltered[config.dataPointIndex].id_emp)
           }
         }
       },
       plotOptions: {
         bar: {
-          columnWidth: '45%',
-          distributed: true,
-        }
+          borderRadius: 5,
+          columnWidth: "50%",
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
-      legend: {
-        show: false
+      stroke: {
+        width: 2,
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
       },
       xaxis: {
-        categories: [
-          ['John', 'Doe'],
-          ['Joe', 'Smith'],
-          ['Jake', 'Williams'],
-          'Amber',
-          ['Peter', 'Brown'],
-          ['Mary', 'Evans'],
-          ['David', 'Wilson'],
-          ['Lily', 'Roberts'], 
-        ],
         labels: {
-          style: {
-            fontSize: '12px'
-          }
-        }
-      }
-    }
+          rotate: -45,
+        },
+        categories: [],
+        tickPlacement: "on",
+      },
+      yaxis: {
+        title: {
+          text: "Количество нарушений",
+        },
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100],
+        },
+      },
+    },
+  }
+
+  violsFiltered.map((item: any) => {
+    chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
+    chartState.series[0].data.push(item.count)
+  })
+
 
   return (
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений в указанную дату (сотрудники отдела)</Typography>
+        <Typography variant='h6'>Количество нарушений в указанный промежуток (сотрудники отдела)</Typography>
          </div>
+         {props.depName == "" ? (
+          <div className={classes.noDepContainer}>
+            <Typography variant="h4">Выберите отдел</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="bar"
         height={"260px"}
-      />
+      />)}
 </div>
 
     </React.Fragment>

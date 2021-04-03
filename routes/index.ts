@@ -6,6 +6,7 @@ import depsRouter from "./depsRouter"
 import accessRouter from "./accessRouter"
 import roomRouter from "./roomRouter"
 import routeRouter from "./routeRouter"
+import violRouter from "./violRouter"
 
 const router = Router()
 
@@ -16,5 +17,6 @@ router.use("/deps", depsRouter)
 router.use("/access", accessRouter)
 router.use("/room", roomRouter)
 router.use("/route", routeRouter)
+router.use("/viol", violRouter)
 
 export default router

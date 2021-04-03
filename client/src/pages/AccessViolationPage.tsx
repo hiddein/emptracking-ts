@@ -59,6 +59,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const AccessViolationPage: React.FC = () => {
   const classes = useStyles()
+  const [selectedDep, SetselectedDep] = useState("")
+  const [selectedEmp, SetselectedEmp] = useState("")
+
 
   return (
     <div className={classes.container1}>
@@ -75,13 +78,13 @@ export const AccessViolationPage: React.FC = () => {
           <Card className={classes.paper}><AccessViolationTable /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><DepsAccessViolChart /></Card>
+          <Card className={classes.paper}><DepsAccessViolChart SetselectedDepOnChart={SetselectedDep} idEmp={selectedEmp} depName={selectedDep}  SetselectedEmpOnChart={SetselectedEmp}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><EmpAccessViolChart /></Card>
+          <Card className={classes.paper}><EmpAccessViolChart idEmp={selectedEmp} /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><ByEmpsAccessViolChart /></Card>
+          <Card className={classes.paper}><ByEmpsAccessViolChart depName={selectedDep} SetselectedEmpOnChart={SetselectedEmp}/></Card>
         </Grid>
         
       </Grid>
