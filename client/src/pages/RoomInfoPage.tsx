@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
+import { RangePicker } from "../components/RangePicker"
 import { CountVisitsChart } from "../components/rooms/CountVisitsChart"
 import { EmpsWithAccessTable } from "../components/rooms/EmpsWithAccessTable"
 import { RoomCard } from "../components/rooms/RoomCard"
@@ -57,6 +58,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "center",
     color: blue[900],
     fontSize: "25px",
+    display: "flex",
+    alignItems: "center",
+  },
+  datePickerContainer:{
+    padding: '5px 20px',
+    display: 'flex',
+    flexWrap: 'nowrap'
+  },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
   },
 }))
 
@@ -67,11 +79,13 @@ export const RoomInfoPage: React.FC = () => {
   return (
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
-
-      <Grid item xs={12}>
+      <Grid item xs={12} className={classes.titleContainer}>
           <Typography className={classes.title} variant="h3">
             Помещения предприятия
           </Typography>
+          <Card className={classes.datePickerContainer}>
+          <RangePicker />
+          </Card>
         </Grid>
 
 

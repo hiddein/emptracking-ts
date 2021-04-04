@@ -1,12 +1,6 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import React, { useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
-import { RangePicker } from "../RangePicker";
 
 const useStyles = makeStyles(() => ({
     labelDiv:{
@@ -106,13 +100,12 @@ export const CountVisitsChart: React.FC = () => {
         <div>
         <div className={classes.labelDiv}>
         <Typography variant='h6'>Количество посещений  </Typography>
-        <RangePicker />
          </div>
       <Chart
         options={state.options}
         series={state.series}
         type="bar"
-        height={"268px"}
+        height={"250px"}
       />
 </div>
 

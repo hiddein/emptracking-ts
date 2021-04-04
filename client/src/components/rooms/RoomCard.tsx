@@ -1,15 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
 import React, { useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridFooterContainer,
-  GridPagination,
-  GridBaseComponentProps,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
 
@@ -40,7 +30,7 @@ export const RoomCard: React.FC = () => {
 
   
   return (
-    <div style={{ height: 340, width: "100%" }}>
+    <div style={{ height: 310, width: "100%" }}>
      <Typography variant="h6">Карточка помещения</Typography>
     </div>
   )

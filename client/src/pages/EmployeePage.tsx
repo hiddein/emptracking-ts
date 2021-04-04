@@ -14,6 +14,7 @@ import { EmpCard } from "../components/emps/EmpCard"
 import { GetEmpAccessTable } from "../components/emps/GetEmpAccessTable"
 import { MostVisitedChart } from "../components/emps/MostVisitedChart"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
+import { RangePicker } from "../components/RangePicker"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { getEmps } from "../store/action-creators/emps"
 
@@ -60,6 +61,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     textAlign: "center",
     color: blue[900],
     fontSize: "25px",
+    display: "flex",
+    alignItems: "center",
   },
   selectedEmpContainer: {
     padding: 5,
@@ -81,6 +84,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: "10px",
     fontSize: "20px",
   },
+  titleContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  datePickerContainer:{
+    padding: '5px 20px',
+    display: 'flex',
+    flexWrap: 'nowrap'
+  },
 }))
 
 export const EmployeePage: React.FC = () => {
@@ -97,21 +109,24 @@ export const EmployeePage: React.FC = () => {
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
         {/* Заголовок страницы */}
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.titleContainer}>
           <Typography className={classes.title} variant="h3">
             Cотрудники предприятия
           </Typography>
+          <Card className={classes.datePickerContainer}>
+          <RangePicker />
+          </Card>
         </Grid>
         {/* Сетка дэшборда */}
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-          <SearchEmpsTable updateData={SetselectedEmp} height={340} />
+          <SearchEmpsTable updateData={SetselectedEmp} height={310} />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <EmpCard />
+            <EmpCard idEmp={selectedEmp.split(' ')[0]}  />
           </Card>
         </Grid>
         <Grid item  xs={12} md={6}>
@@ -133,7 +148,7 @@ export const EmployeePage: React.FC = () => {
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <GetEmpAccessTable />
+            <GetEmpAccessTable idEmp={selectedEmp.split(' ')[0]} />
           </Card>
         </Grid>
       </Grid>

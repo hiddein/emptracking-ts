@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import {
   DataGrid,
   GridColDef,
@@ -12,6 +12,10 @@ import {
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getAccess } from "../../store/action-creators/emps"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -33,6 +37,13 @@ const useStyles = makeStyles(() => ({
   toolBarOption: {
     paddingRight: "10px",
   },
+  noEmpContainer: {
+    height: "285px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
 const CustomToolbar = () => {
@@ -52,72 +63,46 @@ const CustomToolbar = () => {
   )
 }
 
+interface propsAccessChart {
+  idEmp: string
+}
 
-export const GetEmpAccessTable: React.FC = () => {
+export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccessChart) => {
+  const classes = useStyles()
+  const access = useTypedSelector((state) => state.emp.access)
+  const isLoading = useTypedSelector((state) => state.emp.accessLoading)
+  const accessFiltered = access.filter((item) => item.id_emp == props.idEmp)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(getAccess())
+   }, [])
+
 
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", flex: 0.2, type: "string" },
-    {
-      field: "roomName",
-      headerName: "Название помещения",
-      flex: 1,
-      type: "string",
-    },
+    { field: "roomName", headerName: "Название помещения", flex: 1, type: "string", },
     { field: "roomAbout", headerName: "Описание помещения", flex: 1, type: "string" },
-  
-
-    // {
-    //   field: 'fullName',
-    //   headerName: 'Full name',
-    //   description: 'This column has a value getter and is not sortable.',
-    //   sortable: false,
-    //   width: 160,
-    //   valueGetter: (params: ValueGetterParams) =>
-    //     `${params.getValue('firstName') || ''} ${params.getValue('lastName') || ''}`,
-    // },
   ]
-
-  const rows = [
-    {
-      id: 1,
-      roomName: "Цех №1",
-      roomAbout: "Отдел разработки",
-    },
-    {
-        id: 2,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
-      {
-        id: 3,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
-      {
-        id: 4,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
-      {
-        id: 5,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
-      {
-        id: 6,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
-      {
-        id: 7,
-        roomName: "Цех №1",
-        roomAbout: "Отдел разработки",
-      },
+  interface Access {
+    id: number
+    roomName: string
+    roomAbout: string
     
-  ]
+
+  }
+  const rows: Access[] = []
+  accessFiltered.map((item:any, index:any) => rows.push({id: index, roomName: item.name_room, roomAbout:item.about_room }))
+ 
 
   return (
     <div style={{ height: 340, width: "100%" }}>
+       {props.idEmp == "" ? (
+          <div className={classes.noEmpContainer}>
+            <Typography variant="h4">Выберите сотрудника</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <DataGrid
         rows={rows}
         columns={columns}
@@ -126,14 +111,11 @@ export const GetEmpAccessTable: React.FC = () => {
         disableColumnSelector={true}
         disableColumnMenu={true}
         localeText={rusLocale}
-        // onRowSelected={(param: any) => {
-        //   props.updateData(param.data.empName)
-        // }}
         components={{
           Toolbar: CustomToolbar,
         }}
         hideFooterSelectedRowCount={true}
-      />
+      />)}
     </div>
   )
 }

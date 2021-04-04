@@ -1,47 +1,40 @@
-import { makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridFooterContainer,
-  GridPagination,
-  GridBaseComponentProps,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
-import { rusLocale } from "../../rusLocale/ruslocale"
-import { blue } from "@material-ui/core/colors"
+import { Avatar, makeStyles, Theme, Typography } from "@material-ui/core"
+import React, { useEffect, useState } from "react"
 
-const useStyles = makeStyles(() => ({
-  toolBarContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    margin: "6px",
-  },
-  footerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  toolBarItem: {
-    display: "flex",
-  },
-  footerEmp: {
-    marginLeft: 10,
-    backgroundColor: blue[200],
-  },
-  toolBarOption: {
-    paddingRight: "10px",
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getEmps } from "../../store/action-creators/emps"
+
+const useStyles = makeStyles((theme: Theme) => ({
+  large: {
+    width: theme.spacing(14),
+    height: theme.spacing(14),
   },
 }))
 
+interface propsEmpCard {
+  idEmp: string
+}
 
-export const EmpCard: React.FC = () => {
 
-  
+export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
+  const classes = useStyles()
+  const emps = useTypedSelector(state => state.emp.emps)
+  const isLoading = useTypedSelector(state => state.emp.loading)
+  const dispatch = useDispatch()
+  const selectedEmp = emps.filter((item) => item.id_emp == props.idEmp)
+
+  useEffect(() => {
+    dispatch(getEmps())
+   }, [])
+
+
   return (
-    <div style={{ height: 340, width: "100%" }}>
+
+    <div style={{ height: 310, width: "100%" }}>
      <Typography variant="h6">Карточка сотрудника</Typography>
+     {selectedEmp.length != 0 ? (<Avatar alt="Remy Sharp" src={`http://localhost:7000/${selectedEmp[0].photo_emp}`} className={classes.large} />) :null}
+
     </div>
   )
 }
