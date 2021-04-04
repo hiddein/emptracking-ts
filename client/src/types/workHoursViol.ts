@@ -5,9 +5,6 @@ export interface WorkHoursViolState {
     violsByEmp: any[]
     loadingByEmp: boolean
     errorByEmp: null | string
-    violsByEmpDays: any[]
-    loadingByEmpDays: boolean
-    errorByEmpDays: null | string
 }
 
 export enum WorkHoursViolActionTypes {

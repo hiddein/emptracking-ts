@@ -11,9 +11,6 @@ import {
     violsByEmp: [],
     loadingByEmp: false,
     errorByEmp: null,
-    violsByEmpDays: [],
-    loadingByEmpDays: false,
-    errorByEmpDays: null,
   }
   
   export const workHoursViolReducer = (

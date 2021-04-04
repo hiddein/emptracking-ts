@@ -30,11 +30,11 @@ const useStyles = makeStyles(() => ({
     },
 }))
 
-interface propsDepChart {
+interface propsEmpChart {
   depName:string
 }
 
-export const LateEmpsByEmpChart: React.FC<propsDepChart> = (props: propsDepChart) => {
+export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.latenessByEmp)
   const isLoading = useTypedSelector((state) => state.lateness.loadingByEmp)

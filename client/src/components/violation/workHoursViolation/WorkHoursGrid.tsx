@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import {
   Card,
   Grid,
@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const WorkHoursGrid: React.FC = () => {
   const classes = useStyles()
+  const [selectedDepOnChart, SetselectedDepOnChart] = useState("")
   
 
   return (
@@ -32,10 +33,10 @@ export const WorkHoursGrid: React.FC = () => {
     <Grid item xs={12} md={6}>
       <Grid container direction="column" spacing={2}>
         <Grid item xs={12} md={12}>
-          <Card className={classes.paper}><WorkHoursByDepChart /></Card>
+          <Card className={classes.paper}><WorkHoursByDepChart SetselectedDepOnChart={SetselectedDepOnChart} depName={selectedDepOnChart}  /></Card>
         </Grid>
         <Grid item xs={12} md={12}>
-          <Card className={classes.paper1}><WorkHoursByEmpChart /></Card>
+          <Card className={classes.paper1}><WorkHoursByEmpChart depName={selectedDepOnChart} /></Card>
         </Grid>
       </Grid>
     </Grid>
