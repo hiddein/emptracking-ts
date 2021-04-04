@@ -49,7 +49,7 @@ class violController {
         return res.status(200).json(response.rows)
       case "byEmp":
         response = await pool.query(
-          "select tracking.id_emp,first_name,middle_name,last_name,name_dep, count(id_reg) from tracking,emp,route,room,department where emp.id_dep=department.id_dep and tracking.id_route=route.id_route and tracking.id_emp=emp.id_emp and route.id_end=room.id_room  and Timestamp > $1 and Timestamp <= $2 and not exists(select * from access where tracking.id_route=access.id_route and tracking.id_emp=access.id_emp) GROUP BY tracking.id_emp,first_name,middle_name,last_name, name_dep order by tracking.id_emp",
+          "SELECT distinct movesWithRN.id_emp, first_name,middle_name,last_name,name_dep, count(*) count_lateness FROM ( SELECT id_emp, time_enter, id_room, ROW_NUMBER() OVER (PARTITION BY moves.id_emp,to_char(time_enter, 'yyyy-mm-dd') ORDER BY time_enter ) rn FROM moves) movesWithRN,schedule,emp,department WHERE rn = 1 and movesWithRN.id_emp=schedule.id_emp and emp.id_dep=department.id_dep and movesWithRN.id_emp=emp.id_emp and time_enter::time - start_time::time  > time '00:10' and time_enter > $1 and time_enter <= $2 group by movesWithRN.id_emp, first_name,middle_name,last_name,name_dep",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)

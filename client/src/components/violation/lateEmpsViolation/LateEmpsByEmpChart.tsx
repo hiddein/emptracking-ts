@@ -1,11 +1,11 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
+import { getLatenessByEmp } from "../../../store/action-creators/lateness";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { useDispatch } from "react-redux";
+import { rusLocaleChart } from "../../../rusLocale/ruslocale";
+import { Loader } from "../../Loader";
 
 const useStyles = makeStyles(() => ({
     labelDiv:{
@@ -20,59 +20,102 @@ const useStyles = makeStyles(() => ({
     datePicker:{
         width: '180px',
         margin: 0
-    }
+    },
+    noDepContainer: {
+      height: "285px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontSize: "25px",
+    },
 }))
 
-export const LateEmpsByEmpChart: React.FC = () => {
+interface propsDepChart {
+  depName:string
+}
+
+export const LateEmpsByEmpChart: React.FC<propsDepChart> = (props: propsDepChart) => {
   const classes = useStyles()
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(new Date('2020-08-18T21:11:54'))
+  const lateness = useTypedSelector((state) => state.lateness.latenessByEmp)
+  const isLoading = useTypedSelector((state) => state.lateness.loadingByEmp)
+  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+  const latenessFiltered = lateness.filter((item) => item.name_dep == props.depName)
 
-  const handleDateChange = (date:any) => {setSelectedDate(date)}
 
-  const state = {
-   
-    series: [{
-      data: [21, 22, 10, 28, 16, 21, 13, 30]
-    }],
+  useEffect(() => {
+    dispatch(getLatenessByEmp(startDate, endDate))
+   }, [startDate, endDate])
+
+   interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
+    series: [
+      {
+        name: "Количество опозданий",
+        data: [],
+      },
+    ],
     options: {
       chart: {
         height: 350,
-        type: 'bar',
-        events: {
-        
-          }
-        }
+        type: "bar",
+        locales: [rusLocaleChart],
+        defaultLocale: "RU",
       },
       plotOptions: {
         bar: {
-          columnWidth: '45%',
-          distributed: true,
-        }
+          borderRadius: 5,
+          columnWidth: "50%",
+        },
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
-      legend: {
-        show: false
+      stroke: {
+        width: 2,
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"],
+        },
       },
       xaxis: {
-        categories: [
-          ['John', 'Doe'],
-          ['Joe', 'Smith'],
-          ['Jake', 'Williams'],
-          'Amber',
-          ['Peter', 'Brown'],
-          ['Mary', 'Evans'],
-          ['David', 'Wilson'],
-          ['Lily', 'Roberts'], 
-        ],
         labels: {
-          style: {
-            fontSize: '12px'
-          }
-        }
-      }
-    }
+          rotate: -45,
+        },
+        categories: [],
+        tickPlacement: "on",
+      },
+      yaxis: {
+        title: {
+          text: "Количество опозданий",
+        },
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100],
+        },
+      },
+    },
+  }
+
+  latenessFiltered.map((item: any) => {
+    chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
+    chartState.series[0].data.push(item.count_lateness)
+  })
 
   return (
     <React.Fragment>
@@ -80,12 +123,19 @@ export const LateEmpsByEmpChart: React.FC = () => {
         <div className={classes.labelDiv}>
         <Typography variant='h6'>Количество опозданий (по сотрудникам)</Typography>
          </div>
+         {props.depName == "" ? (
+          <div className={classes.noDepContainer}>
+            <Typography variant="h4">Выберите отдел</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="bar"
         height={"268px"}
-      />
+      />)}
 </div>
 
     </React.Fragment>
