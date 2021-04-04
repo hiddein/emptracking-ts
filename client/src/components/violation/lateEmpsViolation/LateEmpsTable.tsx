@@ -12,6 +12,7 @@ import { rusLocale } from "../../../rusLocale/ruslocale"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getLateness } from "../../../store/action-creators/lateness"
+import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -72,12 +73,14 @@ export const LateEmpsTable: React.FC = () => {
     timeViol: string
 
   }
-console.log(lateness)
   const rows: Lateness[] = []
   lateness.map((item:any, index:any) => rows.push({id: index, fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name}`, depName: item.name_dep, dateViol: item.date, timeViol: item.late_time}))
  
   return (
     <div style={{ height: 699, width: "100%" }}>
+       {isLoading ? (
+        <Loader size={60} />
+      ) : (
       <DataGrid
         rows={rows}
         columns={columns}
@@ -89,7 +92,7 @@ console.log(lateness)
         }}
         disableColumnSelector={true}
         disableColumnMenu={true}
-      />
+      />)}
     </div>
   )
 }
