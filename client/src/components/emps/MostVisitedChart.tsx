@@ -1,7 +1,11 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from "@date-io/moment"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getCountMovesInRange } from "../../store/action-creators/stat"
+import _ from "lodash"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -12,25 +16,46 @@ const useStyles = makeStyles(() => ({
     padding: " 0 20px",
 
   },
-  datePicker: {
-    width: "180px",
-    margin: 0,
+  noEmpContainer: {
+    height: "290px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
   },
 }))
 
-export const MostVisitedChart: React.FC = () => {
+interface propsStatChart {
+  idEmp: string
+}
+
+export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart) => {
   const classes = useStyles()
+  const stat = useTypedSelector((state) => state.stat.stat)
+  const isLoading = useTypedSelector((state) => state.stat.loading)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dispatch = useDispatch()
+  const statFiltered = stat.filter((item) => item.id_emp == props.idEmp)
+console.log(statFiltered)
+  useEffect(() => {
+    dispatch(getCountMovesInRange(startDate, endDate))
+   }, [startDate, endDate])
 
 
-  const state = {
+   interface chartStateInterface {
+    series: any
+    options: any
+  }
+  const chartState: chartStateInterface = {
     
-    series: [42, 47, 52, 58, 65],
+    series: [],
             options: {
               chart: {
                 width: 380,
                 type: 'polarArea'
               },
-              labels: ['Rose A', 'Rose B', 'Rose C', 'Rose D', 'Rose E'],
+              labels: [],
               fill: {
                 opacity: 1
               },
@@ -65,8 +90,14 @@ export const MostVisitedChart: React.FC = () => {
           
    
     }
-  
+    const statSorted = _.sortBy(statFiltered, 'count_visits')
+    const statSortedFiltered = statSorted.filter((item) => statSorted.indexOf(item)<5)
 
+    statSortedFiltered.map((item: any) => {
+      chartState.options.labels.push(item.name_room)
+      chartState.series.push(item.count_visits)
+    })
+  
   return (
     <div>
       <div className={classes.labelDiv}>
@@ -74,12 +105,19 @@ export const MostVisitedChart: React.FC = () => {
           Самые посещаемые помещения
         </Typography>
       </div>
+      {props.idEmp == "" ? (
+          <div className={classes.noEmpContainer}>
+            <Typography variant="h4">Выберите сотрудника</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="polarArea"
         height={"300px"}
-      />
+      />)}
     </div>
   )
 }

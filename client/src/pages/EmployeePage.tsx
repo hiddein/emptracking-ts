@@ -10,8 +10,10 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
+import { AccessViolsCard } from "../components/emps/AccessViolsCard"
 import { EmpCard } from "../components/emps/EmpCard"
 import { GetEmpAccessTable } from "../components/emps/GetEmpAccessTable"
+import { LatenessCard } from "../components/emps/LatenessCard"
 import { MostVisitedChart } from "../components/emps/MostVisitedChart"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RangePicker } from "../components/RangePicker"
@@ -97,12 +99,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
   const [selectedEmp, SetselectedEmp] = useState("")
 
-  useEffect(() => {
-    dispatch(getEmps())
-  }, [])
   return (
     //<MovementsTable />
     //<MovementsEmpBar />
@@ -133,15 +131,15 @@ export const EmployeePage: React.FC = () => {
           <Grid container spacing={2}>
             <Grid item container spacing={2} xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}>1</Card>
+                <Card className={classes.papepSmallCard}><LatenessCard idEmp={selectedEmp.split(' ')[0]} /></Card>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}>2</Card>
+                <Card className={classes.papepSmallCard}><AccessViolsCard idEmp={selectedEmp.split(' ')[0]} /></Card>
               </Grid>
             </Grid>
             <Grid item container  xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepBigCard}><MostVisitedChart /></Card>
+                <Card className={classes.papepBigCard}><MostVisitedChart idEmp={selectedEmp.split(' ')[0]} /></Card>
               </Grid>
             </Grid>
           </Grid>

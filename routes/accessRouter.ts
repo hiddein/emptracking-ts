@@ -5,5 +5,6 @@ const router = Router()
 
 router.post("/", authMiddleware, accessController.create)
 router.get("/", authMiddleware, accessController.getAll)
+router.get("/getAccess", authMiddleware, accessController.getAccess)
 
 export default router
