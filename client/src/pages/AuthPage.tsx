@@ -11,6 +11,7 @@ import {
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
+import { useHistory } from "react-router"
 import { login as loginAction } from "../store/action-creators/user"
 
 const useStyles = makeStyles(() => ({
@@ -48,6 +49,7 @@ export const AuthPage: React.FC = () => {
   const [password, setPassword] = useState("")
   const classes = useStyles()
   const dispatch = useDispatch()
+  const history = useHistory()
   return (
     <Grid
       container
@@ -96,7 +98,10 @@ export const AuthPage: React.FC = () => {
               color="primary"
               size="large"
               className={classes.button}
-              onClick={() =>{dispatch(loginAction(login,password))}}
+              onClick={() =>{
+                dispatch(loginAction(login,password))
+                history.push('/dashboard')
+              }}
             >
               Войти в систему
             </Button>

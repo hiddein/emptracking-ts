@@ -1,7 +1,12 @@
 import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from "@date-io/moment"
+
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { getLateness } from "../../store/action-creators/lateness"
+import _ from "lodash"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles(() => ({
   labelDiv: {
@@ -20,17 +25,30 @@ const useStyles = makeStyles(() => ({
 
 export const TopLatesDepsChart: React.FC = () => {
   const classes = useStyles()
+  const lateness = useTypedSelector((state) => state.lateness.lateness)
+  const isLoading = useTypedSelector((state) => state.lateness.loading)
+  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
 
+  useEffect(() => {
+    dispatch(getLateness(startDate, endDate))
+   }, [startDate, endDate])
 
-  const state = {
+   interface chartStateInterface {
+    series: any
+    options: any
+  }
+
+  const chartState:chartStateInterface  = {
     
-    series: [42, 47, 52, 58, 65],
+    series: [],
             options: {
               chart: {
                 width: 380,
                 type: 'polarArea'
               },
-              labels: ['Rose A', 'Rose B', 'Rose C', 'Rose D', 'Rose E'],
+              labels: [],
               fill: {
                 opacity: 1
               },
@@ -62,9 +80,16 @@ export const TopLatesDepsChart: React.FC = () => {
                 }
               }
             },
-          
-   
     }
+    
+  const latenessSorted = _.countBy(lateness, 'name_dep')
+  var resultlatenessSortedSorted = Object.keys(latenessSorted).map(function (id) {
+    return {name_dep: id, count_viols: latenessSorted[id]}
+  })
+  resultlatenessSortedSorted.map((item: any) => {
+    chartState.options.labels.push(item.name_dep)
+    chartState.series.push(item.count_viols)
+  })
   
 
   return (
@@ -74,12 +99,15 @@ export const TopLatesDepsChart: React.FC = () => {
           Статистика опозданий
         </Typography>
       </div>
+      {isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
       <Chart
-        options={state.options}
-        series={state.series}
+        options={chartState.options}
+        series={chartState.series}
         type="donut"
         height={"300px"}
-      />
+      />)}
     </div>
   )
 }

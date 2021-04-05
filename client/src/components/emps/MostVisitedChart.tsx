@@ -91,7 +91,7 @@ console.log(statFiltered)
    
     }
     const statSorted = _.sortBy(statFiltered, 'count_visits')
-    const statSortedFiltered = statSorted.filter((item) => statSorted.indexOf(item)<5)
+    const statSortedFiltered = statSorted.reverse().filter((item) => statSorted.indexOf(item)<5)
 
     statSortedFiltered.map((item: any) => {
       chartState.options.labels.push(item.name_room)

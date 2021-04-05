@@ -32,9 +32,9 @@ export const login = (login: string, password: string) => {
           password,
         }
       )
-
-      dispatch(setUser(response.data.user))
       localStorage.setItem("token", response.data.token)
+      dispatch(setUser(response.data.user))
+      
     } catch (e) {
       alert(e)
     }

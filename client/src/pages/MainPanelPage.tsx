@@ -10,10 +10,14 @@ import { blue } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import { useDispatch } from "react-redux"
-import { TopAbsenceTimeChart } from "../components/mainpageCharts/TopAbsenceTimeChart"
-import { TopLatesDepsChart } from "../components/mainpageCharts/TopLatesDepsChart"
-import { TopMissOnWorkPlaceChart } from "../components/mainpageCharts/TopMissOnWorkPlaceChart"
-import { TopVisRoomsChart } from "../components/mainpageCharts/TopVisRoomsChart"
+import { AccessViolsCountCard } from "../components/mainpage/cards/AccessViolsCountCard"
+import { LatenessCountCard } from "../components/mainpage/cards/LatenessCountCard"
+import { TopLatenessCard } from "../components/mainpage/cards/TopLatenessCard"
+import { WorkhoursViolsCountCard } from "../components/mainpage/cards/WorkhoursViolsCountCard"
+import { TopAccessViolsChart } from "../components/mainpage/TopAccessViolsChart"
+import { TopLatesDepsChart } from "../components/mainpage/TopLatesDepsChart"
+import { TopMissOnWorkPlaceChart } from "../components/mainpage/TopMissOnWorkPlaceChart"
+import { TopVisRoomsChart } from "../components/mainpage/TopVisRoomsChart"
 import { RangePicker } from "../components/RangePicker"
 
 
@@ -92,16 +96,16 @@ export const MainPanelPage: React.FC = () => {
         <Grid  item xs={12} md={6}>
         <Grid spacing={2} container  >
         <Grid  item xs={12} md={6}>
-          <Card className={classes.paperInfo}>1</Card>
+          <Card className={classes.paperInfo}><TopLatenessCard /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}>2</Card>
+          <Card className={classes.paperInfo}><LatenessCountCard /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}>2</Card>
+          <Card className={classes.paperInfo}><WorkhoursViolsCountCard /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}>2</Card>
+          <Card className={classes.paperInfo}><AccessViolsCountCard /></Card>
         </Grid>
         </Grid>
         </Grid>
@@ -109,7 +113,7 @@ export const MainPanelPage: React.FC = () => {
           <Card className={classes.paper}><TopMissOnWorkPlaceChart /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><TopAbsenceTimeChart /></Card>
+          <Card className={classes.paper}><TopAccessViolsChart /></Card>
         </Grid>
         <Grid item xs={12} md={6}>
 
