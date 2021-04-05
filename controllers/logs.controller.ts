@@ -70,6 +70,13 @@ class logsController {
     let response: QueryResult
     endDate += " 23:59"
     switch (sort) {
+      case "default":
+        response = await pool.query(
+          "select name_room , count(moves.id_room) as count_visits from emp, department, moves,room where time_leave is not NULL and time_enter > $1 and time_leave <= $2 and  emp.id_emp=moves.id_emp and emp.id_dep=department.id_dep and moves.id_room=room.id_room group by name_room order by name_room",
+          [startDate, endDate]
+        )
+        return res.status(200).json(response.rows)
+
       case "room":
         response = await pool.query(
           "select moves.id_emp,first_name,middle_name,last_name,name_dep, name_room , count(moves.id_room) as count_visits from emp, department, moves,room where time_leave is not NULL and time_enter > $1 and time_leave <= $2 and  emp.id_emp=moves.id_emp and emp.id_dep=department.id_dep and moves.id_room=room.id_room group by moves.id_emp,first_name,middle_name,last_name,name_dep, name_room order by name_room",

@@ -1,7 +1,19 @@
 import axios from "axios"
-import { fetchStat, fetchStatError, fetchStatSuccess, fetchStatByDep, fetchStatByDepError, fetchStatByDepSuccess, fetchStatDaySort, fetchStatDaySortError, fetchStatDaySortSuccess } from "../reducers/statReducer"
+import { fetchStat, fetchStatError, fetchStatSuccess, fetchStatByDep, fetchStatByDepError, fetchStatByDepSuccess, fetchStatDaySort, fetchStatDaySortError, fetchStatDaySortSuccess, fetchStatByDefault, fetchStatByDefaultSuccess, fetchStatByDefaultError } from "../reducers/statReducer"
 
-
+export const getCountMovesInRangeByDefault = (start:Date, end:Date):any => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(fetchStatByDefault())
+      const response = await axios.get(`http://localhost:7000/api/logs/getCountMovesInRange?startDate=${start.toLocaleDateString()}&endDate=${end.toLocaleDateString()}&sort=default`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+      dispatch(fetchStatByDefaultSuccess(response.data))
+    } catch (e) {
+      dispatch(fetchStatByDefaultError("Ошибка"))
+    }
+  }
+}
 
 export const getCountMovesInRange = (start:Date, end:Date):any => {
     return async (dispatch: any) => {

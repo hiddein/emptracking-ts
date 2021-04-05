@@ -5,9 +5,6 @@ import {
   GridColDef,
   GridToolbarContainer,
   GridFilterToolbarButton,
-  GridFooterContainer,
-  GridPagination,
-  GridBaseComponentProps,
   GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
@@ -73,7 +70,6 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccess
   const isLoading = useTypedSelector((state) => state.emp.accessLoading)
   const accessFiltered = access.filter((item) => item.id_emp == props.idEmp)
   const dispatch = useDispatch()
-  
   useEffect(() => {
     dispatch(getAccess())
    }, [])

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getEmps } from "../../store/action-creators/emps"
+import { Loader } from "../Loader"
 
 const useStyles = makeStyles((theme: Theme) => ({
   large: {
@@ -32,6 +33,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: '15px'
 
   },
+  noEmpContainer: {
+    height: "285px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
 interface propsEmpCard {
@@ -52,7 +60,13 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
   return (
     <div style={{ height: 310, width: "100%" }}>
       <Typography variant="h5">Карточка сотрудника</Typography>
-      {selectedEmp.length != 0 ? (
+      {selectedEmp.length == 0 ? (
+          <div className={classes.noEmpContainer}>
+            <Typography variant="h4">Выберите сотрудника</Typography>
+          </div>
+        ) : isLoading ? (
+          <Loader size={60} height="290px" />
+        ) : (
         <React.Fragment>
         <div className={classes.titleEmpContainer}>
           <Avatar alt="Remy Sharp" src={`http://localhost:7000/${selectedEmp[0].photo_emp}`} className={classes.large} />
@@ -71,7 +85,7 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
           <Typography variant="h6" className={classes.empInfoItem}>Время на чай   (свободное время): {selectedEmp[0].tea_time}</Typography>
           </div>
           </React.Fragment>
-      ) : null}
+      )}
     </div>
   )
 }

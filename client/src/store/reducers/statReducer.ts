@@ -10,6 +10,9 @@ const initialState: StatState = {
   statDepSort: [],
   loadingDepSort: false,
   errorDepSort: null,
+  statSortByDefault: [],
+  loadingSortByDefault: false,
+  errorSortByDefault: null,
 }
 
 export const statReducer = (state = initialState,action: StatAction): StatState => {
@@ -65,6 +68,16 @@ export const statReducer = (state = initialState,action: StatAction): StatState 
         errorDepSort: action.payload,
         statDepSort: [],
       }
+
+      case StatActionTypes.FETCH_STATBYDEFAULT:
+        return { ...state, loadingSortByDefault: true, errorSortByDefault: null, statSortByDefault: [] }
+  
+      case StatActionTypes.FETCH_STATBYDEFAULT_SUCCESS:
+        return { ...state, loadingSortByDefault: false, errorSortByDefault: null, statSortByDefault: action.payload }
+  
+      case StatActionTypes.FETCH_STATBYDEFAULT_ERROR:
+        return { ...state, loadingSortByDefault: false, errorSortByDefault: action.payload, statSortByDefault: [] }
+  
     default:
       return state
   }
@@ -108,5 +121,19 @@ export const fetchStatDaySortSuccess = (stat: any) => ({
 
 export const fetchStatDaySortError = (error: string) => ({
   type: StatActionTypes.FETCH_STATDAYSORT_ERROR,
+  payload: error,
+})
+
+export const fetchStatByDefault = () => ({
+  type: StatActionTypes.FETCH_STATBYDEFAULT,
+})
+
+export const fetchStatByDefaultSuccess = (stat: any) => ({
+  type: StatActionTypes.FETCH_STATBYDEFAULT_SUCCESS,
+  payload: stat,
+})
+
+export const fetchStatByDefaultError = (error: string) => ({
+  type: StatActionTypes.FETCH_STATBYDEFAULT_ERROR,
   payload: error,
 })

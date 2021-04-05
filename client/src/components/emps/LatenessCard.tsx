@@ -86,7 +86,7 @@ export const LatenessCard: React.FC<propsLatenessCard> = (
           <Typography variant="h6">Выберите сотрудника</Typography>
         </div>
       ) : isLoading ? (
-        <Loader size={60} height="25px" />
+        <Loader size={40} height="150" />
       ) : (
         <div className={classes.cardBack}>
           <div className={classes.imgBack}>
