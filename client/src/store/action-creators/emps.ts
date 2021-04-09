@@ -8,6 +8,9 @@ import {
   fetchAccess,
   fetchAccessError,
   fetchAccessSuccess,
+  fetchDeps,
+  fetchDepsSuccess,
+  fetchDepsError,
 } from "../reducers/empReducer"
 
 export const getEmps = () => {
@@ -34,6 +37,20 @@ export const getAccess = () => {
         dispatch(fetchAccessSuccess(response.data))
     } catch (e) {
       dispatch(fetchAccessError("Ошибка"))
+    }
+  }
+}
+
+export const getDeps = () => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(fetchDeps())
+      const response = await axios.get("http://localhost:7000/api/deps", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        dispatch(fetchDepsSuccess(response.data))
+    } catch (e) {
+      dispatch(fetchDepsError("Ошибка"))
     }
   }
 }

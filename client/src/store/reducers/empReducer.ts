@@ -7,6 +7,9 @@ const initialState: EmpState = {
   access: [],
   accessLoading: false,
   accessError: null,
+  deps: [],
+  depsLoading: false,
+  depsError: null,
 }
 
 export const empReducer = ( state = initialState,action: EmpAction): EmpState => {
@@ -28,7 +31,17 @@ export const empReducer = ( state = initialState,action: EmpAction): EmpState =>
 
     case UserActionTypes.FETCH_ACCESS_ERROR:
       return { ...state, accessLoading: false, accessError: action.payload, access: [] }
+      
 
+      case UserActionTypes.FETCH_DEPS:
+        return { ...state, depsLoading: true, depsError: null, deps: [] }
+  
+      case UserActionTypes.FETCH_DEPS_SUCCESS:
+        return { ...state, depsLoading: false, depsError: null, deps: action.payload }
+  
+      case UserActionTypes.FETCH_DEPS_ERROR:
+        return { ...state, depsLoading: false, depsError: action.payload, deps: [] }
+  
     default:
       return state
   }
@@ -58,6 +71,20 @@ export const fetchAccess = () => ({
   
   export const fetchAccessError = (error: string) => ({
     type: UserActionTypes.FETCH_ACCESS_ERROR,
+    payload: error,
+  })
+  
+  export const fetchDeps = () => ({
+    type: UserActionTypes.FETCH_DEPS,
+  })
+  
+  export const fetchDepsSuccess = (deps: any) => ({
+    type: UserActionTypes.FETCH_DEPS_SUCCESS,
+    payload: deps,
+  })
+  
+  export const fetchDepsError = (error: string) => ({
+    type: UserActionTypes.FETCH_DEPS_ERROR,
     payload: error,
   })
   

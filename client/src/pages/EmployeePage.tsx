@@ -7,7 +7,7 @@ import {
   Theme,
   Typography,
 } from "@material-ui/core"
-import { blue } from "@material-ui/core/colors"
+import { blue, green } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { AccessViolsCard } from "../components/emps/AccessViolsCard"
@@ -15,6 +15,7 @@ import { EmpCard } from "../components/emps/EmpCard"
 import { GetEmpAccessTable } from "../components/emps/GetEmpAccessTable"
 import { LatenessCard } from "../components/emps/LatenessCard"
 import { MostVisitedChart } from "../components/emps/MostVisitedChart"
+import { NewEmpWindow } from "../components/emps/NewEmpWindow"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RangePicker } from "../components/RangePicker"
 import { useTypedSelector } from "../hooks/useTypedSelector"
@@ -73,8 +74,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "space-between",
   },
   selectedEmpButton: {
-    padding: 5,
-    color: blue[900],
+    padding: 10,
+    color: blue[800],
+    backgroundColor: green[200],
+    marginRight: '20px'
   },
   selectedEmpLabel: {
     paddingLeft: "10px",
@@ -95,11 +98,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: 'flex',
     flexWrap: 'nowrap'
   },
+  
 }))
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
+  const [windowOpen, setWindowOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setWindowOpen(true);
+  };
 
   return (
     //<MovementsTable />
@@ -112,6 +121,8 @@ export const EmployeePage: React.FC = () => {
             Cотрудники предприятия
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Button className={classes.selectedEmpButton} onClick={handleClickOpen}>Новый сотрудник</Button>
+          <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} />
           <RangePicker />
           </Card>
         </Grid>

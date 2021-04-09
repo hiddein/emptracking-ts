@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import {} from "apexcharts/dist/locales/ru.json"
 import DateFnsUtils from "@date-io/date-fns"
+import ruLocale from "date-fns/locale/ru"
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
@@ -132,7 +133,7 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
           <Typography variant="h6">
             Перемещения сотрудника в указанную дату
           </Typography>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
             <KeyboardDatePicker
               className={classes.datePicker}
               disableToolbar
