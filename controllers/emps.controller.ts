@@ -67,28 +67,15 @@ class empsController {
         teaTime
       } = await req.body
       const { id } = req.params
-      let { withPhoto } = req.query
       const errors = validationResult(req)
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: "Значения - NULL", errors })
       }
-      console.log(withPhoto)
-      if(withPhoto == true){
-        const { photo_emp } = await req.files
-        let filename = uuidv4() + ".jpg"
-        photo_emp.mv(path.resolve(__dirname, "..", "static", filename))
-
-        const response: QueryResult = await pool.query(
-          "UPDATE emp set first_name=$2 ,middle_name=$3 ,last_name=$4 ,id_dep=$5 ,db_emp=$6 ,email_emp=$7,tel_emp=$8,photo_emp=$9 where id_emp=$1",
-          [id, first_name, middle_name, last_name, id_dep, db_emp, email_emp, tel_emp, photo_emp]
-        )
-      }
-      else {
+      
         const response: QueryResult = await pool.query(
           "UPDATE emp set first_name=$2 ,middle_name=$3 ,last_name=$4 ,id_dep=$5 ,db_emp=$6 ,email_emp=$7,tel_emp=$8 where id_emp=$1",
           [id, first_name, middle_name, last_name, id_dep, db_emp, email_emp, tel_emp]
         )
-      }
       const response2: QueryResult = await pool.query(
         "UPDATE schedule set start_time=$2, end_time=$3 ,tea_time=$4 ,lunch_time=$5 where id_emp=$1",
         [id, startTime, endTime, teaTime, lunchTime]

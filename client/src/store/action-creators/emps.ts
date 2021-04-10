@@ -72,14 +72,12 @@ export const addEmp = (formData: any) => {
   }
 }
 
-export const editEmp = (formData: any,idEmp:string, photoEmp:any) => {
+export const editEmp = (formData: any,idEmp:string) => {
   return async (dispatch: any) => {
     try {
-      console.log(photoEmp)
-      console.log(photoEmp == null? true: photoEmp)
 
       const response = await axios.post(
-        `http://localhost:7000/api/emps/edit/${idEmp}?withPhoto=${Object.keys(photoEmp).length != 0? true: false}`,formData
+        `http://localhost:7000/api/emps/edit/${idEmp}`,formData
         ,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },

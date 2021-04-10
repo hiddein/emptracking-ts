@@ -46,7 +46,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
   const [firstName, setFirstName] = React.useState("")
   const [middleName, setMiddleName] = React.useState("")
   const [dbEmp, setDbEmp] = React.useState("")
-  const [photoEmp, setPhotoEmp] = React.useState<any>({});
   const [email, setEmail] = React.useState("")
   const [tel, setTel] = React.useState("")
   const [startDayTime, setStartDayTime] = React.useState("")
@@ -64,7 +63,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     setLastName(props.selectedEmp[0].last_name)
     setFirstName(props.selectedEmp[0].first_name)
     setMiddleName(props.selectedEmp[0].middle_name)
-    setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
+    //setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
     setEmail(props.selectedEmp[0].email_emp)
     setTel(props.selectedEmp[0].tel_emp)
     setStartDayTime(props.selectedEmp[0].start_time)
@@ -89,15 +88,14 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     formData.append('middle_name', middleName)
     formData.append('last_name', lastName)
     formData.append('id_dep', selectedDep)
-    formData.append('db_emp', dbEmp)
-    formData.append('photo_emp', photoEmp)
+    //formData.append('db_emp', dbEmp)
     formData.append('email_emp', email)
     formData.append('tel_emp', tel)
     formData.append('startTime', startDayTime)
     formData.append('endTime', endDayTime)
     formData.append('lunchTime', lunchTime)
     formData.append('teaTime', teaTime)
-    dispatch(editEmp(formData,idEmp,photoEmp))
+    dispatch(editEmp(formData,idEmp))
   }
 
 
@@ -169,39 +167,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
             </FormControl>
           </div>
           <div className={classes.headContainer}>
-          <TextField
-          className={classes.mainItem}
-            margin="dense"
-            type="date"
-            id="db_emp"
-            label="Дата рождения"
-            variant='outlined'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            fullWidth
-            value={dbEmp}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setDbEmp(event.target.value as string)
-                }}
-          />
-         
-          <TextField
-              className={classes.mainItem}
-              margin="dense"
-              id="photo_emp"
-              label="Фото сотрудника"
-              type="file"
-              variant='outlined'
-              InputLabelProps={{
-                shrink: true,
-              }}
-                onChange={(event: any) => {
-                  setPhotoEmp(event.target.files[0])
-
-                }}
-            />
-          
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -231,7 +196,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               id="start_time"
               label="Начало рабочего дня"
               type="time"
-              defaultValue="08:00"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -246,7 +210,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               id="end_time"
               label="Конец рабочего дня"
               type="time"
-              defaultValue="18:00"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -261,7 +224,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               id="lunch_time"
               label="Время на обед (hh:mm)"
               type="time"
-              defaultValue="00:30"
               InputLabelProps={{
                 shrink: true,
               }}
@@ -276,7 +238,6 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               id="tea_time"
               label="Свободное время (hh:mm)"
               type="time"
-              defaultValue="00:15"
               InputLabelProps={{
                 shrink: true,
               }}
