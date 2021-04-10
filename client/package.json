@@ -19,7 +19,7 @@
     "@types/react-redux": "^7.1.16",
     "apexcharts": "^3.26.0",
     "axios": "^0.21.1",
-    "date-fns": "^2.19.0",
+    "date-fns": "^2.20.1",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

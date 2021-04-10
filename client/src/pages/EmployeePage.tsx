@@ -11,8 +11,8 @@ import { blue, green } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import { AccessViolsCard } from "../components/emps/AccessViolsCard"
-import { EmpCard } from "../components/emps/EmpCard"
-import { GetEmpAccessTable } from "../components/emps/GetEmpAccessTable"
+import { EmpCard } from "../components/emps/empCard/EmpCard"
+import { GetEmpAccessTable } from "../components/emps/access/GetEmpAccessTable"
 import { LatenessCard } from "../components/emps/LatenessCard"
 import { MostVisitedChart } from "../components/emps/MostVisitedChart"
 import { NewEmpWindow } from "../components/emps/NewEmpWindow"
@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 10,
     color: blue[800],
     backgroundColor: green[200],
-    marginRight: '20px'
+    margin: '0 20px 0 5px'
   },
   selectedEmpLabel: {
     paddingLeft: "10px",
@@ -104,7 +104,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
-  const [windowOpen, setWindowOpen] = React.useState(false);
+  const [windowOpen, setWindowOpen] = React.useState(false)
 
   const handleClickOpen = () => {
     setWindowOpen(true);

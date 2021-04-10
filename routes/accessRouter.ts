@@ -4,6 +4,7 @@ import authMiddleware from "../middleware/authMiddleware"
 const router = Router()
 
 router.post("/", authMiddleware, accessController.create)
+router.post("/delete", authMiddleware, accessController.delete)
 router.get("/", authMiddleware, accessController.getAll)
 router.get("/getAccess", authMiddleware, accessController.getAccess)
 

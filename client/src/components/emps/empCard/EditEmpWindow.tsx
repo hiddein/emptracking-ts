@@ -7,8 +7,8 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
-import { useTypedSelector } from "../../hooks/useTypedSelector"
-import { addEmp, getDeps } from "../../store/action-creators/emps"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { addEmp, editEmp, getDeps} from "../../../store/action-creators/emps"
 import {
   FormControl,
   InputLabel,
@@ -17,6 +17,7 @@ import {
   Select,
   Theme,
 } from "@material-ui/core"
+import { isEmpty } from "lodash"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -33,17 +34,18 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
+  selectedEmp: any
 }
-
-export const NewEmpWindow: React.FC<NewEmpInterface> = (
+export const EditEmpWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
   const classes = useStyles()
   const [selectedDep, setSelectedDep] = React.useState("")
+  const [idEmp, setIdEmp] = React.useState("")
   const [lastName, setLastName] = React.useState("")
   const [firstName, setFirstName] = React.useState("")
   const [middleName, setMiddleName] = React.useState("")
-  const [dbEmp, setDbEmp] = React.useState("1999-11-15")
+  const [dbEmp, setDbEmp] = React.useState("")
   const [photoEmp, setPhotoEmp] = React.useState<any>({});
   const [email, setEmail] = React.useState("")
   const [tel, setTel] = React.useState("")
@@ -56,12 +58,30 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
   const dispatch = useDispatch()
 
   useEffect(() => {
+    setIdEmp(props.selectedEmp[0].id_emp)
+    setSelectedDep(props.selectedEmp[0].id_dep)
+    setLastName(props.selectedEmp[0].id_emp)
+    setLastName(props.selectedEmp[0].last_name)
+    setFirstName(props.selectedEmp[0].first_name)
+    setMiddleName(props.selectedEmp[0].middle_name)
+    setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
+    setEmail(props.selectedEmp[0].email_emp)
+    setTel(props.selectedEmp[0].tel_emp)
+    setStartDayTime(props.selectedEmp[0].start_time)
+    setEndDayTime(props.selectedEmp[0].end_time)
+    setLunchTime(props.selectedEmp[0].lunch_time)
+    setTeaTime(props.selectedEmp[0].tea_time)
+  }, [props.selectedEmp])
+
+  useEffect(() => {
     dispatch(getDeps())
   }, [])
 
   const handleClose = () => {
     props.setWindowOpen(false)
   }
+
+  const zero = () => {}
 
   const onAddHandle = () => {
     const formData = new FormData()
@@ -77,7 +97,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
     formData.append('endTime', endDayTime)
     formData.append('lunchTime', lunchTime)
     formData.append('teaTime', teaTime)
-    dispatch(addEmp(formData))
+    dispatch(editEmp(formData,idEmp,photoEmp))
   }
 
 
@@ -89,7 +109,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Добавить нового сотрудника
+          Редактировать информацию о сотруднике
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -137,7 +157,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                 id="dep-select"
                 value={selectedDep}
                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setSelectedDep(event.target.value as string)
+                    setSelectedDep(event.target.value as string)
                 }}
               >
                 {deps.map((dep: any, index: number) => (
@@ -165,6 +185,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                   setDbEmp(event.target.value as string)
                 }}
           />
+         
           <TextField
               className={classes.mainItem}
               margin="dense"

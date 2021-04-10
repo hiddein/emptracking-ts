@@ -12,19 +12,19 @@ class violController {
     switch (sort) {
       case "default":
         response = await pool.query(
-          "select distinct id_reg, tracking.id_emp,first_name,middle_name,last_name, name_dep, tracking.id_route,route.id_end,name_room,to_char(Timestamp, 'yyyy-mm-dd hh24:MI:ss') as timestamp from tracking,emp,route,room,department where emp.id_dep=department.id_dep and tracking.id_route=route.id_route and tracking.id_emp=emp.id_emp and route.id_end=room.id_room  and Timestamp > $1 and Timestamp <= $2 and not exists(select * from access where tracking.id_route=access.id_route and tracking.id_emp=access.id_emp)",
+          "select distinct move_id, moves.id_emp,first_name,middle_name,last_name, name_dep, moves.id_room,name_room,to_char(time_enter, 'yyyy-mm-dd hh24:MI:ss') as timestamp from moves,emp,room,department where moves.id_room=room.id_room and emp.id_dep=department.id_dep and moves.id_emp=emp.id_emp and time_enter > $1 and time_enter <= $2 and not exists(select * from access where moves.id_room=access.id_room and moves.id_emp=access.id_emp)",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)
       case "byEmp":
         response = await pool.query(
-          "select tracking.id_emp,first_name,middle_name,last_name,name_dep, count(id_reg) from tracking,emp,route,room,department where emp.id_dep=department.id_dep and tracking.id_route=route.id_route and tracking.id_emp=emp.id_emp and route.id_end=room.id_room  and Timestamp > $1 and Timestamp <= $2 and not exists(select * from access where tracking.id_route=access.id_route and tracking.id_emp=access.id_emp) GROUP BY tracking.id_emp,first_name,middle_name,last_name, name_dep order by tracking.id_emp",
+          "select moves.id_emp,first_name,middle_name,last_name,name_dep, count(move_id) from moves,emp,room,department where moves.id_room=room.id_room and emp.id_dep=department.id_dep and moves.id_emp=emp.id_emp and time_enter > $1 and time_enter <= $2 and not exists(select * from access where moves.id_room=access.id_room and moves.id_emp=access.id_emp) GROUP BY moves.id_emp,first_name,middle_name,last_name, name_dep order by moves.id_emp",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)
       case "byEmpDays":
         response = await pool.query(
-          "select tracking.id_emp,first_name,middle_name,last_name,name_dep,to_char(Timestamp, 'yyyy-mm-dd') as timestamp, count(id_reg) from tracking,emp,route,room,department where emp.id_dep=department.id_dep and tracking.id_route=route.id_route and tracking.id_emp=emp.id_emp and route.id_end=room.id_room  and Timestamp > $1 and Timestamp <= $2 and not exists(select * from access where tracking.id_route=access.id_route and tracking.id_emp=access.id_emp) GROUP BY tracking.id_emp,first_name,middle_name,last_name, name_dep, to_char(Timestamp, 'yyyy-mm-dd') order by tracking.id_emp",
+          "select moves.id_emp,first_name,middle_name,last_name,name_dep,to_char(time_enter, 'yyyy-mm-dd') as timestamp, count(move_id) from moves,emp,room,department where moves.id_room=room.id_room and emp.id_dep=department.id_dep and moves.id_emp=emp.id_emp and time_enter > $1 and time_enter <= $2 and not exists(select * from access where moves.id_room=access.id_room and moves.id_emp=access.id_emp) GROUP BY moves.id_emp,first_name,middle_name,last_name, name_dep, to_char(time_enter, 'yyyy-mm-dd') order by moves.id_emp",
           [startDate, endDate]
         )
         return res.status(200).json(response.rows)

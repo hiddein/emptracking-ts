@@ -55,7 +55,6 @@ const CustomToolbar = () => {
 interface propsTable {
   updateData: Function,
   height: number
-  
 }
 
 export const SearchEmpsTable: React.FC<propsTable> = (props:propsTable) => {

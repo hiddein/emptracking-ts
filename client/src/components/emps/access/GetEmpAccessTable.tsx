@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Typography } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import {
   DataGrid,
@@ -7,12 +7,16 @@ import {
   GridFilterToolbarButton,
   GridToolbarExport,
 } from "@material-ui/data-grid"
-import { rusLocale } from "../../rusLocale/ruslocale"
-import { blue } from "@material-ui/core/colors"
-import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { rusLocale } from "../../../rusLocale/ruslocale"
+import { blue, green, red } from "@material-ui/core/colors"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { getAccess } from "../../store/action-creators/emps"
-import { Loader } from "../Loader"
+import { getAccess } from "../../../store/action-creators/emps"
+import { Loader } from "../../Loader"
+import AddIcon from '@material-ui/icons/Add';
+import { NewAccessWindow } from "./NewAccessWindow"
+import RemoveIcon from '@material-ui/icons/Remove';
+import { DepriveAccessWindow } from "./DepriveAccessWindow"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -41,18 +45,35 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     fontSize: "25px",
   },
+  addButton: {
+    color: green[300]
+  },
+  depriveButton: {
+    color: red[300]
+  },
 }))
 
-const CustomToolbar = () => {
+const CustomToolbar = (props: any) => {
   const classes = useStyles()
+
   return (
     <GridToolbarContainer className={classes.toolBarContainer}>
       <Typography variant="h6">Доступ в помещения</Typography>
       <div className={classes.toolBarItem}>
+
+      <div className={classes.toolBarOption}>
+        <Button className={classes.addButton} onClick={() => props.setAddWindowOpen(true)}><AddIcon />{'  '}доступ</Button>
+        <NewAccessWindow selectedEmp={props.idEmp} windowOpen={props.addWindowOpen} setWindowOpen={props.setAddWindowOpen} />
+        </div>
+        <div className={classes.toolBarOption}>
+        <Button className={classes.depriveButton} onClick={() => props.setDepriveAddWindowOpen(true)}><RemoveIcon />{'  '}доступ</Button>
+        <DepriveAccessWindow selectedEmp={props.idEmp} windowOpen={props.depriveWindowOpen} setWindowOpen={props.setDepriveAddWindowOpen} />
+        </div>
         <div className={classes.toolBarOption}>
           <GridFilterToolbarButton />
         </div>
         <div className={classes.toolBarOption}>
+          
           <GridToolbarExport />
         </div>
       </div>
@@ -65,6 +86,8 @@ interface propsAccessChart {
 }
 
 export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccessChart) => {
+  const [addWindowOpen, setAddWindowOpen] = React.useState(false)
+  const [depriveWindowOpen, setDepriveAddWindowOpen] = React.useState(false)
   const classes = useStyles()
   const access = useTypedSelector((state) => state.emp.access)
   const isLoading = useTypedSelector((state) => state.emp.accessLoading)
@@ -72,7 +95,7 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccess
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAccess())
-   }, [])
+   }, [addWindowOpen,depriveWindowOpen])
 
 
   const columns: GridColDef[] = [
@@ -109,6 +132,15 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccess
         localeText={rusLocale}
         components={{
           Toolbar: CustomToolbar,
+        }}
+        componentsProps={{
+          toolbar: {
+            idEmp: props.idEmp,
+            addWindowOpen,
+            setAddWindowOpen,
+            depriveWindowOpen,
+            setDepriveAddWindowOpen
+          }
         }}
         hideFooterSelectedRowCount={true}
       />)}

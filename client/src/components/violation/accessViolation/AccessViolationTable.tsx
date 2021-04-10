@@ -80,7 +80,7 @@ export const AccessViolationTable: React.FC = () => {
   }
 
   const rows: Viol[] = []
-  viols.map((viol:any) => rows.push({id:viol.id_reg, empName: `${viol.last_name} ${viol.first_name} ${viol.middle_name}`, empDep: viol.name_dep, room: viol.name_room, timeViol: viol.timestamp }))
+  viols.map((viol:any) => rows.push({id:viol.move_id, empName: `${viol.last_name} ${viol.first_name} ${viol.middle_name}`, empDep: viol.name_dep, room: viol.name_room, timeViol: viol.timestamp }))
 
   return (
     <div style={{ height: 320, width: "100%" }}>

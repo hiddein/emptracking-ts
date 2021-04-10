@@ -1,10 +1,12 @@
-import { Avatar, makeStyles, Theme, Typography } from "@material-ui/core"
+import { Avatar, Button, makeStyles, Theme, Typography } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 
-import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { getEmps } from "../../store/action-creators/emps"
-import { Loader } from "../Loader"
+import { getEmps } from "../../../store/action-creators/emps"
+import { Loader } from "../../Loader"
+import { blue, green, yellow } from "@material-ui/core/colors"
+import { EditEmpWindow } from "./EditEmpWindow"
 
 const useStyles = makeStyles((theme: Theme) => ({
   large: {
@@ -40,6 +42,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     justifyContent: "center",
     fontSize: "25px",
   },
+  openEditButton: {
+    color: blue[600],
+    backgroundColor: green[100],
+
+  },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between'
+  }
 }))
 
 interface propsEmpCard {
@@ -52,6 +63,8 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
   const isLoading = useTypedSelector((state) => state.emp.loading)
   const dispatch = useDispatch()
   const selectedEmp = emps.filter((item) => item.id_emp == props.idEmp)
+  const [windowOpen, setWindowOpen] = React.useState(false)
+
 
   useEffect(() => {
     dispatch(getEmps())
@@ -59,7 +72,7 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
 
   return (
     <div style={{ height: 310, width: "100%" }}>
-      <Typography variant="h5">Карточка сотрудника</Typography>
+      
       {selectedEmp.length == 0 ? (
           <div className={classes.noEmpContainer}>
             <Typography variant="h4">Выберите сотрудника</Typography>
@@ -68,6 +81,13 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
           <Loader size={60} height="290px" />
         ) : (
         <React.Fragment>
+          <div className={classes.headerContainer} >
+      <Typography variant="h5">Карточка сотрудника</Typography>
+      <EditEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen}  selectedEmp={selectedEmp}/>
+      <Button className={classes.openEditButton} onClick={()=> setWindowOpen(true)}>Редактировать</Button>
+
+
+      </div>
         <div className={classes.titleEmpContainer}>
           <Avatar alt="Remy Sharp" src={`http://localhost:7000/${selectedEmp[0].photo_emp}`} className={classes.large} />
           <div className={classes.fioPlusDep}>

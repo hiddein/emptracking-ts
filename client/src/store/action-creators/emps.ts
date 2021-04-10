@@ -1,6 +1,6 @@
 import axios from "axios"
-import { Dispatch } from "react"
-import { EmpAction } from "../../types/emp"
+import _ from "lodash"
+import { isEmpty } from "lodash"
 import {
   fetchEmps,
   fetchEmpsSuccess,
@@ -54,3 +54,41 @@ export const getDeps = () => {
     }
   }
 }
+
+export const addEmp = (formData: any) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:7000/api/emps/",formData
+        ,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      alert("OK")
+    } catch (e) {
+      alert(e)
+    }
+  }
+}
+
+export const editEmp = (formData: any,idEmp:string, photoEmp:any) => {
+  return async (dispatch: any) => {
+    try {
+      console.log(photoEmp)
+      console.log(photoEmp == null? true: photoEmp)
+
+      const response = await axios.post(
+        `http://localhost:7000/api/emps/edit/${idEmp}?withPhoto=${Object.keys(photoEmp).length != 0? true: false}`,formData
+        ,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+      alert("OK")
+    } catch (e) {
+      alert(e)
+    }
+  }
+}
+
