@@ -90,6 +90,29 @@ class empsController {
     }
   }
 
+  async delete(req: any, res: Response): Promise<Response> {
+    try {
+      const {
+       idEmp
+      } = await req.body
+       const response2: QueryResult = await pool.query(
+        "DELETE FROM schedule where id_emp=$1",
+        [idEmp]
+      )
+        const response: QueryResult = await pool.query(
+          "DELETE FROM emp where id_emp=$1",
+          [idEmp]
+        )
+     
+
+      return res
+        .status(200)
+        .json({ message: "Добавлен сотрудник", idEmp })
+    } catch (e) {
+      console.log(e.message)
+      return res.status(500).json("Ошибка, проверьте значения")
+    }
+  }
   async getAll(req: Request, res: Response): Promise<Response> {
     try{
     const response: QueryResult = await pool.query(

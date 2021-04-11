@@ -18,6 +18,8 @@ import {
   Theme,
 } from "@material-ui/core"
 import { isEmpty } from "lodash"
+import { blue, red } from "@material-ui/core/colors"
+import { AgreeDeleteWindow } from "./AgreeDeleteWindow"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -29,17 +31,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   mainItem: {
     width: "48%",
   },
+  mainItemButton: {
+    width: "48%",
+    backgroundColor: red[300],
+    color: blue[900]
+  },
 }))
 
 interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
   selectedEmp: any
+  setOpenSnack: Function
 }
 export const EditEmpWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
   const classes = useStyles()
+  const [agreeOpen, setAgreeOpen] = React.useState(false);
   const [selectedDep, setSelectedDep] = React.useState("")
   const [idEmp, setIdEmp] = React.useState("")
   const [lastName, setLastName] = React.useState("")
@@ -63,7 +72,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     setLastName(props.selectedEmp[0].last_name)
     setFirstName(props.selectedEmp[0].first_name)
     setMiddleName(props.selectedEmp[0].middle_name)
-    //setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
+    setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
     setEmail(props.selectedEmp[0].email_emp)
     setTel(props.selectedEmp[0].tel_emp)
     setStartDayTime(props.selectedEmp[0].start_time)
@@ -80,15 +89,13 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     props.setWindowOpen(false)
   }
 
-  const zero = () => {}
-
-  const onAddHandle = () => {
+  const onEditHandle = () => {
     const formData = new FormData()
     formData.append('first_name', firstName)
     formData.append('middle_name', middleName)
     formData.append('last_name', lastName)
     formData.append('id_dep', selectedDep)
-    //formData.append('db_emp', dbEmp)
+    formData.append('db_emp', dbEmp)
     formData.append('email_emp', email)
     formData.append('tel_emp', tel)
     formData.append('startTime', startDayTime)
@@ -96,6 +103,8 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     formData.append('lunchTime', lunchTime)
     formData.append('teaTime', teaTime)
     dispatch(editEmp(formData,idEmp))
+    props.setWindowOpen(false)
+    props.setOpenSnack(true)
   }
 
 
@@ -167,6 +176,22 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
             </FormControl>
           </div>
           <div className={classes.headContainer}>
+             <TextField
+          className={classes.mainItem}
+            margin="dense"
+            type="date"
+            id="db_emp"
+            label="Дата рождения"
+            variant='outlined'
+            InputLabelProps={{
+              shrink: true,
+            }}
+            fullWidth
+            value={dbEmp}
+                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                  setDbEmp(event.target.value as string)
+                }}
+          />
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -232,6 +257,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 setLunchTime(event.target.value as string)
               }}
             />
+            <Button onClick={()=> setAgreeOpen(true)} className={classes.mainItemButton}>Удалить сотрудника</Button>
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -246,14 +272,16 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 setTeaTime(event.target.value as string)
               }}
             />
+             
           </div>
         </DialogContent>
         <DialogActions>
+        <AgreeDeleteWindow windowOpen={agreeOpen} setWindowOpen={setAgreeOpen} setMainWindowOpen={props.setWindowOpen} selectedEmp={props.selectedEmp} setOpenSnack={props.setOpenSnack}/>
           <Button onClick={handleClose} color="primary">
             Отмена
           </Button>
-          <Button onClick={onAddHandle} color="primary">
-            Добавить
+          <Button onClick={onEditHandle} color="primary">
+            Обновить
           </Button>
         </DialogActions>
       </Dialog>

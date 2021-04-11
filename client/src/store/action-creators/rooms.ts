@@ -21,6 +21,21 @@ export const getRooms = () => {
   }
 }
 
+export const addRoom = (formData: any) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:7000/api/room/",formData,
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+    } catch (e) {
+      alert(e)
+    }
+  }
+}
+
 export const addAccess = (formData: any) => {
   return async (dispatch: any) => {
     try {
@@ -31,7 +46,6 @@ export const addAccess = (formData: any) => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      alert("OK")
     } catch (e) {
       alert(e)
     }
@@ -48,7 +62,6 @@ export const depriveAccess = (formData: any) => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      alert("OK")
     } catch (e) {
       alert(e)
     }

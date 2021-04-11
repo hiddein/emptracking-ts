@@ -15,6 +15,7 @@ router.post(
   empsController.create
 )
 router.post("/edit/:id", authMiddleware,[check("first_name", "Нет имени").notEmpty(), check("last_name", "Нет фамилии").notEmpty(), check("id_dep", "Нет отдела").notEmpty()],empsController.edit)
+router.post("/delete", authMiddleware, empsController.delete)
 router.get("/", authMiddleware, empsController.getAll)
 router.get("/:id", authMiddleware, empsController.getOne)
 router.get("/schedule/:id", authMiddleware, empsController.getSchedule)

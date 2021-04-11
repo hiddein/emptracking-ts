@@ -1,12 +1,16 @@
-import { Avatar, Button, makeStyles, Theme, Typography } from "@material-ui/core"
+import { Avatar, Button, makeStyles, Snackbar, Theme, Typography } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
-
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getEmps } from "../../../store/action-creators/emps"
 import { Loader } from "../../Loader"
 import { blue, green, yellow } from "@material-ui/core/colors"
 import { EditEmpWindow } from "./EditEmpWindow"
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles((theme: Theme) => ({
   large: {
@@ -59,12 +63,19 @@ interface propsEmpCard {
 
 export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
   const classes = useStyles()
+  const [openSnack, setOpenSnack] = React.useState(false);
   const emps = useTypedSelector((state) => state.emp.emps)
   const isLoading = useTypedSelector((state) => state.emp.loading)
   const dispatch = useDispatch()
   const selectedEmp = emps.filter((item) => item.id_emp == props.idEmp)
   const [windowOpen, setWindowOpen] = React.useState(false)
 
+  const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
+  };
 
   useEffect(() => {
     dispatch(getEmps())
@@ -83,7 +94,7 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
         <React.Fragment>
           <div className={classes.headerContainer} >
       <Typography variant="h5">Карточка сотрудника</Typography>
-      <EditEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen}  selectedEmp={selectedEmp}/>
+      <EditEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen}  selectedEmp={selectedEmp} setOpenSnack={setOpenSnack}/>
       <Button className={classes.openEditButton} onClick={()=> setWindowOpen(true)}>Редактировать</Button>
 
 
@@ -104,6 +115,11 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
           <Typography variant="h6" className={classes.empInfoItem}>Время на обед:   {selectedEmp[0].lunch_time}</Typography>
           <Typography variant="h6" className={classes.empInfoItem}>Время на чай   (свободное время): {selectedEmp[0].tea_time}</Typography>
           </div>
+          <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          Обновление произошло успешно
+        </Alert>
+      </Snackbar>
           </React.Fragment>
       )}
     </div>

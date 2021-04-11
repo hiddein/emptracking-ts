@@ -35,6 +35,7 @@ interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
   selectedEmp: string
+  setOpenSnack: Function
 }
 
 export const DepriveAccessWindow: React.FC<NewEmpInterface> = (
@@ -60,6 +61,8 @@ export const DepriveAccessWindow: React.FC<NewEmpInterface> = (
     formData.append('id_emp', props.selectedEmp)
     formData.append('id_room', selectedRoom)
     dispatch(depriveAccess(formData))
+    props.setOpenSnack(true)
+    props.setWindowOpen(false)
   }
 
 

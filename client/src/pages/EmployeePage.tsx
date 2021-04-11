@@ -4,6 +4,7 @@ import {
   Grid,
   makeStyles,
   Paper,
+  Snackbar,
   Theme,
   Typography,
 } from "@material-ui/core"
@@ -20,7 +21,11 @@ import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RangePicker } from "../components/RangePicker"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { getEmps } from "../store/action-creators/emps"
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
@@ -103,11 +108,19 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
+  const [openSnack, setOpenSnack] = React.useState(false);
   const [selectedEmp, SetselectedEmp] = useState("")
   const [windowOpen, setWindowOpen] = React.useState(false)
 
   const handleClickOpen = () => {
     setWindowOpen(true);
+  };
+
+  const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
   };
 
   return (
@@ -122,7 +135,7 @@ export const EmployeePage: React.FC = () => {
           </Typography>
           <Card className={classes.datePickerContainer}>
           <Button className={classes.selectedEmpButton} onClick={handleClickOpen}>Новый сотрудник</Button>
-          <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} />
+          <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} setOpenSnack={setOpenSnack} />
           <RangePicker />
           </Card>
         </Grid>
@@ -161,6 +174,11 @@ export const EmployeePage: React.FC = () => {
           </Card>
         </Grid>
       </Grid>
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          Сотрудник успешно добавлен
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

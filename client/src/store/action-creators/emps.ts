@@ -65,7 +65,6 @@ export const addEmp = (formData: any) => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      alert("OK")
     } catch (e) {
       alert(e)
     }
@@ -83,10 +82,23 @@ export const editEmp = (formData: any,idEmp:string) => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
       )
-      alert("OK")
     } catch (e) {
       alert(e)
     }
   }
 }
 
+export const deleteEmp = (idEmp:string) => {
+  return async (dispatch: any) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:7000/api/emps/delete/`,{idEmp},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+    } catch (e) {
+      alert(e)
+    }
+  }
+}

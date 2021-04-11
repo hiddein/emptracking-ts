@@ -12,7 +12,6 @@ import React, { useState } from "react"
 import { RangePicker } from "../components/RangePicker"
 import { CountVisitsChart } from "../components/rooms/CountVisitsChart"
 import { EmpsWithAccessTable } from "../components/rooms/EmpsWithAccessTable"
-import { RoomCard } from "../components/rooms/RoomCard"
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
 
 const useStyles = makeStyles((theme: Theme) => ({

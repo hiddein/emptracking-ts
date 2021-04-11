@@ -1,21 +1,26 @@
-import { makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
 import React, { useState,useEffect } from "react"
 import {
   DataGrid,
   GridColDef,
   GridToolbarContainer,
   GridFilterToolbarButton,
-  GridFooterContainer,
-  GridPagination,
-  GridBaseComponentProps,
   GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
-import { blue } from "@material-ui/core/colors"
+import { blue, green } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
 import { useDispatch } from "react-redux"
 import { getRooms } from "../../store/action-creators/rooms"
+import { NewRoomWindow } from "./NewRoomWindow"
+import AddIcon from '@material-ui/icons/Add';
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -37,14 +42,21 @@ const useStyles = makeStyles(() => ({
   toolBarOption: {
     paddingRight: "10px",
   },
+  addButton: {
+    color: green[300]
+  },
 }))
 
-const CustomToolbar = () => {
+const CustomToolbar = (props: any) => {
   const classes = useStyles()
   return (
     <GridToolbarContainer className={classes.toolBarContainer}>
       <Typography variant="h6">Список помещений</Typography>
       <div className={classes.toolBarItem}>
+      <div className={classes.toolBarOption}>
+        <Button className={classes.addButton} onClick={() => props.setAddWindowOpen(true)}><AddIcon />{'  '}Помещение</Button>
+        <NewRoomWindow windowOpen={props.addWindowOpen} setWindowOpen={props.setAddWindowOpen} setOpenSnack={props.setOpenSnack}/>
+        </div>
         <div className={classes.toolBarOption}>
           <GridFilterToolbarButton />
         </div>
@@ -62,6 +74,8 @@ interface propsTable {
 }
 
 export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const [addWindowOpen, setAddWindowOpen] = React.useState(false)
   const rooms = useTypedSelector(state => state.room.rooms)
   const isLoading = useTypedSelector(state => state.room.loading)
   const dispatch = useDispatch()
@@ -70,6 +84,12 @@ export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
     dispatch(getRooms())
    }, [])
 
+   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
+  };
 
   const columns: GridColDef[] = [
     { field: "id", headerName: "ID", flex: 0.2, type: "string"},
@@ -104,8 +124,20 @@ export const RoomSearchTable: React.FC<propsTable> = (props:propsTable) => {
         components={{
           Toolbar: CustomToolbar,
         }}
+        componentsProps={{
+          toolbar: {
+            addWindowOpen,
+            setAddWindowOpen,
+            setOpenSnack
+          }
+        }}
         hideFooterSelectedRowCount={true}
       />}
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          Помещение добавлено
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

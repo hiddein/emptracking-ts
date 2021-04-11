@@ -15,8 +15,10 @@ import {
   makeStyles,
   MenuItem,
   Select,
+  Snackbar,
   Theme,
 } from "@material-ui/core"
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -33,6 +35,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
+  setOpenSnack: Function
 }
 
 export const NewEmpWindow: React.FC<NewEmpInterface> = (
@@ -63,6 +66,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
     props.setWindowOpen(false)
   }
 
+ 
   const onAddHandle = () => {
     const formData = new FormData()
     formData.append('first_name', firstName)
@@ -78,6 +82,8 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
     formData.append('lunchTime', lunchTime)
     formData.append('teaTime', teaTime)
     dispatch(addEmp(formData))
+    props.setWindowOpen(false)
+    props.setOpenSnack(true)
   }
 
 
@@ -97,6 +103,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
           </DialogContentText>
           <div className={classes.headContainer}>
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="last_name"
@@ -108,6 +115,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                 }}
             />
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="first_name"
@@ -133,6 +141,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
             <FormControl className={classes.mainItem} margin="dense">
               <InputLabel htmlFor="dep-select">Отдел</InputLabel>
               <Select
+              required
                 labelId="dep-select"
                 id="dep-select"
                 value={selectedDep}
@@ -151,6 +160,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
           <div className={classes.headContainer}>
           <TextField
           className={classes.mainItem}
+          required
             margin="dense"
             type="date"
             id="db_emp"
@@ -166,6 +176,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                 }}
           />
           <TextField
+          required
               className={classes.mainItem}
               margin="dense"
               id="photo_emp"
@@ -182,6 +193,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
             />
           
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="email"
@@ -193,6 +205,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                 }}
             />
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="tel_emp"
@@ -205,6 +218,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
             />
             
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="start_time"
@@ -220,6 +234,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="end_time"
@@ -235,6 +250,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="lunch_time"
@@ -250,6 +266,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
+            required
               className={classes.mainItem}
               margin="dense"
               id="tea_time"
@@ -273,6 +290,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
           <Button onClick={onAddHandle} color="primary">
             Добавить
           </Button>
+          
         </DialogActions>
       </Dialog>
     </div>

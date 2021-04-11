@@ -1,5 +1,6 @@
-import { Button, makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import {
   DataGrid,
   GridColDef,
@@ -17,6 +18,11 @@ import AddIcon from '@material-ui/icons/Add';
 import { NewAccessWindow } from "./NewAccessWindow"
 import RemoveIcon from '@material-ui/icons/Remove';
 import { DepriveAccessWindow } from "./DepriveAccessWindow"
+
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -63,11 +69,11 @@ const CustomToolbar = (props: any) => {
 
       <div className={classes.toolBarOption}>
         <Button className={classes.addButton} onClick={() => props.setAddWindowOpen(true)}><AddIcon />{'  '}доступ</Button>
-        <NewAccessWindow selectedEmp={props.idEmp} windowOpen={props.addWindowOpen} setWindowOpen={props.setAddWindowOpen} />
+        <NewAccessWindow selectedEmp={props.idEmp} windowOpen={props.addWindowOpen} setWindowOpen={props.setAddWindowOpen} setOpenSnack={props.setOpenSnack} />
         </div>
         <div className={classes.toolBarOption}>
         <Button className={classes.depriveButton} onClick={() => props.setDepriveAddWindowOpen(true)}><RemoveIcon />{'  '}доступ</Button>
-        <DepriveAccessWindow selectedEmp={props.idEmp} windowOpen={props.depriveWindowOpen} setWindowOpen={props.setDepriveAddWindowOpen} />
+        <DepriveAccessWindow selectedEmp={props.idEmp} windowOpen={props.depriveWindowOpen} setWindowOpen={props.setDepriveAddWindowOpen} setOpenSnack={props.setOpenSnack} />
         </div>
         <div className={classes.toolBarOption}>
           <GridFilterToolbarButton />
@@ -86,6 +92,7 @@ interface propsAccessChart {
 }
 
 export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccessChart) => {
+  const [openSnack, setOpenSnack] = React.useState(false);
   const [addWindowOpen, setAddWindowOpen] = React.useState(false)
   const [depriveWindowOpen, setDepriveAddWindowOpen] = React.useState(false)
   const classes = useStyles()
@@ -93,9 +100,17 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccess
   const isLoading = useTypedSelector((state) => state.emp.accessLoading)
   const accessFiltered = access.filter((item) => item.id_emp == props.idEmp)
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getAccess())
    }, [addWindowOpen,depriveWindowOpen])
+
+   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
+  };
 
 
   const columns: GridColDef[] = [
@@ -139,11 +154,17 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (props: propsAccess
             addWindowOpen,
             setAddWindowOpen,
             depriveWindowOpen,
-            setDepriveAddWindowOpen
+            setDepriveAddWindowOpen,
+            setOpenSnack
           }
         }}
         hideFooterSelectedRowCount={true}
       />)}
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          Обновление произошло успешно
+        </Alert>
+      </Snackbar>
     </div>
   )
 }

@@ -7,17 +7,18 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
-import { useTypedSelector } from "../../../hooks/useTypedSelector"
-import { addEmp, getDeps, getEmps } from "../../../store/action-creators/emps"
+import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { addRoom  } from "../../store/action-creators/rooms"
 import {
   FormControl,
   InputLabel,
   makeStyles,
   MenuItem,
   Select,
+  Snackbar,
   Theme,
 } from "@material-ui/core"
-import { addAccess } from "../../../store/action-creators/rooms"
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -34,35 +35,32 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
-  selectedEmp: string
   setOpenSnack: Function
 }
 
-export const NewAccessWindow: React.FC<NewEmpInterface> = (
+export const NewRoomWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
   const classes = useStyles()
-  const [selectedRoom, setSelectedRoom] = React.useState("")
-  const emps = useTypedSelector((state) => state.emp.emps)
-  const rooms = useTypedSelector((state) => state.room.rooms)
-  const emp = emps.filter((item) => item.id_emp == props.selectedEmp)[0]
+  const [nameRoom, setNameRoom] = React.useState("")
+  const [aboutRoom, setAboutRoom] = React.useState("")
+  const deps = useTypedSelector((state) => state.emp.deps)
+
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    dispatch(getDeps())
-  }, [])
 
   const handleClose = () => {
     props.setWindowOpen(false)
   }
 
+ 
   const onAddHandle = () => {
     const formData = new FormData()
-    formData.append('id_emp', props.selectedEmp)
-    formData.append('id_room', selectedRoom)
-    dispatch(addAccess(formData))
-    props.setOpenSnack(true)
+    formData.append('name_room', nameRoom)
+    formData.append('about_room', aboutRoom)
+    dispatch(addRoom(formData))
     props.setWindowOpen(false)
+    props.setOpenSnack(true)
   }
 
 
@@ -74,48 +72,47 @@ export const NewAccessWindow: React.FC<NewEmpInterface> = (
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          Предоставить доступ в помещение
+          Добавить новое помещение
         </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Выберите помещение для предоставления доступа
+            Пожалуйста, заполните данные 
           </DialogContentText>
+          <div className={classes.headContainer}>
             <TextField
-            disabled={true}
+            required
             fullWidth
               margin="dense"
-              id="last_name"
-              label="ФИО сотрудника"
+              id="name_room"
+              label="Название"
               type="text"
-              value={`${emp.last_name} ${emp.first_name} ${emp.middle_name} `}
-            />
-
-            <FormControl fullWidth margin="dense">
-              <InputLabel htmlFor="dep-select">Помещение</InputLabel>
-              <Select
-                labelId="dep-select"
-                id="dep-select"
-                value={selectedRoom}
+              value={nameRoom}
                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  console.log(event)
-                setSelectedRoom(event.target.value as string)
+                    setNameRoom(event.target.value as string)
                 }}
-              >
-                {rooms.map((room: any) => (
-                  <MenuItem value={room.id_room} key={room.id_room}>
-                    {room.name_room}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            />
+            <TextField
+            required
+            fullWidth
+              margin="dense"
+              id="about_room"
+              label="Информация о помещении"
+              type="text"
+              value={aboutRoom}
+                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                    setAboutRoom(event.target.value as string)
+                }}
+            />
+           </div>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Отмена
           </Button>
           <Button onClick={onAddHandle} color="primary">
-            Предоставить доступ
+            Добавить
           </Button>
+          
         </DialogActions>
       </Dialog>
     </div>
