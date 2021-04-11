@@ -1,21 +1,23 @@
-import { makeStyles, Typography } from "@material-ui/core"
+import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
 import React, { useEffect, useState } from "react"
 import {
   DataGrid,
   GridColDef,
   GridToolbarContainer,
   GridFilterToolbarButton,
-  GridFooterContainer,
-  GridPagination,
-  GridBaseComponentProps,
   GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
-import { blue } from "@material-ui/core/colors"
+import { blue, green, red } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
+import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { getAccess } from "../../store/action-creators/emps"
 import { Loader } from "../Loader"
+import AddIcon from '@material-ui/icons/Add';
+import RemoveIcon from '@material-ui/icons/Remove';
+import { NewAccessRoomWindow } from "./NewAccessRoomWindow"
+import { DepriveAccessRoomWindow } from "./DepriveAccessRoomWindow"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -44,19 +46,33 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
     fontSize: "25px",
   },
+  addButton: {
+    color: green[300]
+  },
+  depriveButton: {
+    color: red[300]
+  },
 }))
 
+function Alert(props: AlertProps) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
-
-const CustomToolbar = () => {
+const CustomToolbar = (props: any) => {
   const classes = useStyles()
-
-
 
   return (
     <GridToolbarContainer className={classes.toolBarContainer}>
-      <Typography variant="h6">Сотрудники, имеющие доступ в помещение</Typography>
+      <Typography variant="h6">Сотрудники c доступом</Typography>
       <div className={classes.toolBarItem}>
+      <div className={classes.toolBarOption}>
+        <Button className={classes.addButton} onClick={() => props.setAddWindowOpen(true)}><AddIcon />{'  '}доступ</Button>
+        <NewAccessRoomWindow selectedRoom={props.nameRoom} windowOpen={props.addWindowOpen} setWindowOpen={props.setAddWindowOpen} setOpenSnack={props.setOpenSnack} />
+        </div>
+        <div className={classes.toolBarOption}>
+        <Button className={classes.depriveButton} onClick={() => props.setDepriveAddWindowOpen(true)}><RemoveIcon />{'  '}доступ</Button>
+        <DepriveAccessRoomWindow selectedRoom={props.nameRoom} windowOpen={props.depriveWindowOpen} setWindowOpen={props.setDepriveAddWindowOpen} setOpenSnack={props.setOpenSnack} />
+        </div>
         <div className={classes.toolBarOption}>
           <GridFilterToolbarButton />
         </div>
@@ -74,13 +90,25 @@ interface propsAccessTable {
 
 export const EmpsWithAccessTable: React.FC<propsAccessTable> = (props: propsAccessTable) => {
   const classes = useStyles()
+  const [openSnack, setOpenSnack] = React.useState(false);
+  const [addWindowOpen, setAddWindowOpen] = React.useState(false)
+  const [depriveWindowOpen, setDepriveAddWindowOpen] = React.useState(false)
   const access = useTypedSelector((state) => state.emp.access)
   const isLoading = useTypedSelector((state) => state.emp.accessLoading)
   const accessFiltered = access.filter((item) => item.name_room == props.nameRoom)
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(getAccess())
-   }, [])
+   }, [addWindowOpen,depriveWindowOpen])
+
+
+   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnack(false);
+  };
 
   const columns: GridColDef[] = [
     { field: "empName", headerName: "ФИО сотрудника", flex: 1.2, type: "string", },
@@ -121,8 +149,23 @@ export const EmpsWithAccessTable: React.FC<propsAccessTable> = (props: propsAcce
         components={{
           Toolbar: CustomToolbar,
         }}
+        componentsProps={{
+          toolbar: {
+            nameRoom: props.nameRoom,
+            addWindowOpen,
+            setAddWindowOpen,
+            depriveWindowOpen,
+            setDepriveAddWindowOpen,
+            setOpenSnack
+          }
+        }}
         hideFooterSelectedRowCount={true}
       />)}
+      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+        <Alert onClose={handleCloseSnack} severity="success">
+          Обновление произошло успешно
+        </Alert>
+      </Snackbar>
     </div>
   )
 }
