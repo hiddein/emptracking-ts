@@ -12,7 +12,7 @@ import { blue, green } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { RangePicker } from "../components/RangePicker"
 import { CountVisitsChart } from "../components/rooms/CountVisitsChart"
-import { EmpsWithAccessTable } from "../components/rooms/EmpsWithAccessTable"
+import { EmpsWithAccessTable } from "../components/rooms/access/EmpsWithAccessTable"
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
 import { NewRoomWindow } from "./../components/rooms/NewRoomWindow"
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';

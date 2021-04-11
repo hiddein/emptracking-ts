@@ -7,8 +7,8 @@ import DialogContent from "@material-ui/core/DialogContent"
 import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
-import { useTypedSelector } from "../../hooks/useTypedSelector"
-import { addEmp, getDeps, getEmps } from "../../store/action-creators/emps"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { addEmp, getDeps, getEmps } from "../../../store/action-creators/emps"
 import {
   FormControl,
   InputLabel,
@@ -17,7 +17,7 @@ import {
   Select,
   Theme,
 } from "@material-ui/core"
-import { addAccess, depriveAccess } from "../../store/action-creators/rooms"
+import { addAccess, depriveAccess } from "../../../store/action-creators/rooms"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {

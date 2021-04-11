@@ -7,13 +7,13 @@ import {
   GridFilterToolbarButton,
   GridToolbarExport,
 } from "@material-ui/data-grid"
-import { rusLocale } from "../../rusLocale/ruslocale"
+import { rusLocale } from "../../../rusLocale/ruslocale"
 import { blue, green, red } from "@material-ui/core/colors"
-import { useTypedSelector } from "../../hooks/useTypedSelector"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
-import { getAccess } from "../../store/action-creators/emps"
-import { Loader } from "../Loader"
+import { getAccess } from "../../../store/action-creators/emps"
+import { Loader } from "../../Loader"
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import { NewAccessRoomWindow } from "./NewAccessRoomWindow"
