@@ -81,7 +81,7 @@ export const LatenessCard: React.FC<propsLatenessCard> = (
 
   return (
     <React.Fragment>
-      {latenessFiltered.length == 0 ? (
+      {props.idEmp == ''  ? (
         <div className={classes.noEmpContainer}>
           <Typography variant="h6">Выберите сотрудника</Typography>
         </div>

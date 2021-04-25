@@ -83,7 +83,7 @@ class empsController {
 
       return res
         .status(200)
-        .json({ message: "Добавлен сотрудник", first_name, last_name })
+        .json({ message: "Обновлен сотрудник", first_name, last_name })
     } catch (e) {
       console.log(e.message)
       return res.status(500).json("Ошибка, проверьте значения")

@@ -48,6 +48,12 @@ const CustomToolbar = () => {
 
 interface propsTable {
   empId: string
+  setMovesExp: Function
+}
+
+interface IExpObg {
+  columns: any[]
+  rows: any[]
 }
 
 export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
@@ -56,10 +62,18 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
   const dispatch = useDispatch()
   const startDate = useTypedSelector(state => state.dates.startDate)
   const endDate = useTypedSelector(state => state.dates.endDate)
+  const movesExp:IExpObg = {
+    columns: [],
+    rows:[]
+  }
 
   useEffect(() => {
     dispatch(getMovesInRange(startDate, endDate))
    }, [startDate, endDate])
+
+   useEffect(() => {
+    props.setMovesExp(movesExp)
+   }, [props.empId])
 
 
   const columns: GridColDef[] = [
@@ -79,6 +93,10 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
     },
   ]
 
+  columns.map((col) => {
+    movesExp.columns.push(col.headerName)
+  })
+
   interface Move {
     id: number
     fioEmp: string
@@ -95,7 +113,7 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
   if (props.empId !== "") {
     movesFiltered = moves.filter((move) => move.id_emp == props.empId)
   } 
-  movesFiltered.map((move: any) =>
+  movesFiltered.map((move: any) => {
     rows.push({
       id: move.move_id,
       fioEmp: `${move.last_name} ${move.first_name} ${move.middle_name} `,
@@ -103,7 +121,17 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
       enterTime: move.time_enter,
       exitTime: move.time_leave,
     })
+
+    movesExp.rows.push([
+      move.move_id,
+      `${move.last_name} ${move.first_name} ${move.middle_name} `,
+      move.name_room,
+      move.time_enter,
+      move.time_leave,
+    ])
+  }
   )
+
 
   return (
     <div style={{ height: props.empId != "" ? 655 : 699, width: "100%" }}>

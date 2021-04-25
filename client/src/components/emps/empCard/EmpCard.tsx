@@ -84,7 +84,7 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
   return (
     <div style={{ height: 310, width: "100%" }}>
       
-      {selectedEmp.length == 0 ? (
+      {props.idEmp == '' ? (
           <div className={classes.noEmpContainer}>
             <Typography variant="h4">Выберите сотрудника</Typography>
           </div>
@@ -96,8 +96,6 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
       <Typography variant="h5">Карточка сотрудника</Typography>
       <EditEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen}  selectedEmp={selectedEmp} setOpenSnack={setOpenSnack}/>
       <Button className={classes.openEditButton} onClick={()=> setWindowOpen(true)}>Редактировать</Button>
-
-
       </div>
         <div className={classes.titleEmpContainer}>
           <Avatar alt="Remy Sharp" src={`http://localhost:7000/${selectedEmp[0].photo_emp}`} className={classes.large} />

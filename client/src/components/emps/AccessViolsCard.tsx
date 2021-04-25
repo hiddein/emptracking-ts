@@ -75,7 +75,7 @@ export const AccessViolsCard: React.FC<propsAccessViolsCard> = (
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
   const violsFiltered = viols.filter((item) => item.id_emp == props.idEmp)
-  console.log(violsFiltered)
+
 
   useEffect(() => {
     dispatch(getAccessViolsByEmp(startDate, endDate))
@@ -83,7 +83,7 @@ export const AccessViolsCard: React.FC<propsAccessViolsCard> = (
 
   return (
     <React.Fragment>
-      {violsFiltered.length == 0 ? (
+      {props.idEmp == '' ? (
         <div className={classes.noEmpContainer}>
           <Typography variant="h6">Выберите сотрудника</Typography>
         </div>
@@ -100,8 +100,8 @@ export const AccessViolsCard: React.FC<propsAccessViolsCard> = (
           </div>
           <div className={classes.cardContent}>
             <Typography variant="h6" className={classes.cardContentCount}>
-              {" "}
-              {violsFiltered[0].count}{" "}
+              
+              {violsFiltered.length == 0 ? `0`: violsFiltered[0].count}
             </Typography>
             <Typography variant="h6" className={classes.cardContentLabel}>
               {" "}

@@ -38,16 +38,25 @@ const useStyles = makeStyles(() => ({
 
 interface propsMovesChart {
   idEmp: string
+  setOneDayMovesExp:Function
+}
+
+interface IExpObg {
+  day: any
+  moves: any
 }
 
 export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChart) => {
 
   const classes = useStyles()
-
   const [selectedDate, setSelectedDate] = React.useState<Date>(new Date('2021-03-18'))
   const oneDayMoves = useTypedSelector((state) => state.move.oneDayMoves)
   const isLoading = useTypedSelector((state) => state.move.oneDayLoading)
   const dispatch = useDispatch()
+  const oneDayMovesExp:IExpObg = {
+    day: selectedDate.toLocaleDateString(),
+    moves:[]
+  }
   const movesFiltered = oneDayMoves.filter(
     (move) => move.id_emp == props.idEmp
   )
@@ -57,6 +66,7 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
 
   useEffect(() => {
     dispatch(getOneDayMoves(selectedDate))
+    props.setOneDayMovesExp(oneDayMovesExp)
    }, [selectedDate,props.idEmp])
   interface chartStateInterface {
     series: any
@@ -124,6 +134,15 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
         moment(move.time_leave).utcOffset(0, true).toDate().getTime(),
       ],
     })
+
+    oneDayMovesExp.moves.push({
+      nameRoom: move.name_room,
+      timeEnterLeave: [
+        move.time_enter,
+        move.time_leave
+      ],
+    })
+
   })
 
   return (

@@ -9,12 +9,12 @@ import {
 } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
-import { useTypedSelector } from "../hooks/useTypedSelector"
+import { saveAs } from "file-saver"
+import SaveIcon from '@material-ui/icons/Save';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -67,21 +67,36 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "20px",
   },
   titleContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
+    display: "flex",
+    justifyContent: "space-between",
   },
-  datePickerContainer:{
-    padding: '5px 20px',
-    display: 'flex',
-    flexWrap: 'nowrap'
+  datePickerContainer: {
+    padding: "5px 20px",
+    display: "flex",
+    flexWrap: "nowrap",
   },
 }))
+interface IExpObg {
+  moves: object
+  oneDayMoves: object
+}
 
 export const MovementPage: React.FC = () => {
   const classes = useStyles()
   const [selectedEmp, SetselectedEmp] = useState("")
+  const [oneDayMovesExp, setOneDayMovesExp] = useState<object>({})
+  const [movesExp, setMovesExp] = useState<object>({})
 
+  const exportJSON: IExpObg = {
+    moves: movesExp,
+    oneDayMoves: oneDayMovesExp,
+  }
 
+  var fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
+  const onSaveButtonClickHandler = () =>  saveAs(fileToSave, "movesData.json")
 
   return (
     <div className={classes.container1}>
@@ -92,7 +107,8 @@ export const MovementPage: React.FC = () => {
             Перемещения сотрудников
           </Typography>
           <Card className={classes.datePickerContainer}>
-          <RangePicker />
+            <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
+            <RangePicker />
           </Card>
         </Grid>
         {/* Сетка дэшборда */}
@@ -100,12 +116,15 @@ export const MovementPage: React.FC = () => {
           <Grid container direction="column" spacing={2}>
             <Grid item xs={12} md={12}>
               <Card className={classes.paper}>
-                <SearchEmpsTable updateData={SetselectedEmp}  height={300} />
+                <SearchEmpsTable updateData={SetselectedEmp} height={300} />
               </Card>
             </Grid>
             <Grid item>
               <Card className={classes.paper1}>
-                <MovementsEmpBar idEmp={selectedEmp.split(' ')[0]} />
+                <MovementsEmpBar
+                  idEmp={selectedEmp.split(" ")[0]}
+                  setOneDayMovesExp={setOneDayMovesExp}
+                />
               </Card>
             </Grid>
           </Grid>
@@ -119,7 +138,9 @@ export const MovementPage: React.FC = () => {
                     variant="subtitle2"
                     className={classes.selectedEmpFIO}
                   >
-                  {`${selectedEmp.split(' ')[2]} ${selectedEmp.split(' ')[3]} ${selectedEmp.split(' ')[4]}`}
+                    {`${selectedEmp.split(" ")[2]} ${
+                      selectedEmp.split(" ")[3]
+                    } ${selectedEmp.split(" ")[4]}`}
                   </Typography>
                 </div>
                 <Button
@@ -133,7 +154,10 @@ export const MovementPage: React.FC = () => {
               </div>
             ) : null}
 
-            <MovementsTable  empId={selectedEmp.split(' ')[0]} />
+            <MovementsTable
+              empId={selectedEmp.split(" ")[0]}
+              setMovesExp={setMovesExp}
+            />
           </Card>
         </Grid>
       </Grid>
