@@ -20,7 +20,13 @@ const useStyles = makeStyles(() => ({
     },
 }))
 
-export const TopAccessViolsChart: React.FC = () => {
+interface ITopAccessChart{
+  setExportJSON: Function
+}
+
+
+
+export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccessChart) => {
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.viol.viols)
   const isLoading = useTypedSelector((state) => state.viol.loading)
@@ -28,9 +34,11 @@ export const TopAccessViolsChart: React.FC = () => {
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
 
-  
+  const topAccessChartExp:Array<object> = []
+
   useEffect(() => {
     dispatch(getAccessViols(startDate, endDate))
+    props.setExportJSON(topAccessChartExp)
    }, [startDate, endDate])
 
 
@@ -107,6 +115,8 @@ export const TopAccessViolsChart: React.FC = () => {
   resultViolsSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
+
+    topAccessChartExp.push({depName:item.name_dep, countViols:item.count_viols})
   })
 
 

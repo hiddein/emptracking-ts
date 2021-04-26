@@ -65,8 +65,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface ILatenessCount{
+  setExportJSON: Function
+}
 
-export const LatenessCountCard: React.FC = () => {
+export const LatenessCountCard: React.FC<ILatenessCount> = (props:ILatenessCount) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
@@ -76,7 +79,9 @@ export const LatenessCountCard: React.FC = () => {
 
   useEffect(() => {
     dispatch(getLateness(startDate, endDate))
+    props.setExportJSON(lateness.length)
   }, [startDate, endDate])
+
 
   return (
     <React.Fragment>

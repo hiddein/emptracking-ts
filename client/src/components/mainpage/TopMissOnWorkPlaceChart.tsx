@@ -25,16 +25,23 @@ const useStyles = makeStyles(() => ({
     }
 }))
 
-export const TopMissOnWorkPlaceChart: React.FC = () => {
+interface ITopMissOnWorkChart{
+  setExportJSON: Function
+}
+
+export const TopMissOnWorkPlaceChart: React.FC<ITopMissOnWorkChart> = (props: ITopMissOnWorkChart) => {
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.workHoursViol.viols)
   const isLoading = useTypedSelector((state) => state.workHoursViol.loading)
   const dispatch = useDispatch()
   const startDate = useTypedSelector(state => state.dates.startDate)
   const endDate = useTypedSelector(state => state.dates.endDate)
+  const workHoursExp:Array<object> = []
+
 
   useEffect(() => {
     dispatch(getWorkHoursViols(startDate, endDate))
+    props.setExportJSON(workHoursExp)
    }, [startDate, endDate])
 
    interface chartStateInterface {
@@ -109,6 +116,8 @@ export const TopMissOnWorkPlaceChart: React.FC = () => {
   resultlatenessSortedSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
+
+    workHoursExp.push({depName:item.name_dep, countViols:item.count_viols})
   })
 
   return (

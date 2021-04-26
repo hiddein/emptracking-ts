@@ -22,16 +22,25 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const TopVisRoomsChart: React.FC = () => {
+interface ITopVisRoomsChart{
+  setExportJSON: Function
+
+}
+
+
+export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoomsChart) => {
   const classes = useStyles()
   const stat = useTypedSelector((state) => state.stat.statSortByDefault)
   const isLoading = useTypedSelector((state) => state.stat.loadingSortByDefault)
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
+  const visRoomsExp:Array<object> = []
+
 
   useEffect(() => {
     dispatch(getCountMovesInRangeByDefault(startDate, endDate))
+    props.setExportJSON(visRoomsExp)
    }, [startDate, endDate])
 
 
@@ -89,6 +98,8 @@ export const TopVisRoomsChart: React.FC = () => {
     statSortedFiltered.map((item: any) => {
       chartState.options.labels.push(item.name_room)
       chartState.series.push(item.count_visits)
+
+      visRoomsExp.push({roomName:item.name_room, countVisits:item.count_visits})
     })
 
   return (

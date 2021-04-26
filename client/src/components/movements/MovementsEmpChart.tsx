@@ -38,10 +38,11 @@ const useStyles = makeStyles(() => ({
 
 interface propsMovesChart {
   idEmp: string
-  setOneDayMovesExp:Function
+  setOneDayMovesExp: Function
 }
 
 interface IExpObg {
+  idEmp: any
   day: any
   moves: any
 }
@@ -54,6 +55,7 @@ export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChar
   const isLoading = useTypedSelector((state) => state.move.oneDayLoading)
   const dispatch = useDispatch()
   const oneDayMovesExp:IExpObg = {
+    idEmp: props.idEmp,
     day: selectedDate.toLocaleDateString(),
     moves:[]
   }

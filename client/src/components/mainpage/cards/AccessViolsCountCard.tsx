@@ -67,8 +67,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface IViolsCount{
+  setExportJSON: Function
+}
 
-export const AccessViolsCountCard: React.FC = () => {
+
+
+export const AccessViolsCountCard: React.FC<IViolsCount> = (props:IViolsCount) => {
   const classes = useStyles()
   const accessViols = useTypedSelector((state) => state.viol.viols)
   const isLoading = useTypedSelector((state) => state.viol.loading)
@@ -76,9 +81,14 @@ export const AccessViolsCountCard: React.FC = () => {
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
 
+
   useEffect(() => {
     dispatch(getAccessViols(startDate, endDate))
+    props.setExportJSON(accessViols.length)
   }, [startDate, endDate])
+
+    
+
 
   return (
     <React.Fragment>

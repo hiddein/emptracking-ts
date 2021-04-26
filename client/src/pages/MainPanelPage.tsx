@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Grid,
   makeStyles,
@@ -19,6 +20,9 @@ import { TopLatesDepsChart } from "../components/mainpage/TopLatesDepsChart"
 import { TopMissOnWorkPlaceChart } from "../components/mainpage/TopMissOnWorkPlaceChart"
 import { TopVisRoomsChart } from "../components/mainpage/TopVisRoomsChart"
 import { RangePicker } from "../components/RangePicker"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import SaveIcon from '@material-ui/icons/Save';
+
 
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -73,12 +77,54 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   }
 }))
+interface IExpObg {
+  startDate: string
+  endDate: string
+  accessCount: string
+  latenessTop: object
+  latenessCount: string
+  workHoursCount: string
+  topAccessChart: object
+  topLatenessChart: object
+  topWorkHoursChart: object
+  topVisRoomsChart: object
+}
 
 export const MainPanelPage: React.FC = () => {
   const classes = useStyles()
-  const dispatch = useDispatch()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
 
+  const [accessCountJSON, setAccessCountJSON] = useState<string>('')
+  const [latenessTopJSON, setLatenessTopJSON] = useState<object>({})
+  const [latenessCountJSON, setLatenessCountJSON] = useState<string>('')
+  const [workHoursCountJSON, setWorkHoursCountJSON] = useState<string>('')
+  const [accessViolsChartJSON, setAccessViolsChartJSON] = useState<object>({})
+  const [latenessChartJSON, setLatenessChartJSON] = useState<object>({})
+  const [workHoursChartJSON, setWorkHoursChartJSON] = useState<object>({})
+  const [topVisRoomsChartJSON, setTopVisRoomsChartJSON] = useState<object>({})
 
+  const exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
+    accessCount: accessCountJSON,
+    latenessTop: latenessTopJSON,
+    latenessCount: latenessCountJSON,
+    workHoursCount: workHoursCountJSON,
+    topAccessChart: accessViolsChartJSON,
+    topLatenessChart: latenessChartJSON,
+    topWorkHoursChart: workHoursChartJSON,
+    topVisRoomsChart: topVisRoomsChartJSON
+  }
+  
+
+  const fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
+  const onSaveButtonClickHandler = () =>  {
+    saveAs(fileToSave, `dashboardData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  }
 
   return (
     <div className={classes.container1}>
@@ -88,6 +134,7 @@ export const MainPanelPage: React.FC = () => {
             Главная панель
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
           <RangePicker />
           </Card>
         </Grid>
@@ -96,33 +143,33 @@ export const MainPanelPage: React.FC = () => {
         <Grid  item xs={12} md={6}>
         <Grid spacing={2} container  >
         <Grid  item xs={12} md={6}>
-          <Card className={classes.paperInfo}><TopLatenessCard /></Card>
+          <Card className={classes.paperInfo}><TopLatenessCard  setExportJSON= {setLatenessTopJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><LatenessCountCard /></Card>
+          <Card className={classes.paperInfo}><LatenessCountCard setExportJSON= {setLatenessCountJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><WorkhoursViolsCountCard /></Card>
+          <Card className={classes.paperInfo}><WorkhoursViolsCountCard setExportJSON= {setWorkHoursCountJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><AccessViolsCountCard /></Card>
+          <Card className={classes.paperInfo}><AccessViolsCountCard setExportJSON= {setAccessCountJSON}/></Card>
         </Grid>
         </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><TopMissOnWorkPlaceChart /></Card>
+          <Card className={classes.paper}><TopMissOnWorkPlaceChart setExportJSON= {setWorkHoursChartJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><TopAccessViolsChart /></Card>
+          <Card className={classes.paper}><TopAccessViolsChart setExportJSON= {setAccessViolsChartJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
 
         <Grid spacing={2} container >
         <Grid  item xs={12} md={6}>
-          <Card className={classes.paperLateStats}><TopVisRoomsChart /></Card>
+          <Card className={classes.paperLateStats}><TopVisRoomsChart setExportJSON= {setTopVisRoomsChartJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperMostVis}><TopLatesDepsChart /></Card>
+          <Card className={classes.paperMostVis}><TopLatesDepsChart setExportJSON= {setLatenessChartJSON}/></Card>
         </Grid>
 
         </Grid>

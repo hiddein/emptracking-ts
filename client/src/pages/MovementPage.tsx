@@ -15,6 +15,7 @@ import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
 import { saveAs } from "file-saver"
 import SaveIcon from '@material-ui/icons/Save';
+import { useTypedSelector } from "../hooks/useTypedSelector"
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -86,6 +87,8 @@ export const MovementPage: React.FC = () => {
   const [selectedEmp, SetselectedEmp] = useState("")
   const [oneDayMovesExp, setOneDayMovesExp] = useState<object>({})
   const [movesExp, setMovesExp] = useState<object>({})
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
 
   const exportJSON: IExpObg = {
     moves: movesExp,
@@ -96,7 +99,7 @@ export const MovementPage: React.FC = () => {
     type: "application/json",
   })
 
-  const onSaveButtonClickHandler = () =>  saveAs(fileToSave, "movesData.json")
+  const onSaveButtonClickHandler = () =>  saveAs(fileToSave, `movesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
 
   return (
     <div className={classes.container1}>

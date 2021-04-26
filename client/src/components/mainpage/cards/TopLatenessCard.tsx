@@ -65,8 +65,11 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface ITopLateness{
+  setExportJSON: Function
+}
 
-export const TopLatenessCard: React.FC = () => {
+export const TopLatenessCard: React.FC<ITopLateness> = (props:ITopLateness) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.latenessByEmp)
   const isLoading = useTypedSelector((state) => state.lateness.loadingByEmp)
@@ -76,7 +79,17 @@ export const TopLatenessCard: React.FC = () => {
 
   useEffect(() => {
     dispatch(getLatenessByEmp(startDate, endDate))
+    props.setExportJSON({
+      nameEmp: latenessSortedFiltered.length != 0 ?`${latenessSortedFiltered[0].last_name} ${latenessSortedFiltered[0].first_name} ${latenessSortedFiltered[0].middle_name}`:null,
+      depEmp: latenessSortedFiltered.length != 0 ? latenessSortedFiltered[0].name_dep : null,
+      countLateness: latenessSortedFiltered.length != 0 ? latenessSortedFiltered[0].count_lateness:null
+    })
+   
   }, [startDate, endDate])
+
+    
+
+
 
 
   const latenessSorted = _.sortBy(lateness, 'count_lateness')

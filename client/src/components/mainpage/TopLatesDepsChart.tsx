@@ -23,16 +23,22 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export const TopLatesDepsChart: React.FC = () => {
+interface ITopLatesChart{
+  setExportJSON: Function
+}
+
+export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChart) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
   const dispatch = useDispatch()
   const startDate = useTypedSelector(state => state.dates.startDate)
   const endDate = useTypedSelector(state => state.dates.endDate)
+  const topLatesExp:Array<object> = []
 
   useEffect(() => {
     dispatch(getLateness(startDate, endDate))
+    props.setExportJSON(topLatesExp)
    }, [startDate, endDate])
 
    interface chartStateInterface {
@@ -89,6 +95,8 @@ export const TopLatesDepsChart: React.FC = () => {
   resultlatenessSortedSorted.map((item: any) => {
     chartState.options.labels.push(item.name_dep)
     chartState.series.push(item.count_viols)
+
+    topLatesExp.push({depName:item.name_dep, countLates:item.count_viols})
   })
   
 

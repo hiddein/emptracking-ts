@@ -66,8 +66,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface IWorkViols{
+  setExportJSON: Function
+}
 
-export const WorkhoursViolsCountCard: React.FC = () => {
+
+export const WorkhoursViolsCountCard: React.FC<IWorkViols> = (props:IWorkViols) => {
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.workHoursViol.viols)
   const isLoading = useTypedSelector((state) => state.workHoursViol.loading)
@@ -78,6 +82,7 @@ export const WorkhoursViolsCountCard: React.FC = () => {
 
   useEffect(() => {
     dispatch(getWorkHoursViols(startDate, endDate))
+    props.setExportJSON(viols.length)
   }, [startDate, endDate])
 
   return (
