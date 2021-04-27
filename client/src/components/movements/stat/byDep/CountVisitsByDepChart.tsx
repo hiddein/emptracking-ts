@@ -31,6 +31,11 @@ const useStyles = makeStyles(() => ({
 interface propsStatChart {
   nameRoom: string
   SetselectedDepOnChart:Function
+  setExportJSON: Function
+}
+
+interface IExpObg {
+  data: any
 }
 
 export const CountVisitsByDepChart: React.FC<propsStatChart> = (
@@ -43,14 +48,19 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
-
+  const dataExp:IExpObg = {
+    data:[]
+  }
   
   useEffect(() => {
     dispatch(getCountMovesInRangeDepSort(startDate, endDate))
    }, [startDate, endDate])
 
 
- 
+   useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.nameRoom])
+
 
   interface chartStateInterface {
     series: any
@@ -123,6 +133,11 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
   statFiltered.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_visits)
+
+    dataExp.data.push({
+      nameDep: item.name_dep,
+      countVisits: item.count_visits
+    })
   })
   return (
     <React.Fragment>

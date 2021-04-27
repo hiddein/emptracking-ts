@@ -99,7 +99,7 @@ export const LatenessCard: React.FC<propsLatenessCard> = (
           <div className={classes.cardContent}>
             <Typography variant="h6" className={classes.cardContentCount}>
               {" "}
-              {latenessFiltered[0].count_lateness}{" "}
+              {latenessFiltered.length == 0 ? '0' : latenessFiltered[0].count_lateness}{" "}
             </Typography>
             <Typography variant="h6" className={classes.cardContentLabel}>
               {" "}

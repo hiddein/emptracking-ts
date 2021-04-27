@@ -73,7 +73,7 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
 
    useEffect(() => {
     props.setMovesExp(movesExp)
-   }, [props.empId])
+   }, [startDate, endDate,props.empId])
 
 
   const columns: GridColDef[] = [
@@ -123,7 +123,6 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
     })
 
     movesExp.rows.push([
-      move.move_id,
       `${move.last_name} ${move.first_name} ${move.middle_name} `,
       move.name_room,
       move.time_enter,

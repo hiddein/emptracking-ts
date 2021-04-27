@@ -34,8 +34,12 @@ const useStyles = makeStyles(() => ({
 interface propsDepChart {
   depName:string
   SetselectedEmpOnChart:Function
+  setExportJSON: Function
 }
-
+interface IExpObg {
+  depName: string
+  data: any
+}
 export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart) => {
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.viol.violsByEmp)
@@ -44,10 +48,19 @@ export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepCh
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
   const violsFiltered = viols.filter((item) => item.name_dep == props.depName)
-  
+  const dataExp:IExpObg = {
+    depName: props.depName,
+    data:[]
+  }
+
   useEffect(() => {
     dispatch(getAccessViolsByEmp(startDate, endDate))
    }, [startDate, endDate, props.depName ])
+
+   useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.depName])
+
 
    interface chartStateInterface {
     series: any
@@ -121,6 +134,11 @@ export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepCh
   violsFiltered.map((item: any) => {
     chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
     chartState.series[0].data.push(item.count)
+
+    dataExp.data.push({
+      nameEmp: `${item.last_name} ${item.first_name}`,
+      countViols: item.count
+    })
   })
 
 

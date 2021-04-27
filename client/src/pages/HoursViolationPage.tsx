@@ -13,6 +13,9 @@ import { blue } from "@material-ui/core/colors"
 import { RangePicker } from "../components/RangePicker"
 import { LateEmpsGrid } from "../components/violation/lateEmpsViolation/LateEmpsGrid"
 import { WorkHoursGrid } from "../components/violation/workHoursViolation/WorkHoursGrid"
+import SaveIcon from "@material-ui/icons/Save"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -60,18 +63,40 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface IExpObg {
+  lateness?: object
+  workHours?: object
+}
+
 export const HoursViolationPage: React.FC = () => {
   const classes = useStyles()
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
   const [lateSelected, SetLateSelected] = useState(true)
   const [hoursSelected, SetHoursSelected] = useState(false)
+  const [latenessJSON, setLatenessJSON] = useState<object>({})
+  const [workHoursJSON, setWorkHoursJSON] = useState<object>({})
 
+  let exportJSON: IExpObg = {}
 
+  lateSelected
+    ? (exportJSON.lateness = latenessJSON)
+    : (exportJSON.workHours = workHoursJSON)
 
+  var fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
 
   const handleSelected = () => {
     SetHoursSelected(!hoursSelected)
     SetLateSelected(!lateSelected)
   }
+
+  const onSaveButtonClickHandler = () =>
+    saveAs(
+      fileToSave,
+      `statMovesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
 
   return (
     <div className={classes.container1}>
@@ -82,6 +107,9 @@ export const HoursViolationPage: React.FC = () => {
           </Typography>
 
           <Card className={classes.datePickerContainer}>
+            <Button onClick={onSaveButtonClickHandler}>
+              <SaveIcon />
+            </Button>
             <div className={classes.buttons}>
               <ButtonGroup color="primary" className={classes.buttonsGroup}>
                 <Button
@@ -105,11 +133,7 @@ export const HoursViolationPage: React.FC = () => {
             <RangePicker />
           </Card>
         </Grid>
-        {lateSelected ? (
-          <LateEmpsGrid />
-        ) : (
-          <WorkHoursGrid />
-        )}
+        {lateSelected ? <LateEmpsGrid setExportJSON={setLatenessJSON} /> : <WorkHoursGrid setExportJSON={setWorkHoursJSON} />}
       </Grid>
     </div>
   )

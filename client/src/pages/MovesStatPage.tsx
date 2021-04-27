@@ -19,9 +19,7 @@ import { CountVisitsByEmpChart } from "../components/movements/stat/byDep/CountV
 import { StatTable } from "../components/movements/stat/StatTable"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
-import { getEmps } from "../store/action-creators/emps"
-import { getRooms } from "../store/action-creators/rooms"
-import { getCountMovesInRange, getCountMovesInRangeDaySort, getCountMovesInRangeDepSort } from "../store/action-creators/stat"
+import SaveIcon from "@material-ui/icons/Save"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -90,6 +88,12 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 
+interface IExpObg {
+  statTableData: object
+  byEmp?: object
+  byDep?: object
+}
+
 export const MovesStatPage: React.FC = () => {
   const classes = useStyles()
   const [empsSelected, SetEmpsSelected] = useState(true)
@@ -98,8 +102,32 @@ export const MovesStatPage: React.FC = () => {
   const [selectedRoomOnChart, SetselectedRoomOnChart] = useState("")
   const [selectedDepOnChart, SetselectedDepOnChart] = useState("")
   const [selectedRoom, SetselectedRoom] = useState("")
+  const [statTableJSON, setStatTableJSON] = useState<object>({})
+  const [statChartByEmpJSON, setStatChartByEmpJSON] = useState<object>({})
+  const [statChartByEmpRoomJSON, setStatChartByEmpRoomJSON] = useState<object>({})
+  const [statChartByDepJSON, setStatChartByDepJSON] = useState<object>({})
+  const [statChartByDepEmpJSON, setStatChartByDepEmpJSON] = useState<object>({})
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
 
-  
+  let exportJSON: IExpObg = {
+    statTableData: statTableJSON,
+  }
+
+  empsSelected
+    ? (exportJSON.byEmp = {
+        statChartByEmp: statChartByEmpJSON,
+        statChartByEmpRoom: statChartByEmpRoomJSON,
+      })
+    : (exportJSON.byDep = {
+        statChartByDep: statChartByDepJSON,
+        statChartByDepEmp: statChartByDepEmpJSON,
+      })
+
+  var fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
   const handleSelected = () => {
     SetselectedEmp("")
     SetselectedRoom("")
@@ -108,7 +136,11 @@ export const MovesStatPage: React.FC = () => {
     SetEmpsSelected(!empsSelected)
   }
 
-
+  const onSaveButtonClickHandler = () =>
+    saveAs(
+      fileToSave,
+      `statMovesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
 
   return (
     <div className={classes.container1}>
@@ -119,6 +151,10 @@ export const MovesStatPage: React.FC = () => {
           </Typography>
 
           <Card className={classes.datePickerContainer}>
+            <Button onClick={onSaveButtonClickHandler}>
+              <SaveIcon />
+            </Button>
+
             <div className={classes.buttons}>
               <ButtonGroup color="primary" className={classes.buttonsGroup}>
                 <Button
@@ -143,16 +179,18 @@ export const MovesStatPage: React.FC = () => {
           </Card>
         </Grid>
 
-        <Grid  item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-          {selectedEmp != "" ? (
+            {selectedEmp != "" ? (
               <div className={classes.selectedEmpContainer}>
                 <div className={classes.selectedEmpLabel}>
                   <Typography
                     variant="subtitle2"
                     className={classes.selectedEmpFIO}
                   >
-                  {`${selectedEmp.split(' ')[2]} ${selectedEmp.split(' ')[3]} ${selectedEmp.split(' ')[4]}`}
+                    {`${selectedEmp.split(" ")[2]} ${
+                      selectedEmp.split(" ")[3]
+                    } ${selectedEmp.split(" ")[4]}`}
                   </Typography>
                 </div>
                 <Button
@@ -167,14 +205,14 @@ export const MovesStatPage: React.FC = () => {
                 </Button>
               </div>
             ) : null}
-            {selectedRoom != "" ?  (
+            {selectedRoom != "" ? (
               <div className={classes.selectedEmpContainer}>
                 <div className={classes.selectedEmpLabel}>
                   <Typography
                     variant="subtitle2"
                     className={classes.selectedEmpFIO}
                   >
-                  {selectedRoom}
+                    {selectedRoom}
                   </Typography>
                 </div>
                 <Button
@@ -190,35 +228,54 @@ export const MovesStatPage: React.FC = () => {
               </div>
             ) : null}
 
-            <StatTable empId={selectedEmp.split(' ')[0]} nameRoom={selectedRoom}/>
+            <StatTable
+              empId={selectedEmp.split(" ")[0]}
+              nameRoom={selectedRoom}
+              setExportJSON={setStatTableJSON}
+            />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-             {empsSelected ? (
-              <SearchEmpsTable updateData={SetselectedEmp} height={310}  />
+            {empsSelected ? (
+              <SearchEmpsTable updateData={SetselectedEmp} height={310} />
             ) : (
               <RoomSearchTable SetselectedRoom={SetselectedRoom} height={310} />
             )}
-          
           </Card>
         </Grid>
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
             {empsSelected ? (
-              <CountVisitsByEmpsDepChart idEmp={selectedEmp.split(' ')[0]} SetselectedRoomOnChart={SetselectedRoomOnChart}  />
+              <CountVisitsByEmpsDepChart
+                idEmp={selectedEmp.split(" ")[0]}
+                SetselectedRoomOnChart={SetselectedRoomOnChart}
+                setExportJSON={setStatChartByEmpJSON}
+              />
             ) : (
-              <CountVisitsByDepChart nameRoom={selectedRoom} SetselectedDepOnChart={SetselectedDepOnChart} />
+              <CountVisitsByDepChart
+                nameRoom={selectedRoom}
+                SetselectedDepOnChart={SetselectedDepOnChart}
+                setExportJSON={setStatChartByDepJSON}
+              />
             )}
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper1}>
             {empsSelected ? (
-              <CountVisitsByEmpPerRangeChart idEmp={selectedEmp.split(' ')[0]}  selectedRoomOnChart={selectedRoomOnChart} />
+              <CountVisitsByEmpPerRangeChart
+                idEmp={selectedEmp.split(" ")[0]}
+                selectedRoomOnChart={selectedRoomOnChart}
+                setExportJSON={setStatChartByEmpRoomJSON}
+              />
             ) : (
-              <CountVisitsByEmpChart nameDep={selectedDepOnChart} nameRoom={selectedRoom}/>
+              <CountVisitsByEmpChart
+                nameDep={selectedDepOnChart}
+                nameRoom={selectedRoom}
+                setExportJSON={setStatChartByDepEmpJSON}
+              />
             )}
           </Card>
         </Grid>

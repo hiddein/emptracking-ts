@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Grid,
   makeStyles,
@@ -14,6 +15,9 @@ import { AccessViolationTable } from "../components/violation/accessViolation/Ac
 import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
 import { DepsAccessViolChart } from "../components/violation/accessViolation/DepsAccessViolChart"
 import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpAccessViolChart"
+import SaveIcon from "@material-ui/icons/Save"
+import { useTypedSelector } from "../hooks/useTypedSelector"
+
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -57,12 +61,41 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
+interface IExpObg {
+  violsTableData: object
+  chartByDep: object
+  chartByEmps: object
+  chartByEmp: object
+}
+
 export const AccessViolationPage: React.FC = () => {
   const classes = useStyles()
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
   const [selectedDep, SetselectedDep] = useState("")
   const [selectedEmp, SetselectedEmp] = useState("")
+  const [chartByEmpJSON, setChartByEmpJSON] = useState<object>({})
+  const [chartByEmpsJSON, setChartByEmpsJSON] = useState<object>({})
+  const [chartByDepJSON, setChartByDepJSON] = useState<object>({})
+  const [tableJSON, setTableJSON] = useState<object>({})
 
+  let exportJSON: IExpObg = {
+    violsTableData: tableJSON,
+    chartByDep: chartByDepJSON,
+    chartByEmps: chartByEmpsJSON,
+    chartByEmp: chartByEmpJSON
+  }
 
+  var fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
+  const onSaveButtonClickHandler = () =>
+    saveAs(
+      fileToSave,
+      `accessViolsData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
+    
   return (
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
@@ -71,20 +104,23 @@ export const AccessViolationPage: React.FC = () => {
             Нарушения прав доступа в помещения
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Button onClick={onSaveButtonClickHandler}>
+              <SaveIcon />
+            </Button>
           <RangePicker />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><AccessViolationTable /></Card>
+          <Card className={classes.paper}><AccessViolationTable setExportJSON={setTableJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><DepsAccessViolChart SetselectedDepOnChart={SetselectedDep} idEmp={selectedEmp} depName={selectedDep}  SetselectedEmpOnChart={SetselectedEmp}/></Card>
+          <Card className={classes.paper}><DepsAccessViolChart SetselectedDepOnChart={SetselectedDep} idEmp={selectedEmp} depName={selectedDep}  SetselectedEmpOnChart={SetselectedEmp} setExportJSON={setChartByDepJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><EmpAccessViolChart idEmp={selectedEmp} /></Card>
+          <Card className={classes.paper}><EmpAccessViolChart idEmp={selectedEmp} setExportJSON={setChartByEmpJSON}/></Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><ByEmpsAccessViolChart depName={selectedDep} SetselectedEmpOnChart={SetselectedEmp}/></Card>
+          <Card className={classes.paper}><ByEmpsAccessViolChart depName={selectedDep} SetselectedEmpOnChart={SetselectedEmp} setExportJSON={setChartByEmpsJSON}/></Card>
         </Grid>
         
       </Grid>

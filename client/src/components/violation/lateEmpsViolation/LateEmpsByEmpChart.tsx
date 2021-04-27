@@ -32,6 +32,11 @@ const useStyles = makeStyles(() => ({
 
 interface propsEmpChart {
   depName:string
+  setExportJSON: Function
+}
+interface IExpObg {
+  depName: string
+  data: any
 }
 
 export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart) => {
@@ -42,11 +47,19 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
   const startDate = useTypedSelector(state => state.dates.startDate)
   const endDate = useTypedSelector(state => state.dates.endDate)
   const latenessFiltered = lateness.filter((item) => item.name_dep == props.depName)
-
+  const dataExp:IExpObg = {
+    depName: props.depName,
+    data:[]
+  }
 
   useEffect(() => {
     dispatch(getLatenessByEmp(startDate, endDate))
    }, [startDate, endDate])
+
+   useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.depName])
+
 
    interface chartStateInterface {
     series: any
@@ -115,6 +128,11 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
   latenessFiltered.map((item: any) => {
     chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
     chartState.series[0].data.push(item.count_lateness)
+
+    dataExp.data.push({
+      nameEmp: `${item.last_name} ${item.first_name}`,
+      countLateness: item.count
+    })
   })
 
   return (

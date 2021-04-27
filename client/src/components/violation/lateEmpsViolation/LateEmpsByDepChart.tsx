@@ -33,12 +33,26 @@ const useStyles = makeStyles(() => ({
 interface propsDepChart {
   SetselectedDepOnChart:Function
   depName:string
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
 }
 
 export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+  const dataExp:IExpObg = {
+    data:[]
+  }
+
+  
+  useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.depName])
 
   interface chartStateInterface {
     series: any
@@ -117,6 +131,11 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
   resultlatenessSortedSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
+
+    dataExp.data.push({
+      nameDep: item.name_dep,
+      countLateness: item.count_viols
+    })
   })
   return (
     <React.Fragment>

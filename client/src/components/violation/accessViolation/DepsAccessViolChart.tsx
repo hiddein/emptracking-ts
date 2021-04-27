@@ -36,6 +36,10 @@ interface propsDepChart {
   SetselectedEmpOnChart:Function
   idEmp:string
   depName:string
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
 }
 
 export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart) => {
@@ -45,11 +49,17 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
-
+  const dataExp:IExpObg = {
+    data:[]
+  }
   
   useEffect(() => {
     dispatch(getAccessViols(startDate, endDate))
    }, [startDate, endDate])
+
+   useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.idEmp, props.depName])
 
 
 
@@ -130,6 +140,11 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
   resultViolsSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
+
+    dataExp.data.push({
+      nameDep: item.name_dep,
+      countViols: item.count_viols
+    })
   })
 
   return (

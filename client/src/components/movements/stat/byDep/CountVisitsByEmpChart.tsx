@@ -32,6 +32,10 @@ const useStyles = makeStyles(() => ({
 interface propsStatChart {
   nameDep: string
   nameRoom: string
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
 }
 
 export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatChart) => {
@@ -41,10 +45,19 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
   const stat = useTypedSelector((state) => state.stat.stat)
   const isLoading = useTypedSelector((state) => state.stat.loading)
   const dispatch = useDispatch()
+  const dataExp:IExpObg = {
+    data:[]
+  }
 
   useEffect(() => {
     dispatch(getCountMovesInRange(startDate, endDate))
    }, [startDate, endDate])
+
+   
+   useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.nameRoom, props.nameDep])
+
 
   const statFiltered = stat.filter((item) => item.name_room == props.nameRoom && item.name_dep==props.nameDep)
 
@@ -96,6 +109,11 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
     statFiltered.map((item: any) => {
       chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
       chartState.series[0].data.push(item.count_visits)
+
+      dataExp.data.push({
+        nameEmp: `${item.last_name} ${item.first_name}`,
+        countVisits: item.count_visits
+      })
     })
   return (
     <React.Fragment>

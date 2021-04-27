@@ -48,6 +48,13 @@ const CustomToolbar = () => {
 interface propsTable {
   empId: string
   nameRoom:string
+  setExportJSON: Function
+
+}
+
+interface IExpObg {
+  columns: any[]
+  rows: any[]
 }
 
 export const StatTable: React.FC<propsTable> = (props: propsTable) => {
@@ -56,11 +63,18 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
   const stat = useTypedSelector((state) => state.stat.stat)
   const isLoading = useTypedSelector((state) => state.stat.loading)
   const dispatch = useDispatch()
+  const movesExp:IExpObg = {
+    columns: [],
+    rows:[]
+  }
 
   useEffect(() => {
     dispatch(getCountMovesInRange(startDate, endDate))
    }, [startDate, endDate])
 
+   useEffect(() => {
+    props.setExportJSON(movesExp)
+   }, [startDate, endDate,props.empId])
 
 
   const columns: GridColDef[] = [
@@ -69,6 +83,10 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
     { field: "room", headerName: "Помещение", flex: 1, type: "string" },
     { field: "countVis", headerName: "Количество посещений", flex: 0.8, type: "number", },
   ]
+
+  columns.map((col) => {
+    movesExp.columns.push(col.headerName)
+  })
 
   interface Stat {
     id:number
@@ -89,14 +107,22 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
     movesFiltered = stat.filter((item) => item.name_room == props.nameRoom)
   } 
 
-  movesFiltered.map((item: any,index:number) =>
+  movesFiltered.map((item: any,index:number) =>{
     rows.push({
       id: index,
       fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name} `,
       nameDep: item.name_dep,
       room: item.name_room,
-      countVis: item.count_visits,
+      countVis: item.count_visits
     })
+
+    movesExp.rows.push([
+      `${item.last_name} ${item.first_name} ${item.middle_name} `,
+      item.name_dep,
+      item.name_room,
+      item.count_visits,
+    ])
+  }
   )
 
   return (

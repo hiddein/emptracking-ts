@@ -1,5 +1,5 @@
 import { Button, Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Chart from "react-apexcharts"
 import MomentUtils from "@date-io/moment"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
@@ -26,6 +26,10 @@ const useStyles = makeStyles(() => ({
 interface propsDepChart {
   SetselectedDepOnChart: Function
   depName: string
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
 }
 
 export const WorkHoursByDepChart: React.FC<propsDepChart> = (
@@ -34,6 +38,16 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.workHoursViol.viols)
   const isLoading = useTypedSelector((state) => state.workHoursViol.loading)
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
+  const dataExp:IExpObg = {
+    data:[]
+  }
+
+  useEffect(() => {
+    props.setExportJSON(dataExp)
+   }, [startDate, endDate,props.depName])
+
 
   interface chartStateInterface {
     series: any
@@ -118,6 +132,11 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
   resultlatenessSortedSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
+
+    dataExp.data.push({
+      nameDep: item.name_dep,
+      countViols: item.count_viols
+    })
   })
 
   return (

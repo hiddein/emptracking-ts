@@ -45,25 +45,40 @@ const CustomToolbar = () => {
   )
 }
 
+interface propsTable {
+  setExportJSON: Function
+}
+interface IExpObg {
+  columns: any[]
+  rows: any[]
+}
 
-export const LateEmpsTable: React.FC = () => {
+export const LateEmpsTable: React.FC<propsTable> = (props: propsTable) => {
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
   const dispatch = useDispatch()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const jsonExp: IExpObg = {
+    columns: [],
+    rows: [],
+  }
 
   useEffect(() => {
     dispatch(getLateness(startDate, endDate))
-   }, [startDate, endDate])
-
+    props.setExportJSON(jsonExp)
+  }, [startDate, endDate])
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },
     { field: "depName", headerName: "Отдел", flex: 1, type: "string" },
-    { field: "dateViol", headerName: "Дата нарушения", flex: 1, type: "date", },
-    { field: "timeViol", headerName: "Время опоздания", flex: 1, type: "time", }
+    { field: "dateViol", headerName: "Дата нарушения", flex: 1, type: "date" },
+    { field: "timeViol", headerName: "Время опоздания", flex: 1, type: "time" },
   ]
+
+  columns.map((col) => {
+    jsonExp.columns.push(col.headerName)
+  })
 
   interface Lateness {
     id: number
@@ -71,28 +86,44 @@ export const LateEmpsTable: React.FC = () => {
     depName: string
     dateViol: string
     timeViol: string
-
   }
   const rows: Lateness[] = []
-  lateness.map((item:any, index:any) => rows.push({id: index, fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name}`, depName: item.name_dep, dateViol: item.date, timeViol: item.late_time}))
- 
+  lateness.map((item: any, index: any) => {
+    rows.push({
+      id: index,
+      fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name}`,
+      depName: item.name_dep,
+      dateViol: item.date,
+      timeViol: item.late_time,
+    })
+
+    jsonExp.rows.push([
+      `${item.last_name} ${item.first_name} ${item.middle_name} `,
+      item.name_dep,
+      item.date,
+      item.late_time,
+    ])
+  }
+  )
+
   return (
     <div style={{ height: 699, width: "100%" }}>
-       {isLoading ? (
+      {isLoading ? (
         <Loader size={60} />
       ) : (
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={18}
-        rowHeight={28}
-        localeText={rusLocale}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        disableColumnSelector={true}
-        disableColumnMenu={true}
-      />)}
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={18}
+          rowHeight={28}
+          localeText={rusLocale}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          disableColumnSelector={true}
+          disableColumnMenu={true}
+        />
+      )}
     </div>
   )
 }
