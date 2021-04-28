@@ -20,16 +20,27 @@ const useStyles = makeStyles(() => ({
     
 }))
 
-export const CountVisitsChart: React.FC = () => {
+interface propsStatChart {
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
+}
+
+export const CountVisitsChart: React.FC<propsStatChart> = (props: propsStatChart) => {
   const classes = useStyles()
   const stat = useTypedSelector((state) => state.stat.statSortByDefault)
   const isLoading = useTypedSelector((state) => state.stat.loadingSortByDefault)
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
+  const dataExp:IExpObg = {
+    data:[]
+  }
 
   useEffect(() => {
     dispatch(getCountMovesInRangeByDefault(startDate, endDate))
+    props.setExportJSON(dataExp)
    }, [startDate, endDate])
 
 
@@ -99,6 +110,11 @@ export const CountVisitsChart: React.FC = () => {
   stat.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_room)
     chartState.series[0].data.push(item.count_visits)
+
+    dataExp.data.push({
+      nameRoom: item.name_room,
+      countVisits: item.count_visits
+    })
   })
 
 

@@ -19,9 +19,9 @@ import { MostVisitedChart } from "../components/emps/MostVisitedChart"
 import { NewEmpWindow } from "../components/emps/NewEmpWindow"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RangePicker } from "../components/RangePicker"
-import { useTypedSelector } from "../hooks/useTypedSelector"
-import { getEmps } from "../store/action-creators/emps"
+import SaveIcon from "@material-ui/icons/Save"
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { useTypedSelector } from "../hooks/useTypedSelector"
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -105,12 +105,40 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   
 }))
+interface IExpObg {
+  startDate: string
+  endDate:string
+  empInfo: object
+  empAccess: object
+  endLates:string
+  empViolsAccess: string
+  empMostVis: object
+}
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
   const [openSnack, setOpenSnack] = React.useState(false);
-  const [selectedEmp, SetselectedEmp] = useState("")
+  const [selectedEmp, setSelectedEmp] = useState("")
   const [windowOpen, setWindowOpen] = React.useState(false)
+  const [empInfoJSON, setEmpInfoJSON] = useState<object>({})
+  const [empAccessJSON, setEmpAccessJSON] = useState<object>({})
+  const [empLates, setEmpLates] = useState("")
+  const [empViolsAccess, setEmpViolsAccess] = useState("")
+  const [empMostVisJSON, setEmpMostVisJSON] = useState<object>({})
+
+
+  let exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
+    empInfo: empInfoJSON,
+    empAccess: empAccessJSON,
+    endLates: empLates,
+    empViolsAccess: empViolsAccess,
+    empMostVis: empMostVisJSON
+  }
+
 
   const handleClickOpen = () => {
     setWindowOpen(true);
@@ -123,9 +151,15 @@ export const EmployeePage: React.FC = () => {
     setOpenSnack(false);
   };
 
+  const fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
+  const onSaveButtonClickHandler = () =>  {
+    saveAs(fileToSave, `empData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  }
+
   return (
-    //<MovementsTable />
-    //<MovementsEmpBar />
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
         {/* Заголовок страницы */}
@@ -134,6 +168,8 @@ export const EmployeePage: React.FC = () => {
             Cотрудники предприятия
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
+
           <Button className={classes.selectedEmpButton} onClick={handleClickOpen}>Новый сотрудник</Button>
           <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} setOpenSnack={setOpenSnack} />
           <RangePicker />
@@ -143,34 +179,34 @@ export const EmployeePage: React.FC = () => {
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-          <SearchEmpsTable updateData={SetselectedEmp} height={310} />
+          <SearchEmpsTable updateData={setSelectedEmp} height={310} />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <EmpCard idEmp={selectedEmp.split(' ')[0]}  />
+            <EmpCard idEmp={selectedEmp.split(' ')[0]}  setExportJSON= {setEmpInfoJSON} setSelectedEmp={setSelectedEmp}/>
           </Card>
         </Grid>
         <Grid item  xs={12} md={6}>
           <Grid container spacing={2}>
             <Grid item container spacing={2} xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}><LatenessCard idEmp={selectedEmp.split(' ')[0]} /></Card>
+                <Card className={classes.papepSmallCard}><LatenessCard idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpLates}/></Card>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}><AccessViolsCard idEmp={selectedEmp.split(' ')[0]} /></Card>
+                <Card className={classes.papepSmallCard}><AccessViolsCard idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpViolsAccess}/></Card>
               </Grid>
             </Grid>
             <Grid item container  xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepBigCard}><MostVisitedChart idEmp={selectedEmp.split(' ')[0]} /></Card>
+                <Card className={classes.papepBigCard}><MostVisitedChart idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpMostVisJSON}/></Card>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <GetEmpAccessTable idEmp={selectedEmp.split(' ')[0]} />
+            <GetEmpAccessTable idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpAccessJSON}/>
           </Card>
         </Grid>
       </Grid>

@@ -89,6 +89,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface IExpObg {
+  startDate: string
+  endDate:string
   statTableData: object
   byEmp?: object
   byDep?: object
@@ -111,6 +113,8 @@ export const MovesStatPage: React.FC = () => {
   const endDate = useTypedSelector((state) => state.dates.endDate)
 
   let exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
     statTableData: statTableJSON,
   }
 

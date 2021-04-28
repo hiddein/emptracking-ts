@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface propsLatenessCard {
   idEmp: string
+  setExportJSON: Function
 }
 
 export const LatenessCard: React.FC<propsLatenessCard> = (
@@ -77,7 +78,9 @@ export const LatenessCard: React.FC<propsLatenessCard> = (
 
   useEffect(() => {
     dispatch(getLatenessByEmp(startDate, endDate))
-  }, [startDate, endDate])
+    props.setExportJSON(latenessFiltered.length == 0 ? '0' : latenessFiltered[0].count_lateness)
+
+  }, [startDate, endDate,props.idEmp])
 
   return (
     <React.Fragment>

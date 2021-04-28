@@ -49,16 +49,24 @@ const useStyles = makeStyles((theme: Theme) => ({
   openEditButton: {
     color: blue[600],
     backgroundColor: green[100],
+    marginRight: '10px'
 
   },
   headerContainer: {
     display: 'flex',
     justifyContent: 'space-between'
+  },
+  cancelButton: {
+    color: blue[600],
+    backgroundColor: blue[100],
+    marginRight: '10px'
   }
 }))
 
 interface propsEmpCard {
   idEmp: string
+  setSelectedEmp: Function
+  setExportJSON: Function
 }
 
 export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
@@ -69,13 +77,31 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
   const dispatch = useDispatch()
   const selectedEmp = emps.filter((item) => item.id_emp == props.idEmp)
   const [windowOpen, setWindowOpen] = React.useState(false)
-
+  
   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
       return;
     }
     setOpenSnack(false);
   };
+
+  useEffect(() => {
+    props.idEmp != '' ? props.setExportJSON({
+      lastName: selectedEmp[0].last_name,
+      firstName:selectedEmp[0].first_name,
+      middleName: selectedEmp[0].middle_name,
+      empDep: selectedEmp[0].name_dep,
+      photoEmp: selectedEmp[0].photo_emp,
+      dbEmp: selectedEmp[0].db_emp,
+      email: selectedEmp[0].email_emp,
+      telEmp: selectedEmp[0].tel_emp,
+      startTime: selectedEmp[0].start_time,
+      endTime: selectedEmp[0].end_time,
+      lunchTime: selectedEmp[0].lunch_time,
+      teaTime: selectedEmp[0].tea_time
+    }) :  props.setExportJSON({})
+  }, [props.idEmp])
+
 
   useEffect(() => {
     dispatch(getEmps())
@@ -95,7 +121,10 @@ export const EmpCard: React.FC<propsEmpCard> = (props: propsEmpCard) => {
           <div className={classes.headerContainer} >
       <Typography variant="h5">Карточка сотрудника</Typography>
       <EditEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen}  selectedEmp={selectedEmp} setOpenSnack={setOpenSnack}/>
+      <div>
       <Button className={classes.openEditButton} onClick={()=> setWindowOpen(true)}>Редактировать</Button>
+      <Button className={classes.cancelButton} onClick={()=> props.setSelectedEmp("")}>Отменить выбор</Button>
+      </div>
       </div>
         <div className={classes.titleEmpContainer}>
           <Avatar alt="Remy Sharp" src={`http://localhost:7000/${selectedEmp[0].photo_emp}`} className={classes.large} />

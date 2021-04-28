@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface propsAccessViolsCard {
   idEmp: string
+  setExportJSON: Function
 }
 
 export const AccessViolsCard: React.FC<propsAccessViolsCard> = (
@@ -79,7 +80,10 @@ export const AccessViolsCard: React.FC<propsAccessViolsCard> = (
 
   useEffect(() => {
     dispatch(getAccessViolsByEmp(startDate, endDate))
-  }, [startDate, endDate])
+    props.setExportJSON(violsFiltered.length == 0 ? `0`: violsFiltered[0].count)
+  }, [startDate, endDate,props.idEmp])
+
+  
 
   return (
     <React.Fragment>

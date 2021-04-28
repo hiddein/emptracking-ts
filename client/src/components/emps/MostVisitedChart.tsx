@@ -27,6 +27,10 @@ const useStyles = makeStyles(() => ({
 
 interface propsStatChart {
   idEmp: string
+  setExportJSON: Function
+}
+interface IExpObg {
+  data: any
 }
 
 export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart) => {
@@ -37,10 +41,16 @@ export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
   const statFiltered = stat.filter((item) => item.id_emp == props.idEmp)
-console.log(statFiltered)
+  const dataExp:IExpObg = {
+    data:[]
+  }
+
+
   useEffect(() => {
     dispatch(getCountMovesInRange(startDate, endDate))
-   }, [startDate, endDate])
+    props.setExportJSON(dataExp)
+
+   }, [startDate, endDate,props.idEmp])
 
 
    interface chartStateInterface {
@@ -96,6 +106,11 @@ console.log(statFiltered)
     statSortedFiltered.map((item: any) => {
       chartState.options.labels.push(item.name_room)
       chartState.series.push(item.count_visits)
+
+      dataExp.data.push({
+        nameRoom: item.name_room,
+        countVisits: item.count_visits
+      })
     })
   
   return (

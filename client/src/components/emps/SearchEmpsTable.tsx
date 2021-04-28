@@ -5,6 +5,7 @@ import {
   GridColDef,
   GridToolbarContainer,
   GridFilterToolbarButton,
+  GridToolbarExport,
 } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue } from "@material-ui/core/colors"
@@ -45,8 +46,9 @@ const CustomToolbar = () => {
       <div className={classes.toolBarItem}>
         <div className={classes.toolBarOption} >
       <GridFilterToolbarButton />
+      
       </div>
-
+      <GridToolbarExport /> 
       </div>
     </GridToolbarContainer>
   )

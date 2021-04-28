@@ -78,6 +78,8 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }))
 interface IExpObg {
+  startDate: string
+  endDate:string
   moves: object
   oneDayMoves: object
 }
@@ -91,6 +93,8 @@ export const MovementPage: React.FC = () => {
   const endDate = useTypedSelector(state => state.dates.endDate)
 
   const exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
     moves: movesExp,
     oneDayMoves: oneDayMovesExp,
   }

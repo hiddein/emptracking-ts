@@ -62,6 +62,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface IExpObg {
+  startDate: string
+  endDate:string
   violsTableData: object
   chartByDep: object
   chartByEmps: object
@@ -80,6 +82,8 @@ export const AccessViolationPage: React.FC = () => {
   const [tableJSON, setTableJSON] = useState<object>({})
 
   let exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
     violsTableData: tableJSON,
     chartByDep: chartByDepJSON,
     chartByEmps: chartByEmpsJSON,

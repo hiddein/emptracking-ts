@@ -16,6 +16,9 @@ import { EmpsWithAccessTable } from "../components/rooms/access/EmpsWithAccessTa
 import { RoomSearchTable } from "../components/rooms/RoomSearchTable"
 import { NewRoomWindow } from "./../components/rooms/NewRoomWindow"
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import { useTypedSelector } from "../hooks/useTypedSelector"
+import SaveIcon from "@material-ui/icons/Save"
+
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -102,11 +105,29 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }))
 
+interface IExpObg {
+  startDate: string
+  endDate:string
+  roomAccess: object
+  roomsVis: object
+}
+
+
 export const RoomInfoPage: React.FC = () => {
   const classes = useStyles()
+  const startDate = useTypedSelector(state => state.dates.startDate)
+  const endDate = useTypedSelector(state => state.dates.endDate)
   const [selectedRoom, SetselectedRoom] = useState("")
   const [openSnack, setOpenSnack] = React.useState(false);
   const [addWindowOpen, setAddWindowOpen] = React.useState(false)
+  const [roomAccessJSON, setRoomAccessJSON] = useState<object>({})
+  const [roomsVisJSON, setRoomsVisJSON] = useState<object>({})
+  let exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
+    roomAccess: roomAccessJSON,
+    roomsVis: roomsVisJSON
+  }
 
   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === 'clickaway') {
@@ -114,6 +135,14 @@ export const RoomInfoPage: React.FC = () => {
     }
     setOpenSnack(false);
   };
+
+  const fileToSave = new Blob([JSON.stringify(exportJSON)], {
+    type: "application/json",
+  })
+
+  const onSaveButtonClickHandler = () =>  {
+    saveAs(fileToSave, `roomData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  }
 
   return (
     <div className={classes.container1}>
@@ -123,6 +152,8 @@ export const RoomInfoPage: React.FC = () => {
             Помещения предприятия
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
+
           <Button className={classes.newRoomButton} onClick={()=> setAddWindowOpen(true)}>Новое помещение</Button>
           <NewRoomWindow windowOpen={addWindowOpen} setWindowOpen={setAddWindowOpen} setOpenSnack={setOpenSnack} />
             <RangePicker />
@@ -156,12 +187,12 @@ export const RoomInfoPage: React.FC = () => {
                 </Button>
               </div>
             ) : null}
-            <EmpsWithAccessTable nameRoom={selectedRoom} />
+            <EmpsWithAccessTable nameRoom={selectedRoom} setExportJSON= {setRoomAccessJSON}/>
           </Card>
         </Grid>
         <Grid item xs={12} md={12}>
           <Card className={classes.paper}>
-            <CountVisitsChart/>
+            <CountVisitsChart setExportJSON= {setRoomsVisJSON}/>
           </Card>
         </Grid>
       </Grid>

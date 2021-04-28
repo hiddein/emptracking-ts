@@ -64,6 +64,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 }))
 
 interface IExpObg {
+  startDate: string
+  endDate:string
   lateness?: object
   workHours?: object
 }
@@ -77,7 +79,10 @@ export const HoursViolationPage: React.FC = () => {
   const [latenessJSON, setLatenessJSON] = useState<object>({})
   const [workHoursJSON, setWorkHoursJSON] = useState<object>({})
 
-  let exportJSON: IExpObg = {}
+  let exportJSON: IExpObg = {
+    startDate: startDate.toLocaleDateString(),
+    endDate: endDate.toLocaleDateString(),
+  }
 
   lateSelected
     ? (exportJSON.lateness = latenessJSON)
@@ -95,7 +100,7 @@ export const HoursViolationPage: React.FC = () => {
   const onSaveButtonClickHandler = () =>
     saveAs(
       fileToSave,
-      `statMovesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+      `hoursViolsData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
     )
 
   return (
