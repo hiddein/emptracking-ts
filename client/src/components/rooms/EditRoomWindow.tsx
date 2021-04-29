@@ -8,7 +8,7 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
-import { addRoom } from "../../store/action-creators/rooms"
+import { addRoom, editRoom } from "../../store/action-creators/rooms"
 import {
   Chip,
   FormControl,
@@ -33,16 +33,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(1),
   },
   chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   chip: {
     margin: 2,
   },
 }))
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
@@ -55,26 +55,29 @@ const MenuProps = {
 interface NewEmpInterface {
   windowOpen: boolean
   setWindowOpen: Function
+  selectedRoom: any
   setOpenSnack: Function
 }
-
-export const NewRoomWindow: React.FC<NewEmpInterface> = (
+export const EditRoomWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
   const classes = useStyles()
   const [nameRoom, setNameRoom] = React.useState("")
   const [aboutRoom, setAboutRoom] = React.useState("")
-  const [commRooms, setCommRooms] = React.useState<any[]>([]);
-  const [depsOwnRoom, setDepsOwnRoom] = React.useState<any[]>([]);
+  const [commRooms, setCommRooms] = React.useState<any[]>([])
+  const [depsOwnRoom, setDepsOwnRoom] = React.useState<any[]>([])
 
+  useEffect(() => {
+    setNameRoom(props.selectedRoom)
+  }, [props.selectedRoom])
 
   const handleCommChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCommRooms(event.target.value as any[]);
-  };
+    setCommRooms(event.target.value as any[])
+  }
 
   const handleOwnChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDepsOwnRoom(event.target.value as any[]);
-  };
+    setDepsOwnRoom(event.target.value as any[])
+  }
 
   const deps = useTypedSelector((state) => state.emp.deps)
   const rooms = useTypedSelector((state) => state.room.rooms)
@@ -86,7 +89,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
   }
 
   const onAddHandle = () => {
-    dispatch(addRoom(nameRoom, aboutRoom, commRooms, depsOwnRoom))
+    dispatch(editRoom(nameRoom, aboutRoom, commRooms, depsOwnRoom))
     props.setWindowOpen(false)
     props.setOpenSnack(true)
   }
@@ -105,6 +108,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
           <DialogContentText>Пожалуйста, заполните данные</DialogContentText>
           <div className={classes.headContainer}>
             <TextField
+              disabled={true}
               required
               fullWidth
               margin="dense"
@@ -130,9 +134,10 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
             />
 
             <FormControl fullWidth>
-              <InputLabel id="mutiple-chip-label" margin="dense">Смежные помещения</InputLabel>
+              <InputLabel id="mutiple-chip-label" margin="dense">
+                Смежные помещения
+              </InputLabel>
               <Select
-              
                 labelId="mutiple-chip-label"
                 id="mutiple-chip"
                 multiple
@@ -153,17 +158,16 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
                 MenuProps={MenuProps}
               >
                 {rooms.map((room) => (
-                  <MenuItem
-                    key={room.id_room}
-                    value={room}
-                  >
+                  <MenuItem key={room.id_room} value={room}>
                     {room.name_room}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel id="mutiple-chip-label-own" margin="dense">Принадлежит отделам</InputLabel>
+              <InputLabel id="mutiple-chip-label-own" margin="dense">
+                Принадлежит отделам
+              </InputLabel>
               <Select
                 labelId="mutiple-chip-label-own"
                 id="mutiple-chip-own"
@@ -185,10 +189,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
                 MenuProps={MenuProps}
               >
                 {deps.map((dep) => (
-                  <MenuItem
-                    key={dep.id_dep}
-                    value={dep}
-                  >
+                  <MenuItem key={dep.id_dep} value={dep}>
                     {dep.name_dep}
                   </MenuItem>
                 ))}
@@ -201,7 +202,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
             Отмена
           </Button>
           <Button onClick={onAddHandle} color="primary">
-            Добавить
+            Обновить
           </Button>
         </DialogActions>
       </Dialog>

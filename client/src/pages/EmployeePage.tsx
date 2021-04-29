@@ -6,6 +6,7 @@ import {
   Paper,
   Snackbar,
   Theme,
+  Tooltip,
   Typography,
 } from "@material-ui/core"
 import { blue, green } from "@material-ui/core/colors"
@@ -168,8 +169,9 @@ export const EmployeePage: React.FC = () => {
             Cотрудники предприятия
           </Typography>
           <Card className={classes.datePickerContainer}>
+          <Tooltip title="Сохранить в JSON" aria-label="add">
           <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
-
+          </Tooltip>
           <Button className={classes.selectedEmpButton} onClick={handleClickOpen}>Новый сотрудник</Button>
           <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} setOpenSnack={setOpenSnack} />
           <RangePicker />

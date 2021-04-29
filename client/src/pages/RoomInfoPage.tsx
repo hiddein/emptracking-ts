@@ -18,6 +18,7 @@ import { NewRoomWindow } from "./../components/rooms/NewRoomWindow"
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import SaveIcon from "@material-ui/icons/Save"
+import { EditRoomWindow } from "../components/rooms/EditRoomWindow"
 
 
 function Alert(props: AlertProps) {
@@ -102,6 +103,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     color: blue[800],
     backgroundColor: green[200],
     margin: '0 20px 0 5px'
+  },
+  editButton: {
+    marginRight: '10px',
+    padding: 5,
+    color: blue[50],
   }
 }))
 
@@ -122,6 +128,8 @@ export const RoomInfoPage: React.FC = () => {
   const [addWindowOpen, setAddWindowOpen] = React.useState(false)
   const [roomAccessJSON, setRoomAccessJSON] = useState<object>({})
   const [roomsVisJSON, setRoomsVisJSON] = useState<object>({})
+  const [editWindowOpen, setEditWindowOpen] = React.useState(false)
+
   let exportJSON: IExpObg = {
     startDate: startDate.toLocaleDateString(),
     endDate: endDate.toLocaleDateString(),
@@ -162,7 +170,7 @@ export const RoomInfoPage: React.FC = () => {
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <RoomSearchTable SetselectedRoom={SetselectedRoom} height={340} />
+            <RoomSearchTable SetselectedRoom={SetselectedRoom} height={340} editWindowOpen={editWindowOpen} />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
@@ -177,6 +185,16 @@ export const RoomInfoPage: React.FC = () => {
                   {selectedRoom}
                   </Typography>
                 </div>
+                <EditRoomWindow windowOpen={editWindowOpen} setWindowOpen={setEditWindowOpen}  selectedRoom={selectedRoom} setOpenSnack={setOpenSnack}/>
+                <div>
+                <Button
+                  className={classes.editButton}
+                  onClick={() => {
+                    setEditWindowOpen(true)
+                  }}
+                >
+                  Редактировать
+                </Button>
                 <Button
                   className={classes.selectedEmpButton}
                   onClick={() => {
@@ -185,6 +203,7 @@ export const RoomInfoPage: React.FC = () => {
                 >
                   Отменить выбор
                 </Button>
+                </div>
               </div>
             ) : null}
             <EmpsWithAccessTable nameRoom={selectedRoom} setExportJSON= {setRoomAccessJSON}/>
@@ -198,7 +217,7 @@ export const RoomInfoPage: React.FC = () => {
       </Grid>
       <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
         <Alert onClose={handleCloseSnack} severity="success">
-          Помещение добавлено
+          Список обновлен
         </Alert>
       </Snackbar>
     </div>

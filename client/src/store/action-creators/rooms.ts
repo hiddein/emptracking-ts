@@ -5,6 +5,9 @@ import {
   fetchRooms,
   fetchRoomsSuccess,
   fetchRoomsError,
+  fetchOwns,
+  fetchOwnsSuccess,
+  fetchOwnsError,
 } from "../reducers/roomReducer"
 
 export const getRooms = () => {
@@ -21,11 +24,43 @@ export const getRooms = () => {
   }
 }
 
-export const addRoom = (formData: any) => {
+
+export const getOwns = () => {
   return async (dispatch: any) => {
     try {
+      dispatch(fetchOwns())
+      const response = await axios.get("http://localhost:7000/api/room/owns", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      })
+        dispatch(fetchOwnsSuccess(response.data))
+    } catch (e) {
+      dispatch(fetchOwnsError("Ошибка"))
+    }
+  }
+}
+
+export const addRoom = (nameRoom: any, aboutRoom:any, commRooms:any,depsOwnRoom: any) => {
+  return async (dispatch: any) => {
+    try {
+
       const response = await axios.post(
-        "http://localhost:7000/api/room/",formData,
+        "http://localhost:7000/api/room/",{nameRoom, aboutRoom, commRooms, depsOwnRoom},
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
+      )
+    } catch (e) {
+      alert(e)
+    }
+  }
+}
+
+export const editRoom = (nameRoom: any, aboutRoom:any, commRooms:any,depsOwnRoom: any) => {
+  return async (dispatch: any) => {
+    try {
+
+      const response = await axios.post(
+        "http://localhost:7000/api/room/edit",{nameRoom, aboutRoom, commRooms, depsOwnRoom},
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }
