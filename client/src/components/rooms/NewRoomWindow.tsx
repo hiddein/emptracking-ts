@@ -39,6 +39,9 @@ const useStyles = makeStyles((theme: Theme) => ({
   chip: {
     margin: 2,
   },
+  multi: {
+    maxWidth: '550px'
+  }
 }))
 
 const ITEM_HEIGHT = 48;
@@ -78,6 +81,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
 
   const deps = useTypedSelector((state) => state.emp.deps)
   const rooms = useTypedSelector((state) => state.room.rooms)
+  console.log(deps)
 
   const dispatch = useDispatch()
 
@@ -129,7 +133,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
               }}
             />
 
-            <FormControl fullWidth>
+            <FormControl fullWidth className={classes.multi}>
               <InputLabel id="mutiple-chip-label" margin="dense">Смежные помещения</InputLabel>
               <Select
               
@@ -162,7 +166,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
                 ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth>
+            <FormControl fullWidth className={classes.multi}>
               <InputLabel id="mutiple-chip-label-own" margin="dense">Принадлежит отделам</InputLabel>
               <Select
                 labelId="mutiple-chip-label-own"

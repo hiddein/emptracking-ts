@@ -61,6 +61,16 @@ export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccess
         locales: [rusLocaleChart],
         defaultLocale: "RU",
       },
+      title: {
+        text: 'Нарушения доступа (по отделам)',
+        align: 'left',
+        margin: 10,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -123,9 +133,7 @@ export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccess
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Нарушения доступа (по отделам)</Typography>
-         </div>
+        
          {isLoading ? (
           <Loader size={60} height="290px"/>
         ) : (
@@ -133,7 +141,7 @@ export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccess
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"280px"}
+        height={"330px"}
       />)}
 </div>
 

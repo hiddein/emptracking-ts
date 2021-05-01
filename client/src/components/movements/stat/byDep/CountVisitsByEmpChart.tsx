@@ -83,6 +83,22 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
           enabled: false
         }
       },
+      plotOptions: {
+        bar: {
+          borderRadius: 15,
+          columnWidth: "50%",
+        },
+      },
+      title: {
+        text: 'Количество посещений (по сотрудникам отдела)',
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       dataLabels: {
         enabled: false
       },
@@ -98,10 +114,12 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
       },
       xaxis: {
         categories: [],
+
       },
       yaxis: {
         min:0,
         forceNiceScale:true
+        
       }
     }
     }
@@ -118,9 +136,6 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество посещений (по сотрудникам отдела)</Typography>
-         </div>
          {props.nameDep == ""? (
           <div className={classes.noDepContainer}>
             <Typography variant="h4">Выберите помещение и отдел</Typography>
@@ -132,7 +147,7 @@ export const CountVisitsByEmpChart: React.FC<propsStatChart> = (props:propsStatC
           options={chartState.options}
           series={chartState.series}
           type="bar"
-          height={"268px"}
+          height={"320px"}
         />
         )}
      

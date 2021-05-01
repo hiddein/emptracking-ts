@@ -54,6 +54,19 @@ export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChar
                 width: 380,
                 type: 'polarArea'
               },
+              title: {
+                text: 'Статистика опозданий',
+                align: 'center',
+                margin: 30,
+                style: {
+                  fontSize:  '20px',
+                  fontFamily:  'Roboto',
+                  color:  '#263238'
+                },
+              },
+              dataLabels: {
+                enabled: false
+              },
               labels: [],
               fill: {
                 opacity: 1
@@ -82,7 +95,7 @@ export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChar
                 monochrome: {
                   enabled: true,
                   shadeTo: 'light',
-                  shadeIntensity: 0.6
+                  shadeIntensity: 0.7
                 }
               }
             },
@@ -92,7 +105,10 @@ export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChar
   var resultlatenessSortedSorted = Object.keys(latenessSorted).map(function (id) {
     return {name_dep: id, count_viols: latenessSorted[id]}
   })
-  resultlatenessSortedSorted.map((item: any) => {
+
+  const topLatenessSorted = resultlatenessSortedSorted.reverse().filter((item) => resultlatenessSortedSorted.indexOf(item)<5)
+
+  topLatenessSorted.map((item: any) => {
     chartState.options.labels.push(item.name_dep)
     chartState.series.push(item.count_viols)
 
@@ -102,11 +118,6 @@ export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChar
 
   return (
     <div>
-      <div className={classes.labelDiv}>
-        <Typography variant="h6">
-          Статистика опозданий
-        </Typography>
-      </div>
       {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
@@ -114,7 +125,7 @@ export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChar
         options={chartState.options}
         series={chartState.series}
         type="donut"
-        height={"300px"}
+        height={"350px"}
       />)}
     </div>
   )

@@ -65,6 +65,16 @@ export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart
                 width: 380,
                 type: 'polarArea'
               },
+              title: {
+                text: 'Самые посещаемые помещения',
+                align: 'center',
+                margin: 30,
+                style: {
+                  fontSize:  '20px',
+                  fontFamily:  'Roboto',
+                  color:  '#263238'
+                },
+              },
               labels: [],
               fill: {
                 opacity: 1
@@ -115,11 +125,6 @@ export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart
   
   return (
     <div>
-      <div className={classes.labelDiv}>
-        <Typography variant="h6">
-          Самые посещаемые помещения
-        </Typography>
-      </div>
       {props.idEmp == "" ? (
           <div className={classes.noEmpContainer}>
             <Typography variant="h4">Выберите сотрудника</Typography>
@@ -131,7 +136,7 @@ export const MostVisitedChart: React.FC<propsStatChart> = (props: propsStatChart
         options={chartState.options}
         series={chartState.series}
         type="polarArea"
-        height={"300px"}
+        height={"380px"}
       />)}
     </div>
   )

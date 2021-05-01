@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
-  paper1: {
+  paper2: {
     padding: theme.spacing(2),
     textAlign: "center",
-    maxHeight: "351px",
+    height: "326px",
   },
 }))
 
@@ -50,10 +50,10 @@ export const WorkHoursGrid: React.FC<propsWorkHoursGrid> = (props: propsWorkHour
     <Grid item xs={12} md={6}>
       <Grid container direction="column" spacing={2}>
         <Grid item xs={12} md={12}>
-          <Card className={classes.paper}><WorkHoursByDepChart SetselectedDepOnChart={SetselectedDepOnChart} depName={selectedDepOnChart} setExportJSON={setWorkHoursViolsByDepJSON} /></Card>
+          <Card className={classes.paper2}><WorkHoursByDepChart SetselectedDepOnChart={SetselectedDepOnChart} depName={selectedDepOnChart} setExportJSON={setWorkHoursViolsByDepJSON} /></Card>
         </Grid>
         <Grid item xs={12} md={12}>
-          <Card className={classes.paper1}><WorkHoursByEmpChart depName={selectedDepOnChart} setExportJSON={setWorkHoursViolsByEmpsDepJSON} /></Card>
+          <Card className={classes.paper2}><WorkHoursByEmpChart depName={selectedDepOnChart} setExportJSON={setWorkHoursViolsByEmpsDepJSON} /></Card>
         </Grid>
       </Grid>
     </Grid>

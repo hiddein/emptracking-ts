@@ -91,7 +91,7 @@ class roomController {
 
   async getAllOwns(req: Request, res: Response): Promise<Response> {
     const response: QueryResult = await pool.query(
-      "SELECT * from dep_own_room "
+      "SELECT dep_own_room.id_dep,dep_own_room.id_room, department.name_dep from dep_own_room,department where dep_own_room.id_dep=department.id_dep "
     )
     return res.status(200).json(response.rows)
   }

@@ -86,6 +86,7 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
           }
         }
       },
+      
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -151,7 +152,7 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
     <React.Fragment>
         <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений в указанный промежуток (по отделам)</Typography>
+        <Typography variant='h6'>Количество нарушений (по отделам)</Typography>
          {props.depName !="" || props.idEmp !="" ? (<Button className={classes.selectedButton}
                   onClick={() => {
                     props.SetselectedDepOnChart("")
@@ -165,7 +166,7 @@ export const DepsAccessViolChart: React.FC<propsDepChart> = (props:propsDepChart
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"260px"}
+        height={"300px"}
       />)}
 </div>
 

@@ -85,6 +85,16 @@ export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepCh
           }
         }
       },
+      title: {
+        text: 'Количество нарушений (сотрудники отдела)',
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -145,9 +155,6 @@ export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepCh
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений в указанный промежуток (сотрудники отдела)</Typography>
-         </div>
          {props.depName == "" ? (
           <div className={classes.noDepContainer}>
             <Typography variant="h4">Выберите отдел</Typography>
@@ -159,7 +166,7 @@ export const ByEmpsAccessViolChart: React.FC<propsDepChart> = (props: propsDepCh
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"260px"}
+        height={"330px"}
       />)}
 </div>
 

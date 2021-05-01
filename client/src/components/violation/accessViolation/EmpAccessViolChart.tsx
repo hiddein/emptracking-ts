@@ -83,6 +83,16 @@ export const EmpAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart
           enabled: false
         }
       },
+      title: {
+        text: 'Количество нарушений (сотрудник)',
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       dataLabels: {
         enabled: false
       },
@@ -119,11 +129,6 @@ export const EmpAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart
 
   return (
     <div>
-      <div className={classes.labelDiv}>
-        <Typography variant="h6">
-          Количество нарушений в указаннные даты (сотрудник)
-        </Typography>
-      </div>
       {props.idEmp == "" ? (
           <div className={classes.noEmpContainer}>
             <Typography variant="h4">Выберите отдел и сотрудника</Typography>
@@ -135,7 +140,7 @@ export const EmpAccessViolChart: React.FC<propsDepChart> = (props: propsDepChart
         options={chartState.options}
         series={chartState.series}
         type="line"
-        height={"280px"}
+        height={"330px"}
       />)}
     </div>
   )

@@ -137,7 +137,7 @@ class empsController {
   async getSchedule(req: Request, res: Response): Promise<Response> {
     const { id } = req.params
     const response: QueryResult = await pool.query(
-      "SELECT id_emp, start_time, teaTime, lunch_time, end_time from schedule where id_emp=$1",
+      "SELECT id_emp, start_time, tea_time, lunch_time, end_time from schedule where id_emp=$1",
       [id]
     )
     return res.status(200).json(response.rows)

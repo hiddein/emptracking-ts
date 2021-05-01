@@ -15,10 +15,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
-  paper1: {
+  paper2: {
     padding: theme.spacing(2),
     textAlign: "center",
-    maxHeight: "351px",
+    height: "325px",
   },
 }))
 
@@ -54,10 +54,10 @@ export const LateEmpsGrid: React.FC<propsLatenessGrid> = (props: propsLatenessGr
             <Grid item xs={12} md={6}>
               <Grid container direction="column" spacing={2}>
                 <Grid item xs={12} md={12}>
-                  <Card className={classes.paper}><LateEmpsByDepChart SetselectedDepOnChart={SetselectedDepOnChart} depName={selectedDepOnChart} setExportJSON={setLatenessByDepJSON} /></Card>
+                  <Card className={classes.paper2}><LateEmpsByDepChart SetselectedDepOnChart={SetselectedDepOnChart} depName={selectedDepOnChart} setExportJSON={setLatenessByDepJSON} /></Card>
                 </Grid>
                 <Grid item xs={12} md={12}>
-                  <Card className={classes.paper1}><LateEmpsByEmpChart depName={selectedDepOnChart} setExportJSON={setLatenessByEmpsDepJSON}/></Card>
+                  <Card className={classes.paper2}><LateEmpsByEmpChart depName={selectedDepOnChart} setExportJSON={setLatenessByEmpsDepJSON}/></Card>
                 </Grid>
               </Grid>
             </Grid>{" "}

@@ -98,6 +98,7 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
       xaxis: {
         labels: {
           rotate: -45,
+          minHeight: 85
         },
         categories: [],
         tickPlacement: "on",
@@ -154,7 +155,7 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"268px"}
+        height={"300px"}
       />)}
 </div>
 

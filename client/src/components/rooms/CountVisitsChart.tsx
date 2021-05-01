@@ -62,6 +62,16 @@ export const CountVisitsChart: React.FC<propsStatChart> = (props: propsStatChart
         locales: [rusLocaleChart],
         defaultLocale: "RU",
       },
+      title: {
+        text: 'Количество посещений помещений предприятия',
+        align: 'center',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -121,9 +131,6 @@ export const CountVisitsChart: React.FC<propsStatChart> = (props: propsStatChart
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество посещений помещений предприятия </Typography>
-         </div>
          {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
@@ -131,7 +138,7 @@ export const CountVisitsChart: React.FC<propsStatChart> = (props: propsStatChart
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"250px"}
+        height={"290px"}
       />)}
 </div>
 

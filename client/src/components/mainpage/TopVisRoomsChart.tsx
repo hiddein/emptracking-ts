@@ -26,11 +26,14 @@ interface ITopVisRoomsChart{
   setExportJSON: Function
 
 }
-
+interface Icount {
+  name_room: string
+  count_visits: number
+}
 
 export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoomsChart) => {
   const classes = useStyles()
-  const stat = useTypedSelector((state) => state.stat.statSortByDefault)
+  const stat: Icount[] = useTypedSelector((state) => state.stat.statSortByDefault)
   const isLoading = useTypedSelector((state) => state.stat.loadingSortByDefault)
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
@@ -55,6 +58,16 @@ export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoom
               chart: {
                 width: 380,
                 type: 'polarArea'
+              },
+              title: {
+                text: 'Самые посещаемые помещения',
+                align: 'center',
+                margin: 30,
+                style: {
+                  fontSize:  '20px',
+                  fontFamily:  'Roboto',
+                  color:  '#263238'
+                },
               },
               labels: [],
               fill: {
@@ -91,8 +104,10 @@ export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoom
           
    
     }
+
     const statSorted = _.sortBy(stat, 'count_visits')
-    
+  
+    console.log(statSorted)
     const statSortedFiltered = statSorted.reverse().filter((item) => statSorted.indexOf(item)<5)
 
     statSortedFiltered.map((item: any) => {
@@ -104,11 +119,6 @@ export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoom
 
   return (
     <div>
-      <div className={classes.labelDiv}>
-        <Typography variant="h6">
-          Самые посещаемые помещения
-        </Typography>
-      </div>
       {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
@@ -116,7 +126,7 @@ export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoom
         options={chartState.options}
         series={chartState.series}
         type="polarArea"
-        height={"300px"}
+        height={"350px"}
       />)}
     </div>
   )

@@ -91,7 +91,16 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
       stroke: {
         width: 2,
       },
-
+      title: {
+        text: 'Количество опозданий (по сотрудникам)',
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       grid: {
         row: {
           colors: ["#fff", "#f2f2f2"],
@@ -138,9 +147,6 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество опозданий (по сотрудникам)</Typography>
-         </div>
          {props.depName == "" ? (
           <div className={classes.noDepContainer}>
             <Typography variant="h4">Выберите отдел</Typography>
@@ -152,7 +158,7 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"268px"}
+        height={"330px"}
       />)}
 </div>
 

@@ -77,14 +77,14 @@ export const RoomSearchTable: React.FC<propsTable> = (props: propsTable) => {
     room.deps = []
   })
 
+
   useEffect(() => {
     dispatch(getRooms())
     dispatch(getOwns())
   }, [props.editWindowOpen])
 
   owns.map((own) => {rooms.filter((room) => room.id_room == own.id_room).map((fitlred: newI) => {
-        fitlred.deps.push(own.id_dep)
-        console.log(own, "    ", fitlred)
+        fitlred.deps.push(own.name_dep)
       })
   })
 

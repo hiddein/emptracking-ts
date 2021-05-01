@@ -217,7 +217,7 @@ export const EmpsWithAccessTable: React.FC<propsAccessTable> = (
         <DataGrid
           rows={rows}
           columns={columns}
-          pageSize={6}
+          pageSize={5}
           rowHeight={25}
           disableColumnSelector={true}
           disableColumnMenu={true}

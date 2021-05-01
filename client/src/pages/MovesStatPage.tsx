@@ -41,11 +41,13 @@ const useStyles = makeStyles((theme: Theme) => ({
   paper: {
     padding: theme.spacing(2),
     textAlign: "center",
+    height: "325px",
+
   },
   paper1: {
     padding: theme.spacing(2),
     textAlign: "center",
-    maxHeight: "351px",
+    height: "325px",
   },
   title: {
     padding: theme.spacing(0),

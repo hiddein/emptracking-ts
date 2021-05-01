@@ -82,6 +82,16 @@ export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: p
           enabled: false
         }
       },
+      title: {
+        text: `Количество посещений Выбранного помещения ${props.selectedRoomOnChart != "" ? ` (${props.selectedRoomOnChart})` :null}`,
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       dataLabels: {
         enabled: false
       },
@@ -100,7 +110,12 @@ export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: p
       },
       yaxis: {
         min:0,
-        forceNiceScale:true
+        forceNiceScale:true,
+        labels: {
+          formatter: function (value:any) {
+            return value;
+          }
+        },
       }
     }
     }
@@ -117,11 +132,6 @@ export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: p
 
   return (
     <div>
-      <div className={classes.labelDiv}>
-        <Typography variant="h6">
-          Количество посещений выбранного помещения {props.selectedRoomOnChart != "" ? ` (${props.selectedRoomOnChart})` :null}
-        </Typography>
-      </div>
       {props.selectedRoomOnChart == "" ? (
           <div className={classes.noRoomContainer}>
             <Typography variant="h4">Выберите сотрудника и помещение</Typography>
@@ -133,7 +143,7 @@ export const CountVisitsByEmpPerRangeChart: React.FC<propsStatChart> = (props: p
         options={chartState.options}
         series={chartState.series}
         type="line"
-        height={"268px"}
+        height={"330px"}
       />
         )}
       

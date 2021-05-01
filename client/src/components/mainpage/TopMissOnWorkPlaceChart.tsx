@@ -62,6 +62,16 @@ export const TopMissOnWorkPlaceChart: React.FC<ITopMissOnWorkChart> = (props: IT
         locales: [rusLocaleChart],
         defaultLocale: "RU",
       },
+      title: {
+        text: 'Нарушения рабочего времени (по отделам)',
+        align: 'left',
+        margin: 10,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -123,9 +133,6 @@ export const TopMissOnWorkPlaceChart: React.FC<ITopMissOnWorkChart> = (props: IT
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Нарушения рабочего времени (по отделам)</Typography>
-         </div>
          {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
@@ -133,7 +140,7 @@ export const TopMissOnWorkPlaceChart: React.FC<ITopMissOnWorkChart> = (props: IT
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"280px"}
+        height={"330px"}
       />)}
 </div>
 

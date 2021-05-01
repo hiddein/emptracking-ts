@@ -1,3 +1,8 @@
+export interface Icount {
+    name_room: string
+    count_visits: number
+}
+
 export interface StatState {
     stat: any[]
     loading: boolean
@@ -11,7 +16,7 @@ export interface StatState {
     loadingDepSort: boolean
     errorDepSort: null | string
 
-    statSortByDefault: any[]
+    statSortByDefault: Icount[]
     loadingSortByDefault: boolean
     errorSortByDefault: null | string
 

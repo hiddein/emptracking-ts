@@ -84,6 +84,16 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
           }
         }
       },
+      title: {
+        text: `Количество посещений (по сотруднику)`,
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -105,14 +115,18 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
       xaxis: {
         labels: {
           rotate: -45,
+          minHeight: 100
         },
         categories: [],
         tickPlacement: "on",
+       
       },
       yaxis: {
         title: {
           text: "Количество посещений",
         },
+        
+
       },
       fill: {
         type: "gradient",
@@ -142,11 +156,6 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
   return (
     <React.Fragment>
       <div>
-        <div className={classes.labelDiv}>
-          <Typography variant="h6">
-            Количество посещений (по сотруднику)
-          </Typography>
-        </div>
         {props.idEmp == "" ? (
           <div className={classes.noEmpContainer}>
             <Typography variant="h4">Выберите сотрудника</Typography>
@@ -158,7 +167,7 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
             options={chartState.options}
             series={chartState.series}
             type="bar"
-            height={"268px"}
+            height={"330px"}
           />
         )}
       </div>

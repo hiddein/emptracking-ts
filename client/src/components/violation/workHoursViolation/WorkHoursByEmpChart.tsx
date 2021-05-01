@@ -82,6 +82,16 @@ export const WorkHoursByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChar
         locales: [rusLocaleChart],
         defaultLocale: "RU",
       },
+      title: {
+        text: 'Количество нарушений (сотрудник)',
+        align: 'left',
+        margin: 5,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       plotOptions: {
         bar: {
           borderRadius: 5,
@@ -141,9 +151,6 @@ export const WorkHoursByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChar
   return (
     <React.Fragment>
         <div>
-        <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество нарушений (сотрудник)</Typography>
-         </div>
          {props.depName == "" ? (
           <div className={classes.noDepContainer}>
             <Typography variant="h4">Выберите отдел</Typography>
@@ -155,7 +162,7 @@ export const WorkHoursByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChar
         options={chartState.options}
         series={chartState.series}
         type="bar"
-        height={"268px"}
+        height={"330px"}
       />)}
 </div>
 

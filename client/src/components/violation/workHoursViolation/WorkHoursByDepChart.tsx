@@ -99,6 +99,7 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
       xaxis: {
         labels: {
           rotate: -45,
+          minHeight: 85
         },
         categories: [],
         tickPlacement: "on",
@@ -164,7 +165,7 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
           options={chartState.options}
           series={chartState.series}
           type="bar"
-          height={"268px"}
+          height={"310px"}
         />)}
       </div>
     </React.Fragment>

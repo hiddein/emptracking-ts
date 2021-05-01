@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
     margin: 0,
   },
   noEmpContainer: {
-    height: "290px",
+    height: "335px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -94,6 +94,16 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
       dataLabels: {
         enabled: false,
       },
+      title: {
+        text: 'Количество посещений (по отделам)',
+        align: 'left',
+        margin: 0,
+        style: {
+          fontSize:  '20px',
+          fontFamily:  'Roboto',
+          color:  '#263238'
+        },
+      },
       stroke: {
         width: 2,
       },
@@ -101,11 +111,14 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
       grid: {
         row: {
           colors: ["#fff", "#f2f2f2"],
+          
         },
       },
       xaxis: {
         labels: {
-          rotate: -45,
+          rotate: -32,
+          rotateAlways: true,
+          minHeight: 200
         },
         categories: [],
         tickPlacement: "on",
@@ -142,14 +155,9 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
   return (
     <React.Fragment>
       <div>
-        <div className={classes.labelDiv}>
-          <Typography variant="h6">
-            Количество посещений (по отделам)
-          </Typography>
-        </div>
         {props.nameRoom == "" ? (
           <div className={classes.noEmpContainer}>
-            <Typography variant="h4">Выберите Помещение</Typography>
+            <Typography variant="h4">Выберите помещение</Typography>
           </div>
         ) : isLoading ? (
           <Loader size={60} height="290px" />
@@ -158,7 +166,7 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
             options={chartState.options}
             series={chartState.series}
             type="bar"
-            height={"268px"}
+            height={"450px"}
           />
         )}
       </div>
