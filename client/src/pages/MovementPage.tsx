@@ -1,26 +1,15 @@
-import {
-  Button,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core"
+import { Button, Card, Grid, makeStyles, Theme, Tooltip, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { MovementsEmpBar } from "../components/movements/MovementsEmpChart"
 import { MovementsTable } from "../components/movements/MovementsTable"
 import { RangePicker } from "../components/RangePicker"
 import { saveAs } from "file-saver"
-import SaveIcon from '@material-ui/icons/Save';
+import SaveIcon from "@material-ui/icons/Save"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   container: {
     paddingTop: "10px",
   },
@@ -76,10 +65,17 @@ const useStyles = makeStyles((theme: Theme) => ({
     display: "flex",
     flexWrap: "nowrap",
   },
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 interface IExpObg {
   startDate: string
-  endDate:string
+  endDate: string
   moves: object
   oneDayMoves: object
 }
@@ -89,8 +85,8 @@ export const MovementPage: React.FC = () => {
   const [selectedEmp, SetselectedEmp] = useState("")
   const [oneDayMovesExp, setOneDayMovesExp] = useState<object>({})
   const [movesExp, setMovesExp] = useState<object>({})
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
 
   const exportJSON: IExpObg = {
     startDate: startDate.toLocaleDateString(),
@@ -103,7 +99,11 @@ export const MovementPage: React.FC = () => {
     type: "application/json",
   })
 
-  const onSaveButtonClickHandler = () =>  saveAs(fileToSave, `movesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  const onSaveButtonClickHandler = () =>
+    saveAs(
+      fileToSave,
+      `movesData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
 
   return (
     <div className={classes.container1}>
@@ -114,7 +114,14 @@ export const MovementPage: React.FC = () => {
             Перемещения сотрудников
           </Typography>
           <Card className={classes.datePickerContainer}>
-            <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
             <RangePicker />
           </Card>
         </Grid>

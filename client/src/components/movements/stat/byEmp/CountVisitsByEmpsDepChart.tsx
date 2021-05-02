@@ -1,5 +1,5 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useTypedSelector } from "../../../../hooks/useTypedSelector"
 import { Loader } from "../../../Loader"
@@ -8,17 +8,6 @@ import { useDispatch } from "react-redux"
 import { getCountMovesInRange } from "../../../../store/action-creators/stat"
 
 const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "10px",
-    padding: " 0 20px",
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
   noEmpContainer: {
     height: "290px",
     display: "flex",
@@ -30,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 interface propsStatChart {
   idEmp: string
-  SetselectedRoomOnChart:Function
+  SetselectedRoomOnChart: Function
   setExportJSON: Function
 }
 
@@ -47,18 +36,17 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
-  const dataExp:IExpObg = {
-    data:[]
+  const dataExp: IExpObg = {
+    data: [],
   }
-
 
   useEffect(() => {
     dispatch(getCountMovesInRange(startDate, endDate))
-   }, [startDate, endDate])
+  }, [startDate, endDate])
 
-   useEffect(() => {
+  useEffect(() => {
     props.setExportJSON(dataExp)
-   }, [startDate, endDate,props.idEmp])
+  }, [startDate, endDate, props.idEmp])
 
   const statFiltered = stat.filter((item) => item.id_emp == props.idEmp)
   interface chartStateInterface {
@@ -79,19 +67,25 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
         locales: [rusLocaleChart],
         defaultLocale: "RU",
         events: {
-          dataPointSelection: function(event:any, chartContext:any, config:any) {
-            props.SetselectedRoomOnChart(statFiltered[config.dataPointIndex].name_room)
-          }
-        }
+          dataPointSelection: function (
+            event: any,
+            chartContext: any,
+            config: any
+          ) {
+            props.SetselectedRoomOnChart(
+              statFiltered[config.dataPointIndex].name_room
+            )
+          },
+        },
       },
       title: {
         text: `Количество посещений (по сотруднику)`,
-        align: 'left',
+        align: "left",
         margin: 5,
         style: {
-          fontSize:  '20px',
-          fontFamily:  'Roboto',
-          color:  '#263238'
+          fontSize: "20px",
+          fontFamily: "Roboto",
+          color: "#263238",
         },
       },
       plotOptions: {
@@ -115,18 +109,15 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
       xaxis: {
         labels: {
           rotate: -45,
-          minHeight: 100
+          minHeight: 100,
         },
         categories: [],
         tickPlacement: "on",
-       
       },
       yaxis: {
         title: {
           text: "Количество посещений",
         },
-        
-
       },
       fill: {
         type: "gradient",
@@ -150,7 +141,7 @@ export const CountVisitsByEmpsDepChart: React.FC<propsStatChart> = (
 
     dataExp.data.push({
       nameRoom: item.name_room,
-      countVisits: item.count_visits
+      countVisits: item.count_visits,
     })
   })
   return (

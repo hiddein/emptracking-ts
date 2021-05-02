@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import {Request,Response} from 'express' 
+import { Response } from 'express' 
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -9,7 +9,6 @@ export default function (req:any,res:Response,next: Function){
         next()
     }
     try{
-        
         const token = req.headers.authorization?.split(' ')[1]
         
         if (!token){

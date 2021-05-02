@@ -1,15 +1,11 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers"
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
 import ruLocale from "date-fns/locale/ru";
 import DateFnsUtils from "@date-io/date-fns";
 import { useDispatch } from "react-redux"
 import { setEndDate, setStartDate } from "../store/reducers/datesReducer"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import { ContactsOutlined } from "@material-ui/icons";
 
 const useStyles = makeStyles(() => ({
   datePicker: {

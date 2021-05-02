@@ -1,24 +1,11 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import _ from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { rusLocaleChart } from "../../rusLocale/ruslocale"
-import { getCountMovesInRange, getCountMovesInRangeByDefault } from "../../store/action-creators/stat"
+import { getCountMovesInRangeByDefault } from "../../store/action-creators/stat"
 import { Loader } from "../Loader"
-
-const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: '10px',
-        padding: ' 0 20px' 
-    },
-
-    
-}))
 
 interface propsStatChart {
   setExportJSON: Function
@@ -28,7 +15,6 @@ interface IExpObg {
 }
 
 export const CountVisitsChart: React.FC<propsStatChart> = (props: propsStatChart) => {
-  const classes = useStyles()
   const stat = useTypedSelector((state) => state.stat.statSortByDefault)
   const isLoading = useTypedSelector((state) => state.stat.loadingSortByDefault)
   const startDate = useTypedSelector((state) => state.dates.startDate)

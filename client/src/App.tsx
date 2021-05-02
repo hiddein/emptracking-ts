@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux"
 import { autologin } from "./store/action-creators/user"
 import { ruRU } from '@material-ui/core/locale';
 import { Loader } from "./components/Loader"
-import { getEmps } from "./store/action-creators/emps"
 
 const useStyles = makeStyles(() => ({
   root: {

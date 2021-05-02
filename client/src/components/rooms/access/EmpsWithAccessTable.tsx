@@ -1,12 +1,6 @@
 import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridToolbarContainer, GridFilterToolbarButton, GridToolbarExport } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
 import { blue, green, red } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
@@ -25,16 +19,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
     margin: "6px",
   },
-  footerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   toolBarItem: {
     display: "flex",
-  },
-  footerEmp: {
-    marginLeft: 10,
-    backgroundColor: blue[200],
   },
   toolBarOption: {
     paddingRight: "10px",
@@ -202,8 +188,7 @@ export const EmpsWithAccessTable: React.FC<propsAccessTable> = (
       item.db_emp,
       item.tel_emp,
     ])
-  }
-  )
+  })
 
   return (
     <div style={{ height: props.nameRoom == "" ? 340 : 296, width: "100%" }}>

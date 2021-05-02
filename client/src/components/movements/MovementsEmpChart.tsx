@@ -1,13 +1,10 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import {} from "apexcharts/dist/locales/ru.json"
 import DateFnsUtils from "@date-io/date-fns"
 import ruLocale from "date-fns/locale/ru"
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers"
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from "@material-ui/pickers"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import moment from "moment"
 import { rusLocaleChart } from "../../rusLocale/ruslocale"
@@ -48,7 +45,6 @@ interface IExpObg {
 }
 
 export const MovementsEmpBar: React.FC<propsMovesChart> = (props: propsMovesChart) => {
-
   const classes = useStyles()
   const [selectedDate, setSelectedDate] = React.useState<Date>(new Date('2021-03-18'))
   const oneDayMoves = useTypedSelector((state) => state.move.oneDayMoves)

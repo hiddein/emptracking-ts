@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
@@ -8,28 +8,10 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
-import { addEmp, getDeps, getEmps } from "../../../store/action-creators/emps"
-import {
-  FormControl,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  Theme,
-} from "@material-ui/core"
-import { addAccess, depriveAccess } from "../../../store/action-creators/rooms"
+import { getEmps } from "../../../store/action-creators/emps"
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core"
+import { depriveAccess } from "../../../store/action-creators/rooms"
 
-const useStyles = makeStyles((theme: Theme) => ({
-  headContainer: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    marginBottom: "5px",
-  },
-  mainItem: {
-    width: "48%",
-  },
-}))
 
 interface NewEmpInterface {
   windowOpen: boolean
@@ -41,7 +23,6 @@ interface NewEmpInterface {
 export const DepriveAccessRoomWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
-  const classes = useStyles()
   const [selectedEmp, setSelectedEmp] = React.useState("")
   const rooms = useTypedSelector((state) => state.room.rooms)
   const emps = useTypedSelector((state) => state.emp.emps)

@@ -1,7 +1,6 @@
-import { Button, Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { Button, makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from "@date-io/moment"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { rusLocaleChart } from "../../../rusLocale/ruslocale"
 import _ from "lodash"
@@ -19,7 +18,10 @@ const useStyles = makeStyles(() => ({
   selectedButton: {
     padding: "4px 10px",
     color: blue[900],
-    backgroundColor: blue[200]
+    backgroundColor: blue[200],
+    "&:hover": {
+      backgroundColor: blue[400],
+    },
   },
 }))
 
@@ -38,16 +40,15 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
   const classes = useStyles()
   const viols = useTypedSelector((state) => state.workHoursViol.viols)
   const isLoading = useTypedSelector((state) => state.workHoursViol.loading)
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  const dataExp:IExpObg = {
-    data:[]
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dataExp: IExpObg = {
+    data: [],
   }
 
   useEffect(() => {
     props.setExportJSON(dataExp)
-   }, [startDate, endDate,props.depName])
-
+  }, [startDate, endDate, props.depName])
 
   interface chartStateInterface {
     series: any
@@ -99,7 +100,7 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
       xaxis: {
         labels: {
           rotate: -45,
-          minHeight: 85
+          minHeight: 85,
         },
         categories: [],
         tickPlacement: "on",
@@ -136,7 +137,7 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
 
     dataExp.data.push({
       nameDep: item.name_dep,
-      countViols: item.count_viols
+      countViols: item.count_viols,
     })
   })
 
@@ -161,12 +162,13 @@ export const WorkHoursByDepChart: React.FC<propsDepChart> = (
         {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
-        <Chart
-          options={chartState.options}
-          series={chartState.series}
-          type="bar"
-          height={"310px"}
-        />)}
+          <Chart
+            options={chartState.options}
+            series={chartState.series}
+            type="bar"
+            height={"310px"}
+          />
+        )}
       </div>
     </React.Fragment>
   )

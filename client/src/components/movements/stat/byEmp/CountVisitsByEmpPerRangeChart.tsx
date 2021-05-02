@@ -1,5 +1,5 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useTypedSelector } from "../../../../hooks/useTypedSelector"
 import { Loader } from "../../../Loader"
@@ -8,17 +8,6 @@ import { getCountMovesInRangeDaySort } from "../../../../store/action-creators/s
 import { useDispatch } from "react-redux"
 
 const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "10px",
-    padding: " 0 20px",
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
   noRoomContainer: {
     height: "290px",
     display: "flex",

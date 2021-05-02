@@ -69,7 +69,7 @@ class UserController {
        
     }
 
-    async auth(req:any,res:Response):Promise<Response>{
+    async auth(req: any, res:Response):Promise<Response>{
         try{
         const user: QueryResult = await pool.query('SELECT * FROM client WHERE client_id=$1 ',[req.user.id])
         const token = generateAccessToken(user.rows[0].client_id,user.rows[0].login,user.rows[0].role)

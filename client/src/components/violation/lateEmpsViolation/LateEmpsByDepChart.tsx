@@ -1,58 +1,54 @@
-import { Button, Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { Button, makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from '@date-io/moment'
-import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-  } from '@material-ui/pickers';
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { useDispatch } from "react-redux";
-import { rusLocaleChart } from "../../../rusLocale/ruslocale";
-import _ from "lodash";
-import { blue } from "@material-ui/core/colors";
-import { Loader } from "../../Loader";
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { rusLocaleChart } from "../../../rusLocale/ruslocale"
+import _ from "lodash"
+import { blue } from "@material-ui/core/colors"
+import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: ' 0 20px'
+  labelDiv: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "10px",
+    padding: " 0 20px",
+  },
+  selectedButton: {
+    padding: "4px 10px",
+    color: blue[900],
+    backgroundColor: blue[200],
+    "&:hover": {
+      backgroundColor: blue[400],
     },
-    selectedButton: {
-      padding: "4px 10px",
-      color: blue[900],
-      backgroundColor: blue[200]
-    },
-
-    
+  },
 }))
 
 interface propsDepChart {
-  SetselectedDepOnChart:Function
-  depName:string
+  SetselectedDepOnChart: Function
+  depName: string
   setExportJSON: Function
 }
 interface IExpObg {
   data: any
 }
 
-export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart) => {
+export const LateEmpsByDepChart: React.FC<propsDepChart> = (
+  props: propsDepChart
+) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  const dataExp:IExpObg = {
-    data:[]
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const dataExp: IExpObg = {
+    data: [],
   }
 
-  
   useEffect(() => {
     props.setExportJSON(dataExp)
-   }, [startDate, endDate,props.depName])
+  }, [startDate, endDate, props.depName])
 
   interface chartStateInterface {
     series: any
@@ -72,10 +68,16 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
         locales: [rusLocaleChart],
         defaultLocale: "RU",
         events: {
-          dataPointSelection: function(event:any, chartContext:any, config:any) {
-            props.SetselectedDepOnChart(resultlatenessSortedSorted[config.dataPointIndex].name_dep)
-          }
-        }
+          dataPointSelection: function (
+            event: any,
+            chartContext: any,
+            config: any
+          ) {
+            props.SetselectedDepOnChart(
+              resultlatenessSortedSorted[config.dataPointIndex].name_dep
+            )
+          },
+        },
       },
       plotOptions: {
         bar: {
@@ -98,7 +100,7 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
       xaxis: {
         labels: {
           rotate: -45,
-          minHeight: 85
+          minHeight: 85,
         },
         categories: [],
         tickPlacement: "on",
@@ -124,9 +126,11 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
     },
   }
 
-  const latenessSorted = _.countBy(lateness, 'name_dep')
-  var resultlatenessSortedSorted = Object.keys(latenessSorted).map(function (id) {
-    return {name_dep: id, count_viols: latenessSorted[id]}
+  const latenessSorted = _.countBy(lateness, "name_dep")
+  var resultlatenessSortedSorted = Object.keys(latenessSorted).map(function (
+    id
+  ) {
+    return { name_dep: id, count_viols: latenessSorted[id] }
   })
 
   resultlatenessSortedSorted.map((item: any) => {
@@ -135,30 +139,38 @@ export const LateEmpsByDepChart: React.FC<propsDepChart> = (props: propsDepChart
 
     dataExp.data.push({
       nameDep: item.name_dep,
-      countLateness: item.count_viols
+      countLateness: item.count_viols,
     })
   })
   return (
     <React.Fragment>
-        <div>
+      <div>
         <div className={classes.labelDiv}>
-        <Typography variant='h6'>Количество опозданий (по отделам)</Typography>
-        {props.depName !="" ? (<Button className={classes.selectedButton}
-                  onClick={() => {
-                    props.SetselectedDepOnChart("")
-                  }}>Отменить выбор</Button>) :null }
-         </div>
-         {isLoading ? (
+          <Typography variant="h6">
+            Количество опозданий (по отделам)
+          </Typography>
+          {props.depName != "" ? (
+            <Button
+              className={classes.selectedButton}
+              onClick={() => {
+                props.SetselectedDepOnChart("")
+              }}
+            >
+              Отменить выбор
+            </Button>
+          ) : null}
+        </div>
+        {isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
-      <Chart
-        options={chartState.options}
-        series={chartState.series}
-        type="bar"
-        height={"300px"}
-      />)}
-</div>
-
+          <Chart
+            options={chartState.options}
+            series={chartState.series}
+            type="bar"
+            height={"300px"}
+          />
+        )}
+      </div>
     </React.Fragment>
   )
 }

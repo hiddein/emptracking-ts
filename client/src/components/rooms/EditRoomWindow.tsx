@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
@@ -8,18 +8,8 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
-import { addRoom, editRoom } from "../../store/action-creators/rooms"
-import {
-  Chip,
-  FormControl,
-  Input,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  Snackbar,
-  Theme,
-} from "@material-ui/core"
+import { editRoom } from "../../store/action-creators/rooms"
+import { Chip, FormControl, Input, InputLabel, makeStyles, MenuItem, Select, Theme } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -27,10 +17,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     flexWrap: "wrap",
     justifyContent: "space-between",
     marginBottom: "5px",
-  },
-
-  formControl: {
-    margin: theme.spacing(1),
   },
   chips: {
     display: "flex",

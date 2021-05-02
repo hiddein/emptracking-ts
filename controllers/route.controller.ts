@@ -4,7 +4,7 @@ import { pool } from "../db"
 
 
 class routeController {
-  async create(req: any, res: Response): Promise<Response> {
+  async create(req: Request, res: Response): Promise<Response> {
     try {
       const { id_start, id_end} = await req.body
       const response: QueryResult = await pool.query(

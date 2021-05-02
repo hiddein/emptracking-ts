@@ -1,10 +1,7 @@
 import React from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import Typography from "@material-ui/core/Typography"
-
 import { blue } from "@material-ui/core/colors"
-
-import { BottomNavigation, Container } from "@material-ui/core"
 
 const useStyles = makeStyles(() => ({
   root: {

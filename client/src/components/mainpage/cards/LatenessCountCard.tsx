@@ -1,6 +1,5 @@
-import { Avatar, makeStyles, Theme, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-
+import { makeStyles, Theme, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getLateness } from "../../../store/action-creators/lateness"
@@ -10,11 +9,6 @@ import { Loader } from "../../Loader"
 import _ from "lodash"
 
 const useStyles = makeStyles((theme: Theme) => ({
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    marginRight: "30px",
-  },
   img: {
     height: 60,
     padding: "0",

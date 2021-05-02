@@ -4,14 +4,13 @@ import { pool } from "../db"
 
 
 class accessController {
-  async create(req: any, res: Response): Promise<Response> {
+  async create(req: Request, res: Response): Promise<Response> {
     try {
       const { id_emp, id_room } = await req.body
       const response: QueryResult = await pool.query(
         "INSERT into access VALUES ($1,$2)",
         [id_emp,id_room]
       )
-
       return res
         .status(200)
         .json({ message: "Добавлен доступ", id_emp,id_room })
@@ -20,14 +19,13 @@ class accessController {
     }
   }
 
-    async delete(req: any, res: Response): Promise<Response> {
+    async delete(req: Request, res: Response): Promise<Response> {
       try {
         const { id_emp, id_room } = await req.body
         const response: QueryResult = await pool.query(
           "DELETE FROM access where id_emp=$1 and id_room=$2",
           [id_emp,id_room]
         )
-  
         return res
           .status(200)
           .json({ message: "Лишен доступа", id_emp,id_room })

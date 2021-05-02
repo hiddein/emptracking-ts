@@ -1,13 +1,6 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterToolbarButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  ValueGetterParams,
-} from "@material-ui/data-grid"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridFilterToolbarButton, GridToolbarContainer, GridToolbarExport, ValueGetterParams } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
@@ -103,8 +96,7 @@ export const LateEmpsTable: React.FC<propsTable> = (props: propsTable) => {
       item.date,
       item.late_time,
     ])
-  }
-  )
+  })
 
   return (
     <div style={{ height: 699, width: "100%" }}>

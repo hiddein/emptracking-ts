@@ -1,17 +1,6 @@
-import {
-  Button,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Snackbar,
-  Theme,
-  Tooltip,
-  Typography,
-} from "@material-ui/core"
+import { Button, Card, Grid, makeStyles, Snackbar, Theme, Tooltip, Typography } from "@material-ui/core"
 import { blue, green } from "@material-ui/core/colors"
-import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import React, { useState } from "react"
 import { AccessViolsCard } from "../components/emps/AccessViolsCard"
 import { EmpCard } from "../components/emps/empCard/EmpCard"
 import { GetEmpAccessTable } from "../components/emps/access/GetEmpAccessTable"
@@ -21,16 +10,13 @@ import { NewEmpWindow } from "../components/emps/NewEmpWindow"
 import { SearchEmpsTable } from "../components/emps/SearchEmpsTable"
 import { RangePicker } from "../components/RangePicker"
 import SaveIcon from "@material-ui/icons/Save"
-import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
+import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 
 function Alert(props: AlertProps) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} variant="filled" {...props} />
 }
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   container: {
     paddingTop: "10px",
   },
@@ -48,17 +34,16 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
   },
-  papepSmallCard: {
+  paperSmallCard: {
     padding: theme.spacing(2),
     textAlign: "center",
     height: "145px",
-    marginRight: '0'
-
+    marginRight: "0",
   },
-  papepBigCard: {
+  paperBigCard: {
     textAlign: "center",
     height: "370px",
-    marginRight: '-16px'
+    marginRight: "-16px",
   },
   paper1: {
     padding: theme.spacing(2),
@@ -83,7 +68,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: 10,
     color: blue[800],
     backgroundColor: green[200],
-    margin: '0 20px 0 5px'
+    margin: "0 20px 0 5px",
+    "&:hover": {
+      backgroundColor: green[300],
+    },
   },
   selectedEmpLabel: {
     paddingLeft: "10px",
@@ -96,31 +84,37 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontSize: "20px",
   },
   titleContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
+    display: "flex",
+    justifyContent: "space-between",
   },
-  datePickerContainer:{
-    padding: '5px 20px',
-    display: 'flex',
-    flexWrap: 'nowrap'
+  datePickerContainer: {
+    padding: "5px 20px",
+    display: "flex",
+    flexWrap: "nowrap",
   },
-  
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 interface IExpObg {
   startDate: string
-  endDate:string
+  endDate: string
   empInfo: object
   empAccess: object
-  endLates:string
+  endLates: string
   empViolsAccess: string
   empMostVis: object
 }
 
 export const EmployeePage: React.FC = () => {
   const classes = useStyles()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  const [openSnack, setOpenSnack] = React.useState(false);
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const [openSnack, setOpenSnack] = React.useState(false)
   const [selectedEmp, setSelectedEmp] = useState("")
   const [windowOpen, setWindowOpen] = React.useState(false)
   const [empInfoJSON, setEmpInfoJSON] = useState<object>({})
@@ -129,7 +123,6 @@ export const EmployeePage: React.FC = () => {
   const [empViolsAccess, setEmpViolsAccess] = useState("")
   const [empMostVisJSON, setEmpMostVisJSON] = useState<object>({})
 
-
   let exportJSON: IExpObg = {
     startDate: startDate.toLocaleDateString(),
     endDate: endDate.toLocaleDateString(),
@@ -137,27 +130,29 @@ export const EmployeePage: React.FC = () => {
     empAccess: empAccessJSON,
     endLates: empLates,
     empViolsAccess: empViolsAccess,
-    empMostVis: empMostVisJSON
+    empMostVis: empMostVisJSON,
   }
 
-
   const handleClickOpen = () => {
-    setWindowOpen(true);
-  };
+    setWindowOpen(true)
+  }
 
   const handleCloseSnack = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
+    if (reason === "clickaway") {
+      return
     }
-    setOpenSnack(false);
-  };
+    setOpenSnack(false)
+  }
 
   const fileToSave = new Blob([JSON.stringify(exportJSON)], {
     type: "application/json",
   })
 
-  const onSaveButtonClickHandler = () =>  {
-    saveAs(fileToSave, `empData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  const onSaveButtonClickHandler = () => {
+    saveAs(
+      fileToSave,
+      `empData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
   }
 
   return (
@@ -169,50 +164,90 @@ export const EmployeePage: React.FC = () => {
             Cотрудники предприятия
           </Typography>
           <Card className={classes.datePickerContainer}>
-          <Tooltip title="Сохранить в JSON" aria-label="add">
-          <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
-          </Tooltip>
-          <Button className={classes.selectedEmpButton} onClick={handleClickOpen}>Новый сотрудник</Button>
-          <NewEmpWindow windowOpen={windowOpen} setWindowOpen={setWindowOpen} setOpenSnack={setOpenSnack} />
-          <RangePicker />
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
+            <Button
+              className={classes.selectedEmpButton}
+              onClick={handleClickOpen}
+            >
+              Новый сотрудник
+            </Button>
+            <NewEmpWindow
+              windowOpen={windowOpen}
+              setWindowOpen={setWindowOpen}
+              setOpenSnack={setOpenSnack}
+            />
+            <RangePicker />
           </Card>
         </Grid>
         {/* Сетка дэшборда */}
 
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-          <SearchEmpsTable updateData={setSelectedEmp} height={310} />
+            <SearchEmpsTable updateData={setSelectedEmp} height={310} />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <EmpCard idEmp={selectedEmp.split(' ')[0]}  setExportJSON= {setEmpInfoJSON} setSelectedEmp={setSelectedEmp}/>
+            <EmpCard
+              idEmp={selectedEmp.split(" ")[0]}
+              setExportJSON={setEmpInfoJSON}
+              setSelectedEmp={setSelectedEmp}
+            />
           </Card>
         </Grid>
-        <Grid item  xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Grid container spacing={2}>
             <Grid item container spacing={2} xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}><LatenessCard idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpLates}/></Card>
+                <Card className={classes.paperSmallCard}>
+                  <LatenessCard
+                    idEmp={selectedEmp.split(" ")[0]}
+                    setExportJSON={setEmpLates}
+                  />
+                </Card>
               </Grid>
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepSmallCard}><AccessViolsCard idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpViolsAccess}/></Card>
+                <Card className={classes.paperSmallCard}>
+                  <AccessViolsCard
+                    idEmp={selectedEmp.split(" ")[0]}
+                    setExportJSON={setEmpViolsAccess}
+                  />
+                </Card>
               </Grid>
             </Grid>
-            <Grid item container  xs={12} md={6} direction="column">
+            <Grid item container xs={12} md={6} direction="column">
               <Grid item xs={12} md={12}>
-                <Card className={classes.papepBigCard}><MostVisitedChart idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpMostVisJSON}/></Card>
+                <Card className={classes.paperBigCard}>
+                  <MostVisitedChart
+                    idEmp={selectedEmp.split(" ")[0]}
+                    setExportJSON={setEmpMostVisJSON}
+                  />
+                </Card>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
           <Card className={classes.paper}>
-            <GetEmpAccessTable idEmp={selectedEmp.split(' ')[0]} setExportJSON= {setEmpAccessJSON}/>
+            <GetEmpAccessTable
+              idEmp={selectedEmp.split(" ")[0]}
+              setExportJSON={setEmpAccessJSON}
+            />
           </Card>
         </Grid>
       </Grid>
-      <Snackbar open={openSnack} autoHideDuration={6000} onClose={handleCloseSnack}>
+      <Snackbar
+        open={openSnack}
+        autoHideDuration={6000}
+        onClose={handleCloseSnack}
+      >
         <Alert onClose={handleCloseSnack} severity="success">
           Сотрудник успешно добавлен
         </Alert>

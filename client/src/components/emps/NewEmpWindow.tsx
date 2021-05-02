@@ -9,16 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { addEmp, getDeps } from "../../store/action-creators/emps"
-import {
-  FormControl,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  Snackbar,
-  Theme,
-} from "@material-ui/core"
-
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, Theme } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -47,7 +38,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
   const [firstName, setFirstName] = React.useState("")
   const [middleName, setMiddleName] = React.useState("")
   const [dbEmp, setDbEmp] = React.useState("1999-11-15")
-  const [photoEmp, setPhotoEmp] = React.useState<any>({});
+  const [photoEmp, setPhotoEmp] = React.useState<any>({})
   const [email, setEmail] = React.useState("")
   const [tel, setTel] = React.useState("")
   const [startDayTime, setStartDayTime] = React.useState("")
@@ -66,26 +57,24 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
     props.setWindowOpen(false)
   }
 
- 
   const onAddHandle = () => {
     const formData = new FormData()
-    formData.append('first_name', firstName)
-    formData.append('middle_name', middleName)
-    formData.append('last_name', lastName)
-    formData.append('id_dep', selectedDep)
-    formData.append('db_emp', dbEmp)
-    formData.append('photo_emp', photoEmp)
-    formData.append('email_emp', email)
-    formData.append('tel_emp', tel)
-    formData.append('startTime', startDayTime)
-    formData.append('endTime', endDayTime)
-    formData.append('lunchTime', lunchTime)
-    formData.append('teaTime', teaTime)
+    formData.append("first_name", firstName)
+    formData.append("middle_name", middleName)
+    formData.append("last_name", lastName)
+    formData.append("id_dep", selectedDep)
+    formData.append("db_emp", dbEmp)
+    formData.append("photo_emp", photoEmp)
+    formData.append("email_emp", email)
+    formData.append("tel_emp", tel)
+    formData.append("startTime", startDayTime)
+    formData.append("endTime", endDayTime)
+    formData.append("lunchTime", lunchTime)
+    formData.append("teaTime", teaTime)
     dispatch(addEmp(formData))
     props.setWindowOpen(false)
     props.setOpenSnack(true)
   }
-
 
   return (
     <div>
@@ -103,28 +92,28 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
           </DialogContentText>
           <div className={classes.headContainer}>
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="last_name"
               label="Фамилия"
               type="text"
               value={lastName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setLastName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setLastName(event.target.value as string)
+              }}
             />
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="first_name"
               label="Имя"
               type="text"
               value={firstName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setFirstName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setFirstName(event.target.value as string)
+              }}
             />
             <TextField
               className={classes.mainItem}
@@ -133,15 +122,15 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               label="Отчество (при наличии)"
               type="text"
               value={middleName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setMiddleName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setMiddleName(event.target.value as string)
+              }}
             />
 
             <FormControl className={classes.mainItem} margin="dense">
               <InputLabel htmlFor="dep-select">Отдел</InputLabel>
               <Select
-              required
+                required
                 labelId="dep-select"
                 id="dep-select"
                 value={selectedDep}
@@ -158,54 +147,53 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
             </FormControl>
           </div>
           <div className={classes.headContainer}>
-          <TextField
-          className={classes.mainItem}
-          required
-            margin="dense"
-            type="date"
-            id="db_emp"
-            label="Дата рождения"
-            variant='outlined'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            fullWidth
-            value={dbEmp}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setDbEmp(event.target.value as string)
-                }}
-          />
-          <TextField
-          required
+            <TextField
+              className={classes.mainItem}
+              required
+              margin="dense"
+              type="date"
+              id="db_emp"
+              label="Дата рождения"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              value={dbEmp}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setDbEmp(event.target.value as string)
+              }}
+            />
+            <TextField
+              required
               className={classes.mainItem}
               margin="dense"
               id="photo_emp"
               label="Фото сотрудника"
               type="file"
-              variant='outlined'
+              variant="outlined"
               InputLabelProps={{
                 shrink: true,
               }}
-                onChange={(event: any) => {
-                  setPhotoEmp(event.target.files[0])
-
-                }}
+              onChange={(event: any) => {
+                setPhotoEmp(event.target.files[0])
+              }}
             />
-          
+
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="email"
               label="E-mail"
               type="email"
               value={email}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setEmail(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setEmail(event.target.value as string)
+              }}
             />
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="tel_emp"
@@ -216,9 +204,9 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
                 setTel(event.target.value as string)
               }}
             />
-            
+
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="start_time"
@@ -234,7 +222,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="end_time"
@@ -250,7 +238,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="lunch_time"
@@ -266,7 +254,7 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
               }}
             />
             <TextField
-            required
+              required
               className={classes.mainItem}
               margin="dense"
               id="tea_time"
@@ -290,7 +278,6 @@ export const NewEmpWindow: React.FC<NewEmpInterface> = (
           <Button onClick={onAddHandle} color="primary">
             Добавить
           </Button>
-          
         </DialogActions>
       </Dialog>
     </div>

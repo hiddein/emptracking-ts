@@ -1,21 +1,11 @@
 import React, { useState } from "react"
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core"
+import { Button, ButtonGroup, Card, Grid, makeStyles, Theme, Tooltip, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import { RangePicker } from "../components/RangePicker"
 import { LateEmpsGrid } from "../components/violation/lateEmpsViolation/LateEmpsGrid"
 import { WorkHoursGrid } from "../components/violation/workHoursViolation/WorkHoursGrid"
 import SaveIcon from "@material-ui/icons/Save"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -61,11 +51,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   buttonsGroup: {
     backgroundColor: blue[200],
   },
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 
 interface IExpObg {
   startDate: string
-  endDate:string
+  endDate: string
   lateness?: object
   workHours?: object
 }
@@ -112,9 +109,6 @@ export const HoursViolationPage: React.FC = () => {
           </Typography>
 
           <Card className={classes.datePickerContainer}>
-            <Button onClick={onSaveButtonClickHandler}>
-              <SaveIcon />
-            </Button>
             <div className={classes.buttons}>
               <ButtonGroup color="primary" className={classes.buttonsGroup}>
                 <Button
@@ -135,10 +129,22 @@ export const HoursViolationPage: React.FC = () => {
                 </Button>
               </ButtonGroup>
             </div>
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
             <RangePicker />
           </Card>
         </Grid>
-        {lateSelected ? <LateEmpsGrid setExportJSON={setLatenessJSON} /> : <WorkHoursGrid setExportJSON={setWorkHoursJSON} />}
+        {lateSelected ? (
+          <LateEmpsGrid setExportJSON={setLatenessJSON} />
+        ) : (
+          <WorkHoursGrid setExportJSON={setWorkHoursJSON} />
+        )}
       </Grid>
     </div>
   )

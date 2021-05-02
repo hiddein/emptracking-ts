@@ -1,34 +1,15 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
-
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getLateness } from "../../store/action-creators/lateness"
 import _ from "lodash"
 import { Loader } from "../Loader"
-
-const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: "10px",
-    padding: " 0 20px",
-
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
-}))
-
 interface ITopLatesChart{
   setExportJSON: Function
 }
 
 export const TopLatesDepsChart: React.FC<ITopLatesChart> = (props: ITopLatesChart) => {
-  const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.lateness)
   const isLoading = useTypedSelector((state) => state.lateness.loading)
   const dispatch = useDispatch()

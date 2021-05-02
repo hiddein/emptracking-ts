@@ -1,5 +1,5 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useTypedSelector } from "../../../../hooks/useTypedSelector"
 import { Loader } from "../../../Loader"
@@ -8,17 +8,6 @@ import { getCountMovesInRangeDepSort } from "../../../../store/action-creators/s
 import { useDispatch } from "react-redux"
 
 const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "10px",
-    padding: " 0 20px",
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
   noEmpContainer: {
     height: "335px",
     display: "flex",
@@ -30,7 +19,7 @@ const useStyles = makeStyles(() => ({
 
 interface propsStatChart {
   nameRoom: string
-  SetselectedDepOnChart:Function
+  SetselectedDepOnChart: Function
   setExportJSON: Function
 }
 
@@ -48,19 +37,17 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
-  const dataExp:IExpObg = {
-    data:[]
+  const dataExp: IExpObg = {
+    data: [],
   }
-  
+
   useEffect(() => {
     dispatch(getCountMovesInRangeDepSort(startDate, endDate))
-   }, [startDate, endDate])
+  }, [startDate, endDate])
 
-
-   useEffect(() => {
+  useEffect(() => {
     props.setExportJSON(dataExp)
-   }, [startDate, endDate,props.nameRoom])
-
+  }, [startDate, endDate, props.nameRoom])
 
   interface chartStateInterface {
     series: any
@@ -80,10 +67,16 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
         locales: [rusLocaleChart],
         defaultLocale: "RU",
         events: {
-          dataPointSelection: function(event:any, chartContext:any, config:any) {
-            props.SetselectedDepOnChart(statFiltered[config.dataPointIndex].name_dep)
-          }
-        }
+          dataPointSelection: function (
+            event: any,
+            chartContext: any,
+            config: any
+          ) {
+            props.SetselectedDepOnChart(
+              statFiltered[config.dataPointIndex].name_dep
+            )
+          },
+        },
       },
       plotOptions: {
         bar: {
@@ -95,13 +88,13 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
         enabled: false,
       },
       title: {
-        text: 'Количество посещений (по отделам)',
-        align: 'left',
+        text: "Количество посещений (по отделам)",
+        align: "left",
         margin: 0,
         style: {
-          fontSize:  '20px',
-          fontFamily:  'Roboto',
-          color:  '#263238'
+          fontSize: "20px",
+          fontFamily: "Roboto",
+          color: "#263238",
         },
       },
       stroke: {
@@ -111,14 +104,13 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
       grid: {
         row: {
           colors: ["#fff", "#f2f2f2"],
-          
         },
       },
       xaxis: {
         labels: {
           rotate: -32,
           rotateAlways: true,
-          minHeight: 200
+          minHeight: 200,
         },
         categories: [],
         tickPlacement: "on",
@@ -149,7 +141,7 @@ export const CountVisitsByDepChart: React.FC<propsStatChart> = (
 
     dataExp.data.push({
       nameDep: item.name_dep,
-      countVisits: item.count_visits
+      countVisits: item.count_visits,
     })
   })
   return (

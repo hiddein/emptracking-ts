@@ -1,20 +1,13 @@
-import { Avatar, makeStyles, Theme, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-
+import { makeStyles, Theme, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { getEmps } from "../../store/action-creators/emps"
 import { getLatenessByEmp } from "../../store/action-creators/lateness"
 import LatenessIcon from "../../img/icons/icons8-hurry-96.png"
 import { blue } from "@material-ui/core/colors"
 import { Loader } from "../Loader"
 
 const useStyles = makeStyles((theme: Theme) => ({
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    marginRight: "30px",
-  },
   img: {
     height: 60,
     padding: "0",

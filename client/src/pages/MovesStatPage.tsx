@@ -1,17 +1,7 @@
-import React, { useEffect, useState } from "react"
-import {
-  Button,
-  ButtonGroup,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core"
+import React, { useState } from "react"
+import { Button, ButtonGroup, Card, Grid, makeStyles, Theme, Tooltip, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import { RangePicker } from "../components/RangePicker"
-import { useDispatch } from "react-redux"
 import { CountVisitsByEmpsDepChart } from "../components/movements/stat/byEmp/CountVisitsByEmpsDepChart"
 import { CountVisitsByDepChart } from "../components/movements/stat/byDep/CountVisitsByDepChart"
 import { CountVisitsByEmpPerRangeChart } from "../components/movements/stat/byEmp/CountVisitsByEmpPerRangeChart"
@@ -42,7 +32,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: theme.spacing(2),
     textAlign: "center",
     height: "325px",
-
   },
   paper1: {
     padding: theme.spacing(2),
@@ -88,11 +77,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     paddingRight: "10px",
     fontSize: "20px",
   },
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 
 interface IExpObg {
   startDate: string
-  endDate:string
+  endDate: string
   statTableData: object
   byEmp?: object
   byDep?: object
@@ -108,7 +104,9 @@ export const MovesStatPage: React.FC = () => {
   const [selectedRoom, SetselectedRoom] = useState("")
   const [statTableJSON, setStatTableJSON] = useState<object>({})
   const [statChartByEmpJSON, setStatChartByEmpJSON] = useState<object>({})
-  const [statChartByEmpRoomJSON, setStatChartByEmpRoomJSON] = useState<object>({})
+  const [statChartByEmpRoomJSON, setStatChartByEmpRoomJSON] = useState<object>(
+    {}
+  )
   const [statChartByDepJSON, setStatChartByDepJSON] = useState<object>({})
   const [statChartByDepEmpJSON, setStatChartByDepEmpJSON] = useState<object>({})
   const startDate = useTypedSelector((state) => state.dates.startDate)
@@ -157,10 +155,6 @@ export const MovesStatPage: React.FC = () => {
           </Typography>
 
           <Card className={classes.datePickerContainer}>
-            <Button onClick={onSaveButtonClickHandler}>
-              <SaveIcon />
-            </Button>
-
             <div className={classes.buttons}>
               <ButtonGroup color="primary" className={classes.buttonsGroup}>
                 <Button
@@ -181,6 +175,14 @@ export const MovesStatPage: React.FC = () => {
                 </Button>
               </ButtonGroup>
             </div>
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
             <RangePicker />
           </Card>
         </Grid>

@@ -1,47 +1,30 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
 import _ from "lodash"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { rusLocaleChart } from "../../rusLocale/ruslocale"
 import { getAccessViols } from "../../store/action-creators/accessViols"
 import { Loader } from "../Loader"
-
-const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: ' 0 20px'
-        
- 
-    },
-}))
-
-interface ITopAccessChart{
+interface ITopAccessChart {
   setExportJSON: Function
 }
 
-
-
-export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccessChart) => {
-  const classes = useStyles()
+export const TopAccessViolsChart: React.FC<ITopAccessChart> = (
+  props: ITopAccessChart
+) => {
   const viols = useTypedSelector((state) => state.viol.viols)
   const isLoading = useTypedSelector((state) => state.viol.loading)
   const startDate = useTypedSelector((state) => state.dates.startDate)
   const endDate = useTypedSelector((state) => state.dates.endDate)
   const dispatch = useDispatch()
 
-  const topAccessChartExp:Array<object> = []
+  const topAccessChartExp: Array<object> = []
 
   useEffect(() => {
     dispatch(getAccessViols(startDate, endDate))
     props.setExportJSON(topAccessChartExp)
-   }, [startDate, endDate])
-
-
+  }, [startDate, endDate])
 
   interface chartStateInterface {
     series: any
@@ -62,13 +45,13 @@ export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccess
         defaultLocale: "RU",
       },
       title: {
-        text: 'Нарушения доступа (по отделам)',
-        align: 'left',
+        text: "Нарушения доступа (по отделам)",
+        align: "left",
         margin: 10,
         style: {
-          fontSize:  '20px',
-          fontFamily:  'Roboto',
-          color:  '#263238'
+          fontSize: "20px",
+          fontFamily: "Roboto",
+          color: "#263238",
         },
       },
       plotOptions: {
@@ -117,34 +100,35 @@ export const TopAccessViolsChart: React.FC<ITopAccessChart> = (props: ITopAccess
     },
   }
 
-  const violsSorted = _.countBy(viols, 'name_dep')
+  const violsSorted = _.countBy(viols, "name_dep")
   var resultViolsSorted = Object.keys(violsSorted).map(function (id) {
-    return {name_dep: id, count_viols: violsSorted[id]}
+    return { name_dep: id, count_viols: violsSorted[id] }
   })
 
   resultViolsSorted.map((item: any) => {
     chartState.options.xaxis.categories.push(item.name_dep)
     chartState.series[0].data.push(item.count_viols)
 
-    topAccessChartExp.push({depName:item.name_dep, countViols:item.count_viols})
+    topAccessChartExp.push({
+      depName: item.name_dep,
+      countViols: item.count_viols,
+    })
   })
-
 
   return (
     <React.Fragment>
-        <div>
-        
-         {isLoading ? (
-          <Loader size={60} height="290px"/>
+      <div>
+        {isLoading ? (
+          <Loader size={60} height="290px" />
         ) : (
-      <Chart
-        options={chartState.options}
-        series={chartState.series}
-        type="bar"
-        height={"330px"}
-      />)}
-</div>
-
+          <Chart
+            options={chartState.options}
+            series={chartState.series}
+            type="bar"
+            height={"330px"}
+          />
+        )}
+      </div>
     </React.Fragment>
   )
 }

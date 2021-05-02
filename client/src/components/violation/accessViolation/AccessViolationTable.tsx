@@ -1,19 +1,10 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridToolbarContainer, GridFilterToolbarButton, GridToolbarExport } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import {
-  getAccessViols,
-  getAccessViolsByEmp,
-} from "../../../store/action-creators/accessViols"
+import { getAccessViols, getAccessViolsByEmp } from "../../../store/action-creators/accessViols"
 import { Loader } from "../../Loader"
 import _ from "lodash"
 
@@ -115,7 +106,7 @@ export const AccessViolationTable: React.FC<propsTable> = (
   }
 
   const rows: Viol[] = []
-  viols.map((viol: any) =>{
+  viols.map((viol: any) => {
     rows.push({
       id: viol.move_id,
       empName: `${viol.last_name} ${viol.first_name} ${viol.middle_name}`,
@@ -128,10 +119,10 @@ export const AccessViolationTable: React.FC<propsTable> = (
       `${viol.last_name} ${viol.first_name} ${viol.middle_name} `,
       viol.name_dep,
       viol.name_room,
-      viol.timestamp,,
+      viol.timestamp,
+      ,
     ])
-  }
-  )
+  })
 
   return (
     <div style={{ height: 320, width: "100%" }}>

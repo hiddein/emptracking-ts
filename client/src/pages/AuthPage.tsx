@@ -1,13 +1,4 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Grid,
-  makeStyles,
-  TextField,
-  Typography,
-} from "@material-ui/core"
+import { Button, Card, CardActions, CardContent, Grid, makeStyles, TextField, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
@@ -19,7 +10,7 @@ const useStyles = makeStyles(() => ({
     flexGrow: 1,
     minHeight: "600px",
     padding: "20px",
-    height: '100vh'
+    height: "100vh",
   },
   title: {
     color: blue[800],
@@ -76,7 +67,9 @@ export const AuthPage: React.FC = () => {
                   label="Логин"
                   fullWidth={true}
                   value={login}
-                  onChange={(event)=>{ setLogin(event.target.value)}}
+                  onChange={(event) => {
+                    setLogin(event.target.value)
+                  }}
                 />
               </Grid>
               <Grid item className={classes.item}>
@@ -87,7 +80,9 @@ export const AuthPage: React.FC = () => {
                   autoComplete="current-password"
                   fullWidth={true}
                   value={password}
-                  onChange={(event)=>{ setPassword(event.target.value)}}
+                  onChange={(event) => {
+                    setPassword(event.target.value)
+                  }}
                 />
               </Grid>
             </Grid>
@@ -98,9 +93,9 @@ export const AuthPage: React.FC = () => {
               color="primary"
               size="large"
               className={classes.button}
-              onClick={() =>{
-                dispatch(loginAction(login,password))
-                history.push('/dashboard')
+              onClick={() => {
+                dispatch(loginAction(login, password))
+                history.push("/dashboard")
               }}
             >
               Войти в систему

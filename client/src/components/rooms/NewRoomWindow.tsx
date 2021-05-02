@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
@@ -9,17 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { addRoom } from "../../store/action-creators/rooms"
-import {
-  Chip,
-  FormControl,
-  Input,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  Snackbar,
-  Theme,
-} from "@material-ui/core"
+import { Chip, FormControl, Input, InputLabel, makeStyles, MenuItem, Select, Theme } from "@material-ui/core"
 
 const useStyles = makeStyles((theme: Theme) => ({
   headContainer: {
@@ -33,19 +23,19 @@ const useStyles = makeStyles((theme: Theme) => ({
     margin: theme.spacing(1),
   },
   chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
+    display: "flex",
+    flexWrap: "wrap",
   },
   chip: {
     margin: 2,
   },
   multi: {
-    maxWidth: '550px'
-  }
+    maxWidth: "550px",
+  },
 }))
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
 const MenuProps = {
   PaperProps: {
     style: {
@@ -67,17 +57,16 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
   const classes = useStyles()
   const [nameRoom, setNameRoom] = React.useState("")
   const [aboutRoom, setAboutRoom] = React.useState("")
-  const [commRooms, setCommRooms] = React.useState<any[]>([]);
-  const [depsOwnRoom, setDepsOwnRoom] = React.useState<any[]>([]);
-
+  const [commRooms, setCommRooms] = React.useState<any[]>([])
+  const [depsOwnRoom, setDepsOwnRoom] = React.useState<any[]>([])
 
   const handleCommChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCommRooms(event.target.value as any[]);
-  };
+    setCommRooms(event.target.value as any[])
+  }
 
   const handleOwnChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setDepsOwnRoom(event.target.value as any[]);
-  };
+    setDepsOwnRoom(event.target.value as any[])
+  }
 
   const deps = useTypedSelector((state) => state.emp.deps)
   const rooms = useTypedSelector((state) => state.room.rooms)
@@ -134,9 +123,10 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
             />
 
             <FormControl fullWidth className={classes.multi}>
-              <InputLabel id="mutiple-chip-label" margin="dense">Смежные помещения</InputLabel>
+              <InputLabel id="mutiple-chip-label" margin="dense">
+                Смежные помещения
+              </InputLabel>
               <Select
-              
                 labelId="mutiple-chip-label"
                 id="mutiple-chip"
                 multiple
@@ -157,17 +147,16 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
                 MenuProps={MenuProps}
               >
                 {rooms.map((room) => (
-                  <MenuItem
-                    key={room.id_room}
-                    value={room}
-                  >
+                  <MenuItem key={room.id_room} value={room}>
                     {room.name_room}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
             <FormControl fullWidth className={classes.multi}>
-              <InputLabel id="mutiple-chip-label-own" margin="dense">Принадлежит отделам</InputLabel>
+              <InputLabel id="mutiple-chip-label-own" margin="dense">
+                Принадлежит отделам
+              </InputLabel>
               <Select
                 labelId="mutiple-chip-label-own"
                 id="mutiple-chip-own"
@@ -189,10 +178,7 @@ export const NewRoomWindow: React.FC<NewEmpInterface> = (
                 MenuProps={MenuProps}
               >
                 {deps.map((dep) => (
-                  <MenuItem
-                    key={dep.id_dep}
-                    value={dep}
-                  >
+                  <MenuItem key={dep.id_dep} value={dep}>
                     {dep.name_dep}
                   </MenuItem>
                 ))}

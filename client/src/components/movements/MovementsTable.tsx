@@ -1,19 +1,11 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterToolbarButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  ValueGetterParams,
-} from "@material-ui/data-grid"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridFilterToolbarButton, GridToolbarContainer, GridToolbarExport } from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { Loader } from "../Loader"
 import { useDispatch } from "react-redux"
-import { getAllMoves, getMovesInRange } from "../../store/action-creators/moves"
-
+import { getMovesInRange } from "../../store/action-creators/moves"
 
 const useStyles = makeStyles(() => ({
   toolBarContainer: {
@@ -60,21 +52,20 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
   const moves = useTypedSelector((state) => state.move.moves)
   const isLoading = useTypedSelector((state) => state.move.loading)
   const dispatch = useDispatch()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  const movesExp:IExpObg = {
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const movesExp: IExpObg = {
     columns: [],
-    rows:[]
+    rows: [],
   }
 
   useEffect(() => {
     dispatch(getMovesInRange(startDate, endDate))
-   }, [startDate, endDate])
+  }, [startDate, endDate])
 
-   useEffect(() => {
+  useEffect(() => {
     props.setMovesExp(movesExp)
-   }, [startDate, endDate,props.empId])
-
+  }, [startDate, endDate, props.empId])
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },
@@ -109,10 +100,9 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
 
   let movesFiltered: Move[] = moves
 
-
   if (props.empId !== "") {
     movesFiltered = moves.filter((move) => move.id_emp == props.empId)
-  } 
+  }
   movesFiltered.map((move: any) => {
     rows.push({
       id: move.move_id,
@@ -128,9 +118,7 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
       move.time_enter,
       move.time_leave,
     ])
-  }
-  )
-
+  })
 
   return (
     <div style={{ height: props.empId != "" ? 655 : 699, width: "100%" }}>
@@ -148,7 +136,7 @@ export const MovementsTable: React.FC<propsTable> = (props: propsTable) => {
           }}
           disableColumnSelector={true}
           disableColumnMenu={true}
-          hideFooterSelectedRowCount = {true}
+          hideFooterSelectedRowCount={true}
         />
       )}
     </div>

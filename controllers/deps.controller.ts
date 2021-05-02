@@ -4,7 +4,7 @@ import { pool } from "../db"
 
 
 class depsController {
-  async create(req: any, res: Response): Promise<Response> {
+  async create(req: Request, res: Response): Promise<Response> {
     try {
       const { name_dep } = await req.body
       const response: QueryResult = await pool.query(

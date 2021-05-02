@@ -22,7 +22,7 @@ class empsController {
         teaTime
       } = await req.body
 
-      const { photo_emp } = await req.files
+      const { photo_emp } = await req.files 
 
       let filename = uuidv4() + ".jpg"
 
@@ -51,7 +51,7 @@ class empsController {
     }
   }
 
-  async edit(req: any, res: Response): Promise<Response> {
+  async edit(req: Request, res: Response): Promise<Response> {
     try {
       const {
         first_name,
@@ -90,7 +90,7 @@ class empsController {
     }
   }
 
-  async delete(req: any, res: Response): Promise<Response> {
+  async delete(req: Request, res: Response): Promise<Response> {
     try {
       const {
        idEmp

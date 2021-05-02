@@ -1,27 +1,10 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getCountMovesInRangeByDefault } from "../../store/action-creators/stat"
 import _ from "lodash"
 import { Loader } from "../Loader"
-
-const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: "10px",
-    padding: " 0 20px",
-
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
-}))
-
 interface ITopVisRoomsChart{
   setExportJSON: Function
 
@@ -32,7 +15,6 @@ interface Icount {
 }
 
 export const TopVisRoomsChart: React.FC<ITopVisRoomsChart> = (props: ITopVisRoomsChart) => {
-  const classes = useStyles()
   const stat: Icount[] = useTypedSelector((state) => state.stat.statSortByDefault)
   const isLoading = useTypedSelector((state) => state.stat.loadingSortByDefault)
   const startDate = useTypedSelector((state) => state.dates.startDate)

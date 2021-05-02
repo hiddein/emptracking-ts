@@ -1,29 +1,15 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  FormControl,
-  Grid,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from "@material-ui/core"
+import { Button, Card, CardActions, CardContent, FormControl, Grid, InputLabel, makeStyles, MenuItem, Select, TextField, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { login as loginAction, registration } from "../store/action-creators/user"
+import {login as loginAction, registration } from "../store/action-creators/user"
 
 const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     minHeight: "600px",
     padding: "20px",
-    height: '100vh'
-
+    height: "100vh",
   },
   title: {
     color: blue[800],
@@ -44,7 +30,7 @@ const useStyles = makeStyles(() => ({
     width: "100%",
   },
   padding: {
-    padding: '25px',
+    padding: "25px",
   },
 }))
 
@@ -62,7 +48,7 @@ export const GiveAccessPage: React.FC = () => {
       justify="center"
       className={classes.root}
     >
-      <Grid item xs={6} xl={4}  className={classes.content}>
+      <Grid item xs={6} xl={4} className={classes.content}>
         <Card className={classes.card}>
           <CardContent className={classes.padding}>
             <Typography className={classes.title} color="primary" gutterBottom>
@@ -125,7 +111,7 @@ export const GiveAccessPage: React.FC = () => {
               size="large"
               className={classes.button}
               onClick={() => {
-                dispatch(registration(login, password,role))
+                dispatch(registration(login, password, role))
               }}
             >
               Выдать данные для входа

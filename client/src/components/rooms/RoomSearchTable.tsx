@@ -1,12 +1,6 @@
-import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
-import React, { useState, useEffect } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridToolbarContainer, GridFilterToolbarButton, GridToolbarExport,} from "@material-ui/data-grid"
 import { rusLocale } from "../../rusLocale/ruslocale"
 import { blue, green } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../hooks/useTypedSelector"
@@ -77,13 +71,15 @@ export const RoomSearchTable: React.FC<propsTable> = (props: propsTable) => {
     room.deps = []
   })
 
-
   useEffect(() => {
     dispatch(getRooms())
     dispatch(getOwns())
   }, [props.editWindowOpen])
 
-  owns.map((own) => {rooms.filter((room) => room.id_room == own.id_room).map((fitlred: newI) => {
+  owns.map((own) => {
+    rooms
+      .filter((room) => room.id_room == own.id_room)
+      .map((fitlred: newI) => {
         fitlred.deps.push(own.name_dep)
       })
   })

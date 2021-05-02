@@ -1,11 +1,6 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
-import MomentUtils from "@date-io/moment"
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getAccessViolsByEmpDays } from "../../../store/action-creators/accessViols"
@@ -13,17 +8,6 @@ import { rusLocaleChart } from "../../../rusLocale/ruslocale"
 import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
-  labelDiv: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: "10px",
-    padding: " 0 20px",
-  },
-  datePicker: {
-    width: "180px",
-    margin: 0,
-  },
   noEmpContainer: {
     height: "290px",
     display: "flex",

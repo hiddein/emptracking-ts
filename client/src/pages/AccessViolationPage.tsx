@@ -1,15 +1,6 @@
-import {
-  Button,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core"
+import { Button, Card, Grid, makeStyles, Theme, Tooltip, Typography } from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
 import React, { useState } from "react"
-import Chart from "react-apexcharts"
 import { RangePicker } from "../components/RangePicker"
 import { AccessViolationTable } from "../components/violation/accessViolation/AccessViolationTable"
 import { ByEmpsAccessViolChart } from "../components/violation/accessViolation/ByEmpsAccessViolChart"
@@ -18,11 +9,7 @@ import { EmpAccessViolChart } from "../components/violation/accessViolation/EmpA
 import SaveIcon from "@material-ui/icons/Save"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 
-
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-  },
   container: {
     paddingTop: "10px",
   },
@@ -51,19 +38,26 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
   },
   titleContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
+    display: "flex",
+    justifyContent: "space-between",
   },
-  datePickerContainer:{
-    padding: '5px 20px',
-    display: 'flex',
-    flexWrap: 'nowrap'
-  }
+  datePickerContainer: {
+    padding: "5px 20px",
+    display: "flex",
+    flexWrap: "nowrap",
+  },
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 
 interface IExpObg {
   startDate: string
-  endDate:string
+  endDate: string
   violsTableData: object
   chartByDep: object
   chartByEmps: object
@@ -87,7 +81,7 @@ export const AccessViolationPage: React.FC = () => {
     violsTableData: tableJSON,
     chartByDep: chartByDepJSON,
     chartByEmps: chartByEmpsJSON,
-    chartByEmp: chartByEmpJSON
+    chartByEmp: chartByEmpJSON,
   }
 
   var fileToSave = new Blob([JSON.stringify(exportJSON)], {
@@ -99,7 +93,7 @@ export const AccessViolationPage: React.FC = () => {
       fileToSave,
       `accessViolsData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
     )
-    
+
   return (
     <div className={classes.container1}>
       <Grid container spacing={2} className={classes.container}>
@@ -108,27 +102,51 @@ export const AccessViolationPage: React.FC = () => {
             Нарушения прав доступа в помещения
           </Typography>
           <Card className={classes.datePickerContainer}>
-          <Button onClick={onSaveButtonClickHandler}>
-              <SaveIcon />
-            </Button>
-          <RangePicker />
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
+            <RangePicker />
           </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><AccessViolationTable setExportJSON={setTableJSON}/></Card>
+          <Card className={classes.paper}>
+            <AccessViolationTable setExportJSON={setTableJSON} />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><DepsAccessViolChart SetselectedDepOnChart={SetselectedDep} idEmp={selectedEmp} depName={selectedDep}  SetselectedEmpOnChart={SetselectedEmp} setExportJSON={setChartByDepJSON}/></Card>
+          <Card className={classes.paper}>
+            <DepsAccessViolChart
+              SetselectedDepOnChart={SetselectedDep}
+              idEmp={selectedEmp}
+              depName={selectedDep}
+              SetselectedEmpOnChart={SetselectedEmp}
+              setExportJSON={setChartByDepJSON}
+            />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><EmpAccessViolChart idEmp={selectedEmp} setExportJSON={setChartByEmpJSON}/></Card>
+          <Card className={classes.paper}>
+            <EmpAccessViolChart
+              idEmp={selectedEmp}
+              setExportJSON={setChartByEmpJSON}
+            />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><ByEmpsAccessViolChart depName={selectedDep} SetselectedEmpOnChart={SetselectedEmp} setExportJSON={setChartByEmpsJSON}/></Card>
+          <Card className={classes.paper}>
+            <ByEmpsAccessViolChart
+              depName={selectedDep}
+              SetselectedEmpOnChart={SetselectedEmp}
+              setExportJSON={setChartByEmpsJSON}
+            />
+          </Card>
         </Grid>
-        
       </Grid>
-
     </div>
   )
 }

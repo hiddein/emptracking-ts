@@ -1,13 +1,6 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useState,useEffect } from "react"
-import {
-  DataGrid,
-  GridColDef,
-  GridFilterToolbarButton,
-  GridToolbarContainer,
-  GridToolbarExport,
-  ValueGetterParams,
-} from "@material-ui/data-grid"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
+import { DataGrid, GridColDef, GridFilterToolbarButton, GridToolbarContainer, GridToolbarExport } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
@@ -47,9 +40,8 @@ const CustomToolbar = () => {
 
 interface propsTable {
   empId: string
-  nameRoom:string
+  nameRoom: string
   setExportJSON: Function
-
 }
 
 interface IExpObg {
@@ -63,25 +55,29 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
   const stat = useTypedSelector((state) => state.stat.stat)
   const isLoading = useTypedSelector((state) => state.stat.loading)
   const dispatch = useDispatch()
-  const movesExp:IExpObg = {
+  const movesExp: IExpObg = {
     columns: [],
-    rows:[]
+    rows: [],
   }
 
   useEffect(() => {
     dispatch(getCountMovesInRange(startDate, endDate))
-   }, [startDate, endDate])
+  }, [startDate, endDate])
 
-   useEffect(() => {
+  useEffect(() => {
     props.setExportJSON(movesExp)
-   }, [startDate, endDate,props.empId])
-
+  }, [startDate, endDate, props.empId])
 
   const columns: GridColDef[] = [
     { field: "fioEmp", headerName: "ФИО сотрудника", flex: 1, type: "string" },
-    { field: "nameDep", headerName: "Отдел", flex: 1, type: "string", },
+    { field: "nameDep", headerName: "Отдел", flex: 1, type: "string" },
     { field: "room", headerName: "Помещение", flex: 1, type: "string" },
-    { field: "countVis", headerName: "Количество посещений", flex: 0.8, type: "number", },
+    {
+      field: "countVis",
+      headerName: "Количество посещений",
+      flex: 0.8,
+      type: "number",
+    },
   ]
 
   columns.map((col) => {
@@ -89,7 +85,7 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
   })
 
   interface Stat {
-    id:number
+    id: number
     fioEmp: string
     nameDep: string
     room: string
@@ -98,22 +94,22 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
 
   const rows: Stat[] = []
 
-  let movesFiltered: Stat [] = stat
+  let movesFiltered: Stat[] = stat
 
   if (props.empId !== "") {
     movesFiltered = stat.filter((item) => item.id_emp == props.empId)
-  } 
+  }
   if (props.nameRoom !== "") {
     movesFiltered = stat.filter((item) => item.name_room == props.nameRoom)
-  } 
+  }
 
-  movesFiltered.map((item: any,index:number) =>{
+  movesFiltered.map((item: any, index: number) => {
     rows.push({
       id: index,
       fioEmp: `${item.last_name} ${item.first_name} ${item.middle_name} `,
       nameDep: item.name_dep,
       room: item.name_room,
-      countVis: item.count_visits
+      countVis: item.count_visits,
     })
 
     movesExp.rows.push([
@@ -122,27 +118,31 @@ export const StatTable: React.FC<propsTable> = (props: propsTable) => {
       item.name_room,
       item.count_visits,
     ])
-  }
-  )
+  })
 
   return (
-    <div style={{ height: props.empId != "" || props.nameRoom!= "" ? 266 : 310, width: "100%" }}>
-       {isLoading ? (
+    <div
+      style={{
+        height: props.empId != "" || props.nameRoom != "" ? 266 : 310,
+        width: "100%",
+      }}
+    >
+      {isLoading ? (
         <Loader size={60} />
       ) : (
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={10}
-        rowHeight={28}
-        localeText={rusLocale}
-        components={{
-          Toolbar: CustomToolbar,
-        }}
-        disableColumnSelector={true}
-        disableColumnMenu={true}
-        hideFooterSelectedRowCount = {true}
-      />
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={10}
+          rowHeight={28}
+          localeText={rusLocale}
+          components={{
+            Toolbar: CustomToolbar,
+          }}
+          disableColumnSelector={true}
+          disableColumnMenu={true}
+          hideFooterSelectedRowCount={true}
+        />
       )}
     </div>
   )

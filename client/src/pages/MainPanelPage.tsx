@@ -1,16 +1,6 @@
-import {
-  Button,
-  Card,
-  Grid,
-  makeStyles,
-  Paper,
-  Theme,
-  Typography,
-} from "@material-ui/core"
+import {Button, Card, Grid, makeStyles, Theme, Tooltip, Typography} from "@material-ui/core"
 import { blue } from "@material-ui/core/colors"
-import React, { useEffect, useState } from "react"
-import Chart from "react-apexcharts"
-import { useDispatch } from "react-redux"
+import React, { useState } from "react"
 import { AccessViolsCountCard } from "../components/mainpage/cards/AccessViolsCountCard"
 import { LatenessCountCard } from "../components/mainpage/cards/LatenessCountCard"
 import { TopLatenessCard } from "../components/mainpage/cards/TopLatenessCard"
@@ -21,9 +11,7 @@ import { TopMissOnWorkPlaceChart } from "../components/mainpage/TopMissOnWorkPla
 import { TopVisRoomsChart } from "../components/mainpage/TopVisRoomsChart"
 import { RangePicker } from "../components/RangePicker"
 import { useTypedSelector } from "../hooks/useTypedSelector"
-import SaveIcon from '@material-ui/icons/Save';
-
-
+import SaveIcon from "@material-ui/icons/Save"
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -54,28 +42,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     alignItems: "center",
   },
   titleContainer: {
-    display: 'flex',
-    justifyContent: 'space-between'
+    display: "flex",
+    justifyContent: "space-between",
   },
-  datePickerContainer:{
-    padding: '5px 20px',
-    display: 'flex',
-    flexWrap: 'nowrap'
+  datePickerContainer: {
+    padding: "5px 20px",
+    display: "flex",
+    flexWrap: "nowrap",
   },
-  paperInfo:{
+  paperInfo: {
     height: "168px",
-
   },
-  paperLateStats:{
+  paperLateStats: {
     height: "352px",
-
-
   },
-  paperMostVis:{
+  paperMostVis: {
     height: "352px",
-
-
-  }
+  },
+  saveButton: {
+    backgroundColor: blue[200],
+    marginRight: "10px",
+    "&:hover": {
+      backgroundColor: blue[100],
+    },
+  },
 }))
 interface IExpObg {
   startDate: string
@@ -92,13 +82,13 @@ interface IExpObg {
 
 export const MainPanelPage: React.FC = () => {
   const classes = useStyles()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
 
-  const [accessCountJSON, setAccessCountJSON] = useState<string>('')
+  const [accessCountJSON, setAccessCountJSON] = useState<string>("")
   const [latenessTopJSON, setLatenessTopJSON] = useState<object>({})
-  const [latenessCountJSON, setLatenessCountJSON] = useState<string>('')
-  const [workHoursCountJSON, setWorkHoursCountJSON] = useState<string>('')
+  const [latenessCountJSON, setLatenessCountJSON] = useState<string>("")
+  const [workHoursCountJSON, setWorkHoursCountJSON] = useState<string>("")
   const [accessViolsChartJSON, setAccessViolsChartJSON] = useState<object>({})
   const [latenessChartJSON, setLatenessChartJSON] = useState<object>({})
   const [workHoursChartJSON, setWorkHoursChartJSON] = useState<object>({})
@@ -114,16 +104,18 @@ export const MainPanelPage: React.FC = () => {
     topAccessChart: accessViolsChartJSON,
     topLatenessChart: latenessChartJSON,
     topWorkHoursChart: workHoursChartJSON,
-    topVisRoomsChart: topVisRoomsChartJSON
+    topVisRoomsChart: topVisRoomsChartJSON,
   }
-  
 
   const fileToSave = new Blob([JSON.stringify(exportJSON)], {
     type: "application/json",
   })
 
-  const onSaveButtonClickHandler = () =>  {
-    saveAs(fileToSave, `dashboardData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`)
+  const onSaveButtonClickHandler = () => {
+    saveAs(
+      fileToSave,
+      `dashboardData_${startDate.toLocaleDateString()}-${endDate.toLocaleDateString()}.json`
+    )
   }
 
   return (
@@ -134,50 +126,69 @@ export const MainPanelPage: React.FC = () => {
             Главная панель
           </Typography>
           <Card className={classes.datePickerContainer}>
-          <Button onClick={onSaveButtonClickHandler}><SaveIcon /></Button>
-          <RangePicker />
+            <Tooltip title="Сохранить в JSON" aria-label="add">
+              <Button
+                onClick={onSaveButtonClickHandler}
+                className={classes.saveButton}
+              >
+                <SaveIcon />
+              </Button>
+            </Tooltip>
+            <RangePicker />
           </Card>
         </Grid>
 
-
-        <Grid  item xs={12} md={6}>
-        <Grid spacing={2} container  >
-        <Grid  item xs={12} md={6}>
-          <Card className={classes.paperInfo}><TopLatenessCard  setExportJSON= {setLatenessTopJSON}/></Card>
+        <Grid item xs={12} md={6}>
+          <Grid spacing={2} container>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperInfo}>
+                <TopLatenessCard setExportJSON={setLatenessTopJSON} />
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperInfo}>
+                <LatenessCountCard setExportJSON={setLatenessCountJSON} />
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperInfo}>
+                <WorkhoursViolsCountCard
+                  setExportJSON={setWorkHoursCountJSON}
+                />
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperInfo}>
+                <AccessViolsCountCard setExportJSON={setAccessCountJSON} />
+              </Card>
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><LatenessCountCard setExportJSON= {setLatenessCountJSON}/></Card>
+          <Card className={classes.paper}>
+            <TopMissOnWorkPlaceChart setExportJSON={setWorkHoursChartJSON} />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><WorkhoursViolsCountCard setExportJSON= {setWorkHoursCountJSON}/></Card>
+          <Card className={classes.paper}>
+            <TopAccessViolsChart setExportJSON={setAccessViolsChartJSON} />
+          </Card>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Card className={classes.paperInfo}><AccessViolsCountCard setExportJSON= {setAccessCountJSON}/></Card>
+          <Grid spacing={2} container>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperLateStats}>
+                <TopVisRoomsChart setExportJSON={setTopVisRoomsChartJSON} />
+              </Card>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Card className={classes.paperMostVis}>
+                <TopLatesDepsChart setExportJSON={setLatenessChartJSON} />
+              </Card>
+            </Grid>
+          </Grid>
         </Grid>
-        </Grid>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><TopMissOnWorkPlaceChart setExportJSON= {setWorkHoursChartJSON}/></Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card className={classes.paper}><TopAccessViolsChart setExportJSON= {setAccessViolsChartJSON}/></Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-
-        <Grid spacing={2} container >
-        <Grid  item xs={12} md={6}>
-          <Card className={classes.paperLateStats}><TopVisRoomsChart setExportJSON= {setTopVisRoomsChartJSON}/></Card>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Card className={classes.paperMostVis}><TopLatesDepsChart setExportJSON= {setLatenessChartJSON}/></Card>
-        </Grid>
-
-        </Grid>
-
-        </Grid>
-        
       </Grid>
-
     </div>
   )
 }

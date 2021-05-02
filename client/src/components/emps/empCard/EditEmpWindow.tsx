@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import Dialog from "@material-ui/core/Dialog"
@@ -8,16 +8,8 @@ import DialogContentText from "@material-ui/core/DialogContentText"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
-import { addEmp, editEmp, getDeps} from "../../../store/action-creators/emps"
-import {
-  FormControl,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  Theme,
-} from "@material-ui/core"
-import { isEmpty } from "lodash"
+import { editEmp, getDeps } from "../../../store/action-creators/emps"
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, Theme } from "@material-ui/core"
 import { blue, red } from "@material-ui/core/colors"
 import { AgreeDeleteWindow } from "./AgreeDeleteWindow"
 
@@ -34,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   mainItemButton: {
     width: "48%",
     backgroundColor: red[300],
-    color: blue[900]
+    color: blue[900],
   },
 }))
 
@@ -48,7 +40,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
   props: NewEmpInterface
 ) => {
   const classes = useStyles()
-  const [agreeOpen, setAgreeOpen] = React.useState(false);
+  const [agreeOpen, setAgreeOpen] = React.useState(false)
   const [selectedDep, setSelectedDep] = React.useState("")
   const [idEmp, setIdEmp] = React.useState("")
   const [lastName, setLastName] = React.useState("")
@@ -72,7 +64,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
     setLastName(props.selectedEmp[0].last_name)
     setFirstName(props.selectedEmp[0].first_name)
     setMiddleName(props.selectedEmp[0].middle_name)
-    setDbEmp(props.selectedEmp[0].db_emp.split('.').reverse().join('-'))
+    setDbEmp(props.selectedEmp[0].db_emp.split(".").reverse().join("-"))
     setEmail(props.selectedEmp[0].email_emp)
     setTel(props.selectedEmp[0].tel_emp)
     setStartDayTime(props.selectedEmp[0].start_time)
@@ -91,22 +83,21 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
 
   const onEditHandle = () => {
     const formData = new FormData()
-    formData.append('first_name', firstName)
-    formData.append('middle_name', middleName)
-    formData.append('last_name', lastName)
-    formData.append('id_dep', selectedDep)
-    formData.append('db_emp', dbEmp)
-    formData.append('email_emp', email)
-    formData.append('tel_emp', tel)
-    formData.append('startTime', startDayTime)
-    formData.append('endTime', endDayTime)
-    formData.append('lunchTime', lunchTime)
-    formData.append('teaTime', teaTime)
-    dispatch(editEmp(formData,idEmp))
+    formData.append("first_name", firstName)
+    formData.append("middle_name", middleName)
+    formData.append("last_name", lastName)
+    formData.append("id_dep", selectedDep)
+    formData.append("db_emp", dbEmp)
+    formData.append("email_emp", email)
+    formData.append("tel_emp", tel)
+    formData.append("startTime", startDayTime)
+    formData.append("endTime", endDayTime)
+    formData.append("lunchTime", lunchTime)
+    formData.append("teaTime", teaTime)
+    dispatch(editEmp(formData, idEmp))
     props.setWindowOpen(false)
     props.setOpenSnack(true)
   }
-
 
   return (
     <div>
@@ -130,9 +121,9 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               label="Фамилия"
               type="text"
               value={lastName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setLastName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setLastName(event.target.value as string)
+              }}
             />
             <TextField
               className={classes.mainItem}
@@ -141,9 +132,9 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               label="Имя"
               type="text"
               value={firstName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setFirstName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setFirstName(event.target.value as string)
+              }}
             />
             <TextField
               className={classes.mainItem}
@@ -152,9 +143,9 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               label="Отчество (при наличии)"
               type="text"
               value={middleName}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setMiddleName(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setMiddleName(event.target.value as string)
+              }}
             />
 
             <FormControl className={classes.mainItem} margin="dense">
@@ -164,7 +155,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 id="dep-select"
                 value={selectedDep}
                 onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                    setSelectedDep(event.target.value as string)
+                  setSelectedDep(event.target.value as string)
                 }}
               >
                 {deps.map((dep: any, index: number) => (
@@ -176,22 +167,22 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
             </FormControl>
           </div>
           <div className={classes.headContainer}>
-             <TextField
-          className={classes.mainItem}
-            margin="dense"
-            type="date"
-            id="db_emp"
-            label="Дата рождения"
-            variant='outlined'
-            InputLabelProps={{
-              shrink: true,
-            }}
-            fullWidth
-            value={dbEmp}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setDbEmp(event.target.value as string)
-                }}
-          />
+            <TextField
+              className={classes.mainItem}
+              margin="dense"
+              type="date"
+              id="db_emp"
+              label="Дата рождения"
+              variant="outlined"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              fullWidth
+              value={dbEmp}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setDbEmp(event.target.value as string)
+              }}
+            />
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -199,9 +190,9 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
               label="E-mail"
               type="email"
               value={email}
-                onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
-                  setEmail(event.target.value as string)
-                }}
+              onChange={(event: React.ChangeEvent<{ value: unknown }>) => {
+                setEmail(event.target.value as string)
+              }}
             />
             <TextField
               className={classes.mainItem}
@@ -214,7 +205,7 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 setTel(event.target.value as string)
               }}
             />
-            
+
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -257,7 +248,12 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 setLunchTime(event.target.value as string)
               }}
             />
-            <Button onClick={()=> setAgreeOpen(true)} className={classes.mainItemButton}>Удалить сотрудника</Button>
+            <Button
+              onClick={() => setAgreeOpen(true)}
+              className={classes.mainItemButton}
+            >
+              Удалить сотрудника
+            </Button>
             <TextField
               className={classes.mainItem}
               margin="dense"
@@ -272,11 +268,16 @@ export const EditEmpWindow: React.FC<NewEmpInterface> = (
                 setTeaTime(event.target.value as string)
               }}
             />
-             
           </div>
         </DialogContent>
         <DialogActions>
-        <AgreeDeleteWindow windowOpen={agreeOpen} setWindowOpen={setAgreeOpen} setMainWindowOpen={props.setWindowOpen} selectedEmp={props.selectedEmp} setOpenSnack={props.setOpenSnack}/>
+          <AgreeDeleteWindow
+            windowOpen={agreeOpen}
+            setWindowOpen={setAgreeOpen}
+            setMainWindowOpen={props.setWindowOpen}
+            selectedEmp={props.selectedEmp}
+            setOpenSnack={props.setOpenSnack}
+          />
           <Button onClick={handleClose} color="primary">
             Отмена
           </Button>

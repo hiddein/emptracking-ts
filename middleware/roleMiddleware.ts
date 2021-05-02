@@ -5,7 +5,7 @@ dotenv.config()
 
 
 export default (rolesUser:string[]) =>{
-    return function (req:any,res:any,next: Function):any {
+    return function (req:Request, res:Response ,next: Function):any {
         
     if(req.method === 'OPTIONS'){
         next()

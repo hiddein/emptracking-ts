@@ -1,9 +1,7 @@
-import { Avatar, makeStyles, Theme, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
-
+import { makeStyles, Theme, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
-import { getLateness } from "../../../store/action-creators/lateness"
 import ViolsIcon from "../../../img/icons/icons8-every-three-hours-96.png"
 import { blue } from "@material-ui/core/colors"
 import { Loader } from "../../Loader"
@@ -11,11 +9,6 @@ import _ from "lodash"
 import { getWorkHoursViols } from "../../../store/action-creators/workHoursViols"
 
 const useStyles = makeStyles((theme: Theme) => ({
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-    marginRight: "30px",
-  },
   img: {
     height: 60,
     padding: "0",

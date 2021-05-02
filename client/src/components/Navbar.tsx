@@ -7,15 +7,7 @@ import logo from "../img/logo.svg"
 import Link from "@material-ui/core/Link"
 import { useTypedSelector } from "../hooks/useTypedSelector"
 import { Link as RouterLink } from "react-router-dom"
-import {
-  Button,
-  Container,
-  Fade,
-  IconButton,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@material-ui/core"
+import { Button, Container, Fade, IconButton, Menu, MenuItem, Typography } from "@material-ui/core"
 import { AccountCircle } from "@material-ui/icons"
 import SupervisedUserCircleIcon from "@material-ui/icons/SupervisedUserCircle"
 import { useDispatch } from "react-redux"

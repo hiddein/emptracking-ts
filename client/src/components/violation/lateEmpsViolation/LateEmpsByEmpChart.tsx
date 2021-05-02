@@ -1,37 +1,24 @@
-import { Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
-import { getLatenessByEmp } from "../../../store/action-creators/lateness";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { useDispatch } from "react-redux";
-import { rusLocaleChart } from "../../../rusLocale/ruslocale";
-import { Loader } from "../../Loader";
+import { getLatenessByEmp } from "../../../store/action-creators/lateness"
+import { useTypedSelector } from "../../../hooks/useTypedSelector"
+import { useDispatch } from "react-redux"
+import { rusLocaleChart } from "../../../rusLocale/ruslocale"
+import { Loader } from "../../Loader"
 
 const useStyles = makeStyles(() => ({
-    labelDiv:{
-        display:'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginBottom: '10px',
-        padding: ' 0 20px'
-        
- 
-    },
-    datePicker:{
-        width: '180px',
-        margin: 0
-    },
-    noDepContainer: {
-      height: "285px",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: "25px",
-    },
+  noDepContainer: {
+    height: "285px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "25px",
+  },
 }))
 
 interface propsEmpChart {
-  depName:string
+  depName: string
   setExportJSON: Function
 }
 interface IExpObg {
@@ -39,29 +26,32 @@ interface IExpObg {
   data: any
 }
 
-export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart) => {
+export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (
+  props: propsEmpChart
+) => {
   const classes = useStyles()
   const lateness = useTypedSelector((state) => state.lateness.latenessByEmp)
   const isLoading = useTypedSelector((state) => state.lateness.loadingByEmp)
   const dispatch = useDispatch()
-  const startDate = useTypedSelector(state => state.dates.startDate)
-  const endDate = useTypedSelector(state => state.dates.endDate)
-  const latenessFiltered = lateness.filter((item) => item.name_dep == props.depName)
-  const dataExp:IExpObg = {
+  const startDate = useTypedSelector((state) => state.dates.startDate)
+  const endDate = useTypedSelector((state) => state.dates.endDate)
+  const latenessFiltered = lateness.filter(
+    (item) => item.name_dep == props.depName
+  )
+  const dataExp: IExpObg = {
     depName: props.depName,
-    data:[]
+    data: [],
   }
 
   useEffect(() => {
     dispatch(getLatenessByEmp(startDate, endDate))
-   }, [startDate, endDate])
+  }, [startDate, endDate])
 
-   useEffect(() => {
+  useEffect(() => {
     props.setExportJSON(dataExp)
-   }, [startDate, endDate,props.depName])
+  }, [startDate, endDate, props.depName])
 
-
-   interface chartStateInterface {
+  interface chartStateInterface {
     series: any
     options: any
   }
@@ -92,13 +82,13 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
         width: 2,
       },
       title: {
-        text: 'Количество опозданий (по сотрудникам)',
-        align: 'left',
+        text: "Количество опозданий (по сотрудникам)",
+        align: "left",
         margin: 5,
         style: {
-          fontSize:  '20px',
-          fontFamily:  'Roboto',
-          color:  '#263238'
+          fontSize: "20px",
+          fontFamily: "Roboto",
+          color: "#263238",
         },
       },
       grid: {
@@ -135,33 +125,35 @@ export const LateEmpsByEmpChart: React.FC<propsEmpChart> = (props: propsEmpChart
   }
 
   latenessFiltered.map((item: any) => {
-    chartState.options.xaxis.categories.push(`${item.last_name} ${item.first_name}`)
+    chartState.options.xaxis.categories.push(
+      `${item.last_name} ${item.first_name}`
+    )
     chartState.series[0].data.push(item.count_lateness)
 
     dataExp.data.push({
       nameEmp: `${item.last_name} ${item.first_name}`,
-      countLateness: item.count
+      countLateness: item.count,
     })
   })
 
   return (
     <React.Fragment>
-        <div>
-         {props.depName == "" ? (
+      <div>
+        {props.depName == "" ? (
           <div className={classes.noDepContainer}>
             <Typography variant="h4">Выберите отдел</Typography>
           </div>
         ) : isLoading ? (
           <Loader size={60} height="290px" />
         ) : (
-      <Chart
-        options={chartState.options}
-        series={chartState.series}
-        type="bar"
-        height={"330px"}
-      />)}
-</div>
-
+          <Chart
+            options={chartState.options}
+            series={chartState.series}
+            type="bar"
+            height={"330px"}
+          />
+        )}
+      </div>
     </React.Fragment>
   )
 }

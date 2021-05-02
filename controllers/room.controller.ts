@@ -3,7 +3,7 @@ import { QueryResult } from "pg"
 import { pool } from "../db"
 
 class roomController {
-  async create(req: any, res: Response): Promise<Response> {
+  async create(req: Request, res: Response): Promise<Response> {
     try {
       const { nameRoom, aboutRoom, commRooms, depsOwnRoom } = await req.body
       const response: QueryResult = await pool.query(
@@ -38,7 +38,7 @@ class roomController {
       return res.status(500).json("Ошибка, проверьте значения")
     }
   }
-  async edit(req: any, res: Response): Promise<Response> {
+  async edit(req: Request, res: Response): Promise<Response> {
     try {
       const { nameRoom, aboutRoom, commRooms, depsOwnRoom } = await req.body
       const response: QueryResult = await pool.query(

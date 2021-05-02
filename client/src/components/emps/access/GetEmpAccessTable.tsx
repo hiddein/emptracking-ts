@@ -1,15 +1,9 @@
 import { Button, makeStyles, Snackbar, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import MuiAlert, { AlertProps } from "@material-ui/lab/Alert"
-import {
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
-  GridFilterToolbarButton,
-  GridToolbarExport,
-} from "@material-ui/data-grid"
+import { DataGrid, GridColDef, GridToolbarContainer, GridFilterToolbarButton, GridToolbarExport } from "@material-ui/data-grid"
 import { rusLocale } from "../../../rusLocale/ruslocale"
-import { blue, green, red } from "@material-ui/core/colors"
+import { green, red } from "@material-ui/core/colors"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { useDispatch } from "react-redux"
 import { getAccess } from "../../../store/action-creators/emps"
@@ -29,16 +23,8 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
     margin: "6px",
   },
-  footerContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
   toolBarItem: {
     display: "flex",
-  },
-  footerEmp: {
-    marginLeft: 10,
-    backgroundColor: blue[200],
   },
   toolBarOption: {
     paddingRight: "10px",
@@ -178,12 +164,8 @@ export const GetEmpAccessTable: React.FC<propsAccessChart> = (
       roomAbout: item.about_room,
     })
 
-    accessExp.rows.push([
-      item.name_room,
-      item.about_room,
-    ])
-  }
-  )
+    accessExp.rows.push([item.name_room, item.about_room])
+  })
 
   return (
     <div style={{ height: 340, width: "100%" }}>

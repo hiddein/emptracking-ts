@@ -1,11 +1,11 @@
-import { Button, Card, Grid, makeStyles, Typography } from "@material-ui/core"
-import React, { useEffect, useState } from "react"
+import { Button, makeStyles, Typography } from "@material-ui/core"
+import React, { useEffect } from "react"
 import Chart from "react-apexcharts"
 
 import { rusLocaleChart } from "../../../rusLocale/ruslocale";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { useDispatch } from "react-redux";
-import { getAccessViols, getAccessViolsByEmpDays} from "../../../store/action-creators/accessViols"
+import { getAccessViols } from "../../../store/action-creators/accessViols"
 import _ from "lodash";
 import { Loader } from "../../Loader";
 import { blue } from "@material-ui/core/colors";
@@ -20,14 +20,13 @@ const useStyles = makeStyles(() => ({
         
  
     },
-    datePicker:{
-        width: '180px',
-        margin: 0
-    },
     selectedButton: {
       padding: "4px 10px",
       color: blue[900],
-      backgroundColor: blue[200]
+      backgroundColor: blue[200],
+      "&:hover": {
+        backgroundColor: blue[400],
+      },
     },
 }))
 
