@@ -31,7 +31,7 @@ const addLog = async (id_emp: number, id_route: number, Timestamp: number) => {
 }
 
 const clearLogs = async () => {
-  const { data } = await $authHost.get("api/logs/delete")
+  const { data } = await $authHost.delete("api/logs/delete")
   return data.message
 }
 

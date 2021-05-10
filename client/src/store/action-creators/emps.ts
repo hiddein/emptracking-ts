@@ -75,7 +75,7 @@ export const editEmp = (formData: any,idEmp:string) => {
   return async (dispatch: any) => {
     try {
 
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:7000/api/emps/edit/${idEmp}`,formData
         ,
         {
@@ -91,8 +91,8 @@ export const editEmp = (formData: any,idEmp:string) => {
 export const deleteEmp = (idEmp:string) => {
   return async (dispatch: any) => {
     try {
-      const response = await axios.post(
-        `http://localhost:7000/api/emps/delete/`,{idEmp},
+      const response = await axios.delete(
+        `http://localhost:7000/api/emps/${idEmp}`,
         {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }

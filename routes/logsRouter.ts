@@ -14,7 +14,7 @@ router.post(
   logsController.create
 )
 router.get("/", authMiddleware, logsController.getAll)
-router.get("/delete",authMiddleware,logsController.deleteAll)
+router.delete("/delete",authMiddleware,logsController.deleteAll)
 router.get("/getMoves",authMiddleware,logsController.getAllMoves)
 router.get("/getMovesInRange",authMiddleware,logsController.getMovesInRange)
 router.get("/getMovesInRangeById",authMiddleware,logsController.getMovesInRangeById)

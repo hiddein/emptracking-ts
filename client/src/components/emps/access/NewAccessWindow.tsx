@@ -9,7 +9,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import { useDispatch } from "react-redux"
 import { useTypedSelector } from "../../../hooks/useTypedSelector"
 import { getDeps } from "../../../store/action-creators/emps"
-import { FormControl, InputLabel, makeStyles, MenuItem, Select, Theme } from "@material-ui/core"
+import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core"
 import { addAccess } from "../../../store/action-creators/rooms"
 
 interface NewEmpInterface {

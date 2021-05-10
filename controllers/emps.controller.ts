@@ -94,7 +94,7 @@ class empsController {
     try {
       const {
        idEmp
-      } = await req.body
+      } = await req.params
        const response2: QueryResult = await pool.query(
         "DELETE FROM schedule where id_emp=$1",
         [idEmp]
