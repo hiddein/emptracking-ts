@@ -91,6 +91,7 @@ export const editEmp = (formData: any,idEmp:string) => {
 export const deleteEmp = (idEmp:string) => {
   return async (dispatch: any) => {
     try {
+      console.log(idEmp)
       const response = await axios.delete(
         `http://localhost:7000/api/emps/${idEmp}`,
         {

@@ -163,7 +163,7 @@ export const MovesStatPage: React.FC = () => {
                   }}
                   disabled={empsSelected}
                 >
-                  По сотрудникам
+                  Сотрудник
                 </Button>
                 <Button
                   onClick={() => {
@@ -171,7 +171,7 @@ export const MovesStatPage: React.FC = () => {
                   }}
                   disabled={roomsSelected}
                 >
-                  По помещениям
+                  Помещение
                 </Button>
               </ButtonGroup>
             </div>

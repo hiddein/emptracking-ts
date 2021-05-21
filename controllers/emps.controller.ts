@@ -93,21 +93,22 @@ class empsController {
   async delete(req: Request, res: Response): Promise<Response> {
     try {
       const {
-       idEmp
+       id
       } = await req.params
+      console.log(req.params)
        const response2: QueryResult = await pool.query(
         "DELETE FROM schedule where id_emp=$1",
-        [idEmp]
+        [id]
       )
         const response: QueryResult = await pool.query(
           "DELETE FROM emp where id_emp=$1",
-          [idEmp]
+          [id]
         )
      
 
       return res
         .status(200)
-        .json({ message: "Добавлен сотрудник", idEmp })
+        .json({ message: "Добавлен сотрудник", id})
     } catch (e) {
       console.log(e.message)
       return res.status(500).json("Ошибка, проверьте значения")

@@ -9,10 +9,10 @@ dotenv.config()
 
 
 
-const generateAccessToken = (id:number,email:string,role:string):string =>{
+const generateAccessToken = (id:number,login:string,role:string):string =>{
     const payload = {
         id,
-        email,
+        login,
         role
     }
     return jwt.sign(payload,process.env.TOKEN_SECRET || 'fakeSecret',{expiresIn:'24h'})
